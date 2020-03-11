@@ -2,7 +2,25 @@
 	<i class="fa fa-angle-up" aria-hidden="true"></i>	
 </div>
 
-
+<div class="order_area_ft">
+					<div class="container">
+						<div class="zalo_order">
+							<div class="panel-grid-cell">
+								<a href="<?php echo home_url(); ?>/diem-ban">Đặt mua trực tuyến <br> DHA Canxi </a>
+							</div>
+							<?php if(get_option('phone')){ ?>
+							<div class="panel-grid-cell">
+								<div class="textwidget"><h2>Kết nối zalo</h2>
+									<p><a href="https://zalo.me/<?php  echo get_option('phone');  ?>"><?php  echo get_option('phone');  ?></a></p>
+									<h4>Gọi<br>
+									ngay</h4>
+								</div>
+							</div>
+						<?php } ?>
+						</div>
+					</div>
+				</div>
+				
 <footer class="footer">
 	<div class="container">
 		<div class="row">

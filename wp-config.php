@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 /**
  * Cấu hình cơ bản cho WordPress
  *
@@ -19,14 +19,14 @@
  */
 // ** Thiết lập MySQL - Bạn có thể lấy các thông tin này từ host/server ** //
 /** Tên database MySQL */
-define('DB_NAME', 'dhacanxi');
+define('DB_NAME', 'daiichi');
 /** Username của database */
 define('DB_USER', 'root');
 /** Mật khẩu của database */
 //define('DB_PASSWORD', '');
-define('DB_PASSWORD', '123456789aA@');
+define('DB_PASSWORD', '');
 /** Hostname của database */
-define('DB_HOST', 'localhost');
+define('DB_HOST', '127.0.0.1');
 /** Database charset sử dụng để tạo bảng database. */
 define('DB_CHARSET', 'utf8mb4');
 /** Kiểu database collate. Đừng thay đổi nếu không hiểu rõ. */
@@ -69,6 +69,7 @@ $table_prefix  = 'wp_';
  * @link https://codex.wordpress.org/Debugging_in_WordPress
  */
 define('WP_DEBUG', false);
+//define('FS_METHOD', 'direct');
 define( 'WP_AUTO_UPDATE_CORE', false );
 /* Đó là tất cả thiết lập, ngưng sửa từ phần này trở xuống. Chúc bạn viết blog vui vẻ. */
 /** Đường dẫn tuyệt đối đến thư mục cài đặt WordPress. */

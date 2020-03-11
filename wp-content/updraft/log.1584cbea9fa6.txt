@@ -1,0 +1,125 @@
+0000.001 (0) Opened log file at time: Wed, 11 Mar 2020 05:28:34 +0000 on http://dhacanxibonegold.com
+0000.005 (0) UpdraftPlus WordPress backup plugin (https://updraftplus.com): 1.16.17 WP: 5.2.2 PHP: 7.0.33 (apache2handler, Linux yang 3.10.0-957.1.3.el7.x86_64 #1 SMP Thu Nov 29 14:49:43 UTC 2018 x86_64) MySQL: 5.7.27 WPLANG: vi Server: Apache/2.4.6 (CentOS) PHP/7.0.33 safe_mode: 0 max_execution_time: 900 memory_limit: 256M (used: 13.5M | 12M) multisite: N openssl: OpenSSL 1.0.2k-fips  26 Jan 2017 mcrypt: Y LANG: C ZipArchive::addFile: N
+0000.007 (0) Free space on disk containing Updraft's temporary directory: 17607.6 MB
+0000.010 (0) Tasks: Backup files:  (schedule: manual) Backup DB: 1 (schedule: daily)
+0000.012 (0) Processed schedules. Tasks now: Backup files:  Backup DB: 1
+0000.023 (0) Requesting semaphore lock (d) (apparently via scheduler: last_scheduled_action_called_at=1583816524, seconds_ago=87990)
+0000.029 (0) Set semaphore last lock (d) time to 2020-03-11 05:28:34
+0000.031 (0) Semaphore lock (d) complete
+0000.038 (0) Backup run: resumption=0, nonce=1584cbea9fa6, file_nonce=1584cbea9fa6 begun at=1583904514 (0s ago), job type=backup
+0000.042 (0) Scheduling a resumption (1) after 300 seconds (1583904814) in case this run gets aborted
+0000.055 (0) This backup run is not intended for files - skipping
+0000.057 (0) Beginning creation of database dump (WordPress DB)
+0000.061 (0) Testing potential mysqldump binary: /usr/bin/mysqldump
+0000.122 (0) Output: /*!40103 SET @OLD_TIME_ZONE=@@TIME_ZONE */;\n/*!40103 SET TIME_ZONE='+00:00' */;\n/*!40014 SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0 */;\n/*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;\n/*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;\n/*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;\nDROP TABLE IF EXISTS `wp_options`;\n/*!40101 SET @saved_cs_client     = @@character_set_client */;\n/*!40101 SET character_set_client = utf8 */;\nCRE (truncated - 1196 bytes total)
+0000.126 (0) Working binary mysqldump found: /usr/bin/mysqldump
+0000.143 (0) Table wp_options: Total expected rows (approximate): 217
+0000.151 (0) Table wp_options: Total rows added: 213 in 0.01 seconds
+0000.154 (0) Table wp_options: finishing file (backup_2020-03-11-1228_Dhacanxi_1584cbea9fa6-db-table-wp_options.table.gz - 9.2 KB)
+0000.162 (0) Table wp_users: Total expected rows (approximate): 0
+0000.165 (0) Table wp_users: Total rows added: 1 in 0.00 seconds
+0000.167 (0) Table wp_users: finishing file (backup_2020-03-11-1228_Dhacanxi_1584cbea9fa6-db-table-wp_users.table.gz - 0.5 KB)
+0000.174 (0) Table wp_usermeta: Total expected rows (approximate): 30
+0000.177 (0) Table wp_usermeta: Total rows added: 33 in 0.00 seconds
+0000.180 (0) Table wp_usermeta: finishing file (backup_2020-03-11-1228_Dhacanxi_1584cbea9fa6-db-table-wp_usermeta.table.gz - 1.4 KB)
+0000.185 (0) Table wp_commentmeta: Total expected rows (approximate): 0
+0000.189 (0) Table wp_commentmeta: Total rows added: 0 in 0.00 seconds
+0000.191 (0) Table wp_commentmeta: finishing file (backup_2020-03-11-1228_Dhacanxi_1584cbea9fa6-db-table-wp_commentmeta.table.gz - 0.4 KB)
+0000.196 (0) Table wp_comments: Total expected rows (approximate): 0
+0000.199 (0) Table wp_comments: Total rows added: 0 in 0.00 seconds
+0000.201 (0) Table wp_comments: finishing file (backup_2020-03-11-1228_Dhacanxi_1584cbea9fa6-db-table-wp_comments.table.gz - 0.5 KB)
+0000.206 (0) Table wp_links: Total expected rows (approximate): 0
+0000.209 (0) Table wp_links: Total rows added: 0 in 0.00 seconds
+0000.211 (0) Table wp_links: finishing file (backup_2020-03-11-1228_Dhacanxi_1584cbea9fa6-db-table-wp_links.table.gz - 0.4 KB)
+0000.216 (0) Table wp_postmeta: Total expected rows (approximate): 984
+0000.372 (0) Table wp_postmeta: Total rows added: 1063 in 0.16 seconds
+0000.374 (0) Table wp_postmeta: finishing file (backup_2020-03-11-1228_Dhacanxi_1584cbea9fa6-db-table-wp_postmeta.table.gz - 136.8 KB)
+0000.381 (0) Table wp_posts: Total expected rows (approximate): 342
+0000.547 (0) Table wp_posts: Total rows added: 564 in 0.16 seconds
+0000.551 (0) Table wp_posts: finishing file (backup_2020-03-11-1228_Dhacanxi_1584cbea9fa6-db-table-wp_posts.table.gz - 154 KB)
+0000.557 (0) Table wp_term_relationships: Total expected rows (approximate): 112
+0000.560 (0) Table wp_term_relationships: Total rows added: 109 in 0.00 seconds
+0000.562 (0) Table wp_term_relationships: finishing file (backup_2020-03-11-1228_Dhacanxi_1584cbea9fa6-db-table-wp_term_relationships.table.gz - 0.7 KB)
+0000.567 (0) Table wp_term_taxonomy: Total expected rows (approximate): 13
+0000.570 (0) Table wp_term_taxonomy: Total rows added: 13 in 0.00 seconds
+0000.572 (0) Table wp_term_taxonomy: finishing file (backup_2020-03-11-1228_Dhacanxi_1584cbea9fa6-db-table-wp_term_taxonomy.table.gz - 0.5 KB)
+0000.579 (0) Table wp_termmeta: Total expected rows (approximate): 0
+0000.583 (0) Table wp_termmeta: Total rows added: 1 in 0.00 seconds
+0000.585 (0) Table wp_termmeta: finishing file (backup_2020-03-11-1228_Dhacanxi_1584cbea9fa6-db-table-wp_termmeta.table.gz - 0.4 KB)
+0000.592 (0) Table wp_terms: Total expected rows (approximate): 13
+0000.595 (0) Table wp_terms: Total rows added: 13 in 0.00 seconds
+0000.596 (0) Table wp_terms: finishing file (backup_2020-03-11-1228_Dhacanxi_1584cbea9fa6-db-table-wp_terms.table.gz - 0.6 KB)
+0000.601 (0) Table wp_nextend2_image_storage: Total expected rows (approximate): 9
+0000.605 (0) Table wp_nextend2_image_storage: Total rows added: 9 in 0.00 seconds
+0000.606 (0) Table wp_nextend2_image_storage: finishing file (backup_2020-03-11-1228_Dhacanxi_1584cbea9fa6-db-table-wp_nextend2_image_storage.table.gz - 0.8 KB)
+0000.612 (0) Table wp_nextend2_section_storage: Total expected rows (approximate): 7
+0000.616 (0) Table wp_nextend2_section_storage: Total rows added: 7 in 0.00 seconds
+0000.618 (0) Table wp_nextend2_section_storage: finishing file (backup_2020-03-11-1228_Dhacanxi_1584cbea9fa6-db-table-wp_nextend2_section_storage.table.gz - 6 KB)
+0000.623 (0) Table wp_nextend2_smartslider3_generators: Total expected rows (approximate): 0
+0000.626 (0) Table wp_nextend2_smartslider3_generators: Total rows added: 0 in 0.00 seconds
+0000.628 (0) Table wp_nextend2_smartslider3_generators: finishing file (backup_2020-03-11-1228_Dhacanxi_1584cbea9fa6-db-table-wp_nextend2_smartslider3_generators.table.gz - 0.3 KB)
+0000.634 (0) Table wp_nextend2_smartslider3_sliders: Total expected rows (approximate): 3
+0000.640 (0) Table wp_nextend2_smartslider3_sliders: Total rows added: 3 in 0.00 seconds
+0000.642 (0) Table wp_nextend2_smartslider3_sliders: finishing file (backup_2020-03-11-1228_Dhacanxi_1584cbea9fa6-db-table-wp_nextend2_smartslider3_sliders.table.gz - 3.4 KB)
+0000.647 (0) Table wp_nextend2_smartslider3_sliders_xref: Total expected rows (approximate): 2
+0000.652 (0) Table wp_nextend2_smartslider3_sliders_xref: Total rows added: 2 in 0.00 seconds
+0000.654 (0) Table wp_nextend2_smartslider3_sliders_xref: finishing file (backup_2020-03-11-1228_Dhacanxi_1584cbea9fa6-db-table-wp_nextend2_smartslider3_sliders_xref.table.gz - 0.3 KB)
+0000.659 (0) Table wp_nextend2_smartslider3_slides: Total expected rows (approximate): 9
+0000.666 (0) Table wp_nextend2_smartslider3_slides: Total rows added: 9 in 0.00 seconds
+0000.668 (0) Table wp_nextend2_smartslider3_slides: finishing file (backup_2020-03-11-1228_Dhacanxi_1584cbea9fa6-db-table-wp_nextend2_smartslider3_slides.table.gz - 3.7 KB)
+0000.673 (0) backup_2020-03-11-1228_Dhacanxi_1584cbea9fa6-db-table-wp_options.table.gz (1/18): adding to final database dump
+0000.677 (0) backup_2020-03-11-1228_Dhacanxi_1584cbea9fa6-db-table-wp_users.table.gz (2/18): adding to final database dump
+0000.678 (0) backup_2020-03-11-1228_Dhacanxi_1584cbea9fa6-db-table-wp_usermeta.table.gz (3/18): adding to final database dump
+0000.680 (0) backup_2020-03-11-1228_Dhacanxi_1584cbea9fa6-db-table-wp_commentmeta.table.gz (4/18): adding to final database dump
+0000.682 (0) backup_2020-03-11-1228_Dhacanxi_1584cbea9fa6-db-table-wp_comments.table.gz (5/18): adding to final database dump
+0000.684 (0) backup_2020-03-11-1228_Dhacanxi_1584cbea9fa6-db-table-wp_links.table.gz (6/18): adding to final database dump
+0000.685 (0) backup_2020-03-11-1228_Dhacanxi_1584cbea9fa6-db-table-wp_postmeta.table.gz (7/18): adding to final database dump
+0000.769 (0) backup_2020-03-11-1228_Dhacanxi_1584cbea9fa6-db-table-wp_posts.table.gz (8/18): adding to final database dump
+0000.860 (0) backup_2020-03-11-1228_Dhacanxi_1584cbea9fa6-db-table-wp_term_relationships.table.gz (9/18): adding to final database dump
+0000.862 (0) backup_2020-03-11-1228_Dhacanxi_1584cbea9fa6-db-table-wp_term_taxonomy.table.gz (10/18): adding to final database dump
+0000.864 (0) backup_2020-03-11-1228_Dhacanxi_1584cbea9fa6-db-table-wp_termmeta.table.gz (11/18): adding to final database dump
+0000.865 (0) backup_2020-03-11-1228_Dhacanxi_1584cbea9fa6-db-table-wp_terms.table.gz (12/18): adding to final database dump
+0000.867 (0) backup_2020-03-11-1228_Dhacanxi_1584cbea9fa6-db-table-wp_nextend2_image_storage.table.gz (13/18): adding to final database dump
+0000.868 (0) backup_2020-03-11-1228_Dhacanxi_1584cbea9fa6-db-table-wp_nextend2_section_storage.table.gz (14/18): adding to final database dump
+0000.871 (0) backup_2020-03-11-1228_Dhacanxi_1584cbea9fa6-db-table-wp_nextend2_smartslider3_generators.table.gz (15/18): adding to final database dump
+0000.873 (0) backup_2020-03-11-1228_Dhacanxi_1584cbea9fa6-db-table-wp_nextend2_smartslider3_sliders.table.gz (16/18): adding to final database dump
+0000.875 (0) backup_2020-03-11-1228_Dhacanxi_1584cbea9fa6-db-table-wp_nextend2_smartslider3_sliders_xref.table.gz (17/18): adding to final database dump
+0000.877 (0) backup_2020-03-11-1228_Dhacanxi_1584cbea9fa6-db-table-wp_nextend2_smartslider3_slides.table.gz (18/18): adding to final database dump
+0000.880 (0) backup_2020-03-11-1228_Dhacanxi_1584cbea9fa6-db.gz: finished writing out complete database file (304 KB)
+0000.891 (0) Total database tables backed up: 18 (backup_2020-03-11-1228_Dhacanxi_1584cbea9fa6-db.gz, size: 323675, sha1: 65d5d98a2bba8f67f9e91479ce690fd843f2d2c6, sha256: 2afcc449bf819460f2f047d5f18f30a2570e587e5262bce3d1099f4bbfd86a49)
+0000.899 (0) backup_2020-03-11-1228_Dhacanxi_1584cbea9fa6-db.gz: db: This file has not yet been successfully uploaded: will queue
+0000.901 (0) Saving backup history. Total backup size: 316.1 KB
+0000.904 (0) Requesting upload of the files that have not yet been successfully uploaded (1)
+0000.909 (0) Cloud backup selection (1/1): googledrive with instance (1/1) (last)
+0000.910 (0) Beginning dispatch of backup to remote (googledrive) (instance identifier s-c4da4c426db711e65715b1b29bfaff59)
+0004.091 (0) Google Drive: quota usage: used=14.2 MB, total=15360 MB, available=15345.8 MB
+0004.093 (0) Google Drive: backup_2020-03-11-1228_Dhacanxi_1584cbea9fa6-db.gz: Attempting to upload to Google Drive (into folder id: 1pmRZPcF9Wn0i6PQeXhRL62sbLsMbyW_f)
+0006.454 (0) Googledrive chunked upload: 100 % uploaded
+0006.459 (0) Google Drive: OK: Archive backup_2020-03-11-1228_Dhacanxi_1584cbea9fa6-db.gz uploaded in 2.36 seconds
+0006.461 (0) Recording as successfully uploaded: backup_2020-03-11-1228_Dhacanxi_1584cbea9fa6-db.gz
+0006.464 (0) Deleting local file: backup_2020-03-11-1228_Dhacanxi_1584cbea9fa6-db.gz: OK
+0006.472 (0) Retain: beginning examination of existing backup sets; user setting: retain_files=2, retain_db=1
+0006.474 (0) Number of backup sets in history: 2; groups (db): 1
+0006.475 (0) Examining (for databases) backup set with group_id=0, nonce=1584cbea9fa6, datestamp=1583904514 (Mar 11 2020 05:28:34)
+0006.477 (0) This backup set is the backup set just made, so will not be deleted.
+0006.477 (0) Examining (for databases) backup set with group_id=0, nonce=d2e54992a267, datestamp=1583816524 (Mar 10 2020 05:02:04)
+0006.477 (0) 1583816524: db: this set includes a database (backup_2020-03-10-1202_Dhacanxi_d2e54992a267-db.gz); db count is now 1
+0006.477 (0) 1583816524: db: over retain limit (1); will delete this database
+0006.477 (0) Delete file: backup_2020-03-10-1202_Dhacanxi_d2e54992a267-db.gz, service=googledrive
+0008.138 (0) Google Drive: backup_2020-03-10-1202_Dhacanxi_d2e54992a267-db.gz: Deletion successful
+0008.143 (0) This backup set is now empty; will remove from history
+0008.144 (0) Deleting log file (log.d2e54992a267.txt)
+0008.146 (0) Number of backup sets in history: 1; groups (files): 1
+0008.149 (0) Examining (for files) backup set with nonce=1584cbea9fa6, datestamp=1583904514 (Mar 11 2020 05:28:34)
+0008.149 (0) This backup set remains non-empty (f=0/d=1); will retain in history
+0008.151 (0) Retain: saving new backup history (sets now: 1) and finishing retain operation
+0008.157 (0) Resume backup (1584cbea9fa6, 0): finish run
+0008.162 (0) Decremented the semaphore (d) by 1
+0008.164 (0) Semaphore (d) unlocked
+0008.166 (0) There were no errors in the uploads, so the 'resume' event (1) is being unscheduled
+0008.171 (0) No email will/can be sent - the user has not configured an email address.
+0008.172 (0) The backup apparently succeeded and is now complete
+0000.000 (1) Opened log file at time: Wed, 11 Mar 2020 15:48:20 +0000 on http://daiichi.co
+0000.006 (1) UpdraftPlus WordPress backup plugin (https://updraftplus.com): 1.16.17 WP: 5.2.2 PHP: 7.0.13 (apache2handler, Windows NT DESKTOP-N4VK37Q 10.0 build 18362 (Windows 10) i586) MySQL: 10.1.19-MariaDB WPLANG: vi Server: Apache/2.4.23 (Win32) OpenSSL/1.0.2h PHP/7.0.13 safe_mode: 0 max_execution_time: 900 memory_limit: 256M (used: 27.2M | 28M) multisite: N openssl: OpenSSL 1.0.2j  26 Sep 2016 mcrypt: Y LANG:  ZipArchive::addFile: Y
+0000.013 (1) Free space on disk containing Updraft's temporary directory: 68477.6 MB
+0000.017 (1) This backup task (1584cbea9fa6) is either complete or began over 2 days ago: ending (1583941700.635, ) (existing jobdata keys: )
