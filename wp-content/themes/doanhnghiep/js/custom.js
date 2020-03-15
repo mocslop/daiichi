@@ -80,36 +80,59 @@ jQuery(document).ready(function(){
 			jQuery(this).addClass('active').siblings().removeClass('active, editBefore_li_product ');
 		});
 
-
-
+			jQuery('.partners ul').slick({
+				dots: true,
+				infinite: true,
+				speed: 300,
+				slidesToShow: 5,
+				slidesToScroll: 1,
+				autoplay: false,
+				dots: false,
+				autoplaySpeed: 2000,
+					// fade: true,
+					cssEase: 'linear',
+					responsive: [
+					{
+						breakpoint: 1024,
+						settings: {
+							slidesToShow: 4,
+							slidesToScroll: 1,
+							infinite: false,
+							dots: false
+						}
+					},
+					{
+						breakpoint: 600,
+						settings: {
+							slidesToShow: 3,
+							slidesToScroll: 1
+						}
+					},
+					{
+						breakpoint: 480,
+						settings: {
+							slidesToShow: 2,
+							slidesToScroll: 1
+						}
+					}
+					]
+				});
+			jQuery('.partners ul li a').click(function(e){
+				e.preventDefault();
+			});
 			// SHOP POPUP
 			jQuery(".order_now").click(function(e){
 				e.preventDefault();
 				jQuery('.popup_order').modal('show');
 			});
 
-			// SHOP POPUP
-		// jQuery(" .social_ft p").click(function(e){
-		// 	jQuery('.popup_map').stop(true,true).fadeIn('300').find('.close_popup').click(function(){jQuery('.popup_map').stop(true,true).fadeOut('300');
-		// });
-		// 	jQuery('.popup_map').find('.content_popup').show();
-		// 	e.preventDefault();
-		// });
-
-			// jQuery(document).click(function(event) {
- 		//  //if you click on anything except the modal itself or the "open modal" link, close the modal
- 		//  if (!jQuery(event.target).closest(".content_popup, .social_ft p ").length) {
- 		//  	jQuery("body").find(".content_popup").hide();
- 		//  	jQuery(".popup").fadeOut(300);
- 		//  }
- 		// });
 
 
 			var width = jQuery(window).width();
 			if(width>1200){
 				jQuery(`.home .address_header, #short_introduce_index .panel-layout>.panel-grid>.panel-grid-cell:nth-child(1) , .short_text,
 					    #feedback .panel-layout>.panel-grid:nth-child(1) ,
-					    .info_product
+					    .info_product,.home #post_idx_area .aio_catlist
 				 `)
 				.attr({"data-wow-delay" : "0.3s", "data-wow-duration" : "1s"}).addClass("wow animated fadeInUp ");
 				jQuery('.home .logo_site').attr({"data-wow-delay" : "0.3s", "data-wow-duration" : "1s"}).addClass("wow animated zoomIn ");

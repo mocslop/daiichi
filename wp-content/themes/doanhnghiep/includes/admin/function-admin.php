@@ -130,6 +130,47 @@ function myshortcode(){
 }
 add_shortcode('social_ft','myshortcode');
 
+function shortcode_gbh(){
+	ob_start();
+	?>
+	<div class="gbh">
+		<div class="container">
+			<h4 class="title_under_before">Các gói bảo hiểm được quan tâm</h4>
+			<ul class="row">
+				<?php
+				$args = array(  
+					'post_type' => 'product',
+					'post_status' => 'publish',
+					'posts_per_page' => 4, 
+					'orderby' => 'title', 
+					'order' => 'ASC'
+				);
+				$loop_partner = new WP_Query( $args ); 
+
+				while ( $loop_partner->have_posts() ) : $loop_partner->the_post(); 
+    	//echo the_title();
+					?> <li class="col-sm-3">
+						<div class="product_inner">
+							<?php  $image = wp_get_attachment_image_src( get_post_thumbnail_id( $post->ID ), 'single-post-thumbnail' );  ?>
+							<figure class="thumbnail" style="background:url('<?php echo $image[0]; ?>');"><a href="<?php the_permalink(); ?>"></a> </figure>
+							<h4><a href="<?php the_permalink(); ?>"><?php echo the_title(); ?></a></h4>
+							<div class="excerpt">
+								<p><?php echo excerpt(20); ?></p>
+							</div>
+						</div>
+						</li> <?php
+					endwhile;
+					wp_reset_query();
+					?>
+				</ul>
+			</div>
+		</div>
+	</div>
+	<?php
+	return ob_get_clean();
+}
+add_shortcode('sc_gbh','shortcode_gbh');
+
 
 
 /* Display Page
@@ -144,8 +185,8 @@ function zang_theme_create_page() {
 		?>  
 
 		<ul class="nav-tab-wrapper"> 
-		<li><a href="?page=template_admin_zang&tab=header_page_options" class="nav-tab <?php echo $active_tab == 'header_page_options' ? 'nav-tab-active' : ''; ?>">Header</a> </li>
-		<li><a href="?page=template_admin_zang&tab=social_page_options" class="nav-tab <?php echo $active_tab == 'social_page_options' ? 'nav-tab-active' : ''; ?>">Social Footer</a></li>	
+			<li><a href="?page=template_admin_zang&tab=header_page_options" class="nav-tab <?php echo $active_tab == 'header_page_options' ? 'nav-tab-active' : ''; ?>">Header</a> </li>
+			<li><a href="?page=template_admin_zang&tab=social_page_options" class="nav-tab <?php echo $active_tab == 'social_page_options' ? 'nav-tab-active' : ''; ?>">Social Footer</a></li>	
 		</ul>  
 
 		<form method="post" action="options.php">  

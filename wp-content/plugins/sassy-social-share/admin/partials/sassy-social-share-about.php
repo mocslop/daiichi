@@ -7,7 +7,7 @@
 		<div style="height:32px">
 			<a href="//www.facebook.com/heateor" target="_blank" title="Facebook"><img style="box-shadow:1px 1px 10px 1px #888888" class="heateorSssLoginButton heateorSssFacebookButton" /></a>
 			<a href="//twitter.com/heateor" target="_blank" title="Twitter"><img style="box-shadow:1px 1px 10px 1px #888888" class="heateorSssLoginButton heateorSssTwitterButton" ></a>
-			<a href="https://www.instagram.com/Heateor" title="Instagram" target="_blank"><div style="display:block;width:32px;height:32px;box-shadow:1px 1px 10px 1px #888888;float:left;background-color:#527FA4"><div class="heateorSssSharingSvg heateorSssInstagramSvg"></div></div></a>
+			<a href="https://www.instagram.com/Heateor" title="Instagram" target="_blank"><div style="display:block;width:32px;height:32px;box-shadow:1px 1px 10px 1px #888888;float:left;background:radial-gradient(circle at 30% 107%,#fdf497 0,#fdf497 5%,#fd5949 45%,#d6249f 60%,#285aeb 90%)"><div class="heateorSssSharingSvg heateorSssInstagramSvg"></div></div></a>
 		</div>
 		</div>
 	</div>

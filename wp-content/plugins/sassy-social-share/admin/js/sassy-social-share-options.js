@@ -278,6 +278,21 @@ jQuery(document).ready(function() {
             jQuery('#heateor_sss_vertical_instagram_options').css('display', 'none');
         }
     });
+    // youtube url option
+    jQuery('input#heateor_sss_youtube').click(function(){
+        if(jQuery(this).is(':checked')){
+            jQuery('#heateor_sss_youtube_options').css('display', 'table-row-group');
+        }else{
+            jQuery('#heateor_sss_youtube_options').css('display', 'none');
+        }
+    });
+    jQuery('input#heateor_sss_vertical_sharing_youtube').click(function(){
+        if(jQuery(this).is(':checked')){
+            jQuery('#heateor_sss_vertical_youtube_options').css('display', 'table-row-group');
+        }else{
+            jQuery('#heateor_sss_vertical_youtube_options').css('display', 'none');
+        }
+    });
     // facebook share count option
     jQuery('input#heateor_sss_facebook').click(function(){
         if(jQuery(this).is(':checked')){
@@ -300,6 +315,12 @@ jQuery(document).ready(function() {
     });
     jQuery('input#heateor_sss_instagram_username').keyup(function(){
         jQuery('#heateor_sss_vertical_instagram_username').val(jQuery(this).val().trim());
+    });
+    jQuery('input#heateor_sss_vertical_youtube_username').keyup(function(){
+        jQuery('#heateor_sss_youtube_username').val(jQuery(this).val().trim());
+    });
+    jQuery('input#heateor_sss_youtube_username').keyup(function(){
+        jQuery('#heateor_sss_vertical_youtube_username').val(jQuery(this).val().trim());
     });
     // Twitter share count options
     jQuery('input#heateor_sss_vertical_newsharecounts').click(function(){

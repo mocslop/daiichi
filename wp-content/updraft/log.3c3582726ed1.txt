@@ -1,0 +1,118 @@
+0000.002 (0) Opened log file at time: Sun, 15 Mar 2020 04:40:23 +0000 on http://daiichi.co
+0000.009 (0) UpdraftPlus WordPress backup plugin (https://updraftplus.com): 1.16.17 WP: 5.2.2 PHP: 7.0.13 (apache2handler, Windows NT DESKTOP-N4VK37Q 10.0 build 18362 (Windows 10) i586) MySQL: 10.1.19-MariaDB WPLANG: vi Server: Apache/2.4.23 (Win32) OpenSSL/1.0.2h PHP/7.0.13 safe_mode: 0 max_execution_time: 900 memory_limit: 256M (used: 27.4M | 18M) multisite: N openssl: OpenSSL 1.0.2j  26 Sep 2016 mcrypt: Y LANG:  ZipArchive::addFile: Y
+0000.016 (0) Free space on disk containing Updraft's temporary directory: 67891.8 MB
+0000.024 (0) Tasks: Backup files:  (schedule: manual) Backup DB: 1 (schedule: daily)
+0000.031 (0) Processed schedules. Tasks now: Backup files:  Backup DB: 1
+0000.051 (0) Requesting semaphore lock (d) (apparently via scheduler: last_scheduled_action_called_at=1584193671, seconds_ago=53552)
+0000.075 (0) Set semaphore last lock (d) time to 2020-03-15 04:40:24
+0000.082 (0) Semaphore lock (d) complete
+0000.108 (0) Backup run: resumption=0, nonce=3c3582726ed1, file_nonce=3c3582726ed1 begun at=1584247223 (1s ago), job type=backup
+0000.121 (0) Scheduling a resumption (1) after 300 seconds (1584247524) in case this run gets aborted
+0000.142 (0) This backup run is not intended for files - skipping
+0000.148 (0) Beginning creation of database dump (WordPress DB)
+0000.178 (0) Table wp_options: Total expected rows (approximate): 235
+0000.218 (0) Table wp_options: Total rows added: 236 in 0.03 seconds
+0000.226 (0) Table wp_options: finishing file (backup_2020-03-15-1140_DAIICHI_LIFE_VIT_NAM_3c3582726ed1-db-table-wp_options.table.gz - 57.8 KB)
+0000.264 (0) Table wp_users: Total expected rows (approximate): 0
+0000.280 (0) Table wp_users: Total rows added: 1 in 0.01 seconds
+0000.285 (0) Table wp_users: finishing file (backup_2020-03-15-1140_DAIICHI_LIFE_VIT_NAM_3c3582726ed1-db-table-wp_users.table.gz - 0.6 KB)
+0000.305 (0) Table wp_usermeta: Total expected rows (approximate): 35
+0000.316 (0) Table wp_usermeta: Total rows added: 36 in 0.00 seconds
+0000.322 (0) Table wp_usermeta: finishing file (backup_2020-03-15-1140_DAIICHI_LIFE_VIT_NAM_3c3582726ed1-db-table-wp_usermeta.table.gz - 1.6 KB)
+0000.365 (0) Table wp_commentmeta: Total expected rows (approximate): 0
+0000.372 (0) Table wp_commentmeta: Total rows added: 0 in 0.00 seconds
+0000.379 (0) Table wp_commentmeta: finishing file (backup_2020-03-15-1140_DAIICHI_LIFE_VIT_NAM_3c3582726ed1-db-table-wp_commentmeta.table.gz - 0.4 KB)
+0000.398 (0) Table wp_comments: Total expected rows (approximate): 0
+0000.405 (0) Table wp_comments: Total rows added: 0 in 0.00 seconds
+0000.412 (0) Table wp_comments: finishing file (backup_2020-03-15-1140_DAIICHI_LIFE_VIT_NAM_3c3582726ed1-db-table-wp_comments.table.gz - 0.5 KB)
+0000.438 (0) Table wp_links: Total expected rows (approximate): 0
+0000.446 (0) Table wp_links: Total rows added: 0 in 0.00 seconds
+0000.452 (0) Table wp_links: finishing file (backup_2020-03-15-1140_DAIICHI_LIFE_VIT_NAM_3c3582726ed1-db-table-wp_links.table.gz - 0.4 KB)
+0000.472 (0) Table wp_postmeta: Total expected rows (approximate): 411
+0001.087 (0) Table wp_postmeta: Total rows added: 769 in 0.61 seconds
+0001.104 (0) Table wp_postmeta: finishing file (backup_2020-03-15-1140_DAIICHI_LIFE_VIT_NAM_3c3582726ed1-db-table-wp_postmeta.table.gz - 186.3 KB)
+0001.134 (0) Table wp_posts: Total expected rows (approximate): 380
+0001.533 (0) Table wp_posts: Total rows added: 488 in 0.39 seconds
+0001.537 (0) Table wp_posts: finishing file (backup_2020-03-15-1140_DAIICHI_LIFE_VIT_NAM_3c3582726ed1-db-table-wp_posts.table.gz - 153.7 KB)
+0001.561 (0) Table wp_term_relationships: Total expected rows (approximate): 42
+0001.570 (0) Table wp_term_relationships: Total rows added: 42 in 0.00 seconds
+0001.577 (0) Table wp_term_relationships: finishing file (backup_2020-03-15-1140_DAIICHI_LIFE_VIT_NAM_3c3582726ed1-db-table-wp_term_relationships.table.gz - 0.5 KB)
+0001.597 (0) Table wp_term_taxonomy: Total expected rows (approximate): 12
+0001.610 (0) Table wp_term_taxonomy: Total rows added: 12 in 0.01 seconds
+0001.616 (0) Table wp_term_taxonomy: finishing file (backup_2020-03-15-1140_DAIICHI_LIFE_VIT_NAM_3c3582726ed1-db-table-wp_term_taxonomy.table.gz - 0.5 KB)
+0001.634 (0) Table wp_termmeta: Total expected rows (approximate): 0
+0001.646 (0) Table wp_termmeta: Total rows added: 0 in 0.00 seconds
+0001.651 (0) Table wp_termmeta: finishing file (backup_2020-03-15-1140_DAIICHI_LIFE_VIT_NAM_3c3582726ed1-db-table-wp_termmeta.table.gz - 0.4 KB)
+0001.671 (0) Table wp_terms: Total expected rows (approximate): 9
+0001.681 (0) Table wp_terms: Total rows added: 12 in 0.00 seconds
+0001.686 (0) Table wp_terms: finishing file (backup_2020-03-15-1140_DAIICHI_LIFE_VIT_NAM_3c3582726ed1-db-table-wp_terms.table.gz - 0.7 KB)
+0001.703 (0) Table wp_nextend2_image_storage: Total expected rows (approximate): 9
+0001.714 (0) Table wp_nextend2_image_storage: Total rows added: 11 in 0.01 seconds
+0001.718 (0) Table wp_nextend2_image_storage: finishing file (backup_2020-03-15-1140_DAIICHI_LIFE_VIT_NAM_3c3582726ed1-db-table-wp_nextend2_image_storage.table.gz - 0.9 KB)
+0001.931 (0) Table wp_nextend2_section_storage: Total expected rows (approximate): 2
+0001.942 (0) Table wp_nextend2_section_storage: Total rows added: 2 in 0.01 seconds
+0001.947 (0) Table wp_nextend2_section_storage: finishing file (backup_2020-03-15-1140_DAIICHI_LIFE_VIT_NAM_3c3582726ed1-db-table-wp_nextend2_section_storage.table.gz - 0.5 KB)
+0001.971 (0) Table wp_nextend2_smartslider3_generators: Total expected rows (approximate): 0
+0001.982 (0) Table wp_nextend2_smartslider3_generators: Total rows added: 0 in 0.00 seconds
+0001.987 (0) Table wp_nextend2_smartslider3_generators: finishing file (backup_2020-03-15-1140_DAIICHI_LIFE_VIT_NAM_3c3582726ed1-db-table-wp_nextend2_smartslider3_generators.table.gz - 0.3 KB)
+0002.015 (0) Table wp_nextend2_smartslider3_sliders: Total expected rows (approximate): 3
+0002.030 (0) Table wp_nextend2_smartslider3_sliders: Total rows added: 3 in 0.01 seconds
+0002.035 (0) Table wp_nextend2_smartslider3_sliders: finishing file (backup_2020-03-15-1140_DAIICHI_LIFE_VIT_NAM_3c3582726ed1-db-table-wp_nextend2_smartslider3_sliders.table.gz - 3.4 KB)
+0002.058 (0) Table wp_nextend2_smartslider3_sliders_xref: Total expected rows (approximate): 2
+0002.066 (0) Table wp_nextend2_smartslider3_sliders_xref: Total rows added: 2 in 0.00 seconds
+0002.072 (0) Table wp_nextend2_smartslider3_sliders_xref: finishing file (backup_2020-03-15-1140_DAIICHI_LIFE_VIT_NAM_3c3582726ed1-db-table-wp_nextend2_smartslider3_sliders_xref.table.gz - 0.3 KB)
+0002.095 (0) Table wp_nextend2_smartslider3_slides: Total expected rows (approximate): 9
+0002.109 (0) Table wp_nextend2_smartslider3_slides: Total rows added: 9 in 0.01 seconds
+0002.116 (0) Table wp_nextend2_smartslider3_slides: finishing file (backup_2020-03-15-1140_DAIICHI_LIFE_VIT_NAM_3c3582726ed1-db-table-wp_nextend2_smartslider3_slides.table.gz - 3.7 KB)
+0002.136 (0) backup_2020-03-15-1140_DAIICHI_LIFE_VIT_NAM_3c3582726ed1-db-table-wp_options.table.gz (1/18): adding to final database dump
+0002.161 (0) backup_2020-03-15-1140_DAIICHI_LIFE_VIT_NAM_3c3582726ed1-db-table-wp_users.table.gz (2/18): adding to final database dump
+0002.167 (0) backup_2020-03-15-1140_DAIICHI_LIFE_VIT_NAM_3c3582726ed1-db-table-wp_usermeta.table.gz (3/18): adding to final database dump
+0002.173 (0) backup_2020-03-15-1140_DAIICHI_LIFE_VIT_NAM_3c3582726ed1-db-table-wp_commentmeta.table.gz (4/18): adding to final database dump
+0002.179 (0) backup_2020-03-15-1140_DAIICHI_LIFE_VIT_NAM_3c3582726ed1-db-table-wp_comments.table.gz (5/18): adding to final database dump
+0002.184 (0) backup_2020-03-15-1140_DAIICHI_LIFE_VIT_NAM_3c3582726ed1-db-table-wp_links.table.gz (6/18): adding to final database dump
+0002.191 (0) backup_2020-03-15-1140_DAIICHI_LIFE_VIT_NAM_3c3582726ed1-db-table-wp_postmeta.table.gz (7/18): adding to final database dump
+0002.328 (0) backup_2020-03-15-1140_DAIICHI_LIFE_VIT_NAM_3c3582726ed1-db-table-wp_posts.table.gz (8/18): adding to final database dump
+0002.454 (0) backup_2020-03-15-1140_DAIICHI_LIFE_VIT_NAM_3c3582726ed1-db-table-wp_term_relationships.table.gz (9/18): adding to final database dump
+0002.465 (0) backup_2020-03-15-1140_DAIICHI_LIFE_VIT_NAM_3c3582726ed1-db-table-wp_term_taxonomy.table.gz (10/18): adding to final database dump
+0002.469 (0) backup_2020-03-15-1140_DAIICHI_LIFE_VIT_NAM_3c3582726ed1-db-table-wp_termmeta.table.gz (11/18): adding to final database dump
+0002.474 (0) backup_2020-03-15-1140_DAIICHI_LIFE_VIT_NAM_3c3582726ed1-db-table-wp_terms.table.gz (12/18): adding to final database dump
+0002.479 (0) backup_2020-03-15-1140_DAIICHI_LIFE_VIT_NAM_3c3582726ed1-db-table-wp_nextend2_image_storage.table.gz (13/18): adding to final database dump
+0002.484 (0) backup_2020-03-15-1140_DAIICHI_LIFE_VIT_NAM_3c3582726ed1-db-table-wp_nextend2_section_storage.table.gz (14/18): adding to final database dump
+0002.494 (0) backup_2020-03-15-1140_DAIICHI_LIFE_VIT_NAM_3c3582726ed1-db-table-wp_nextend2_smartslider3_generators.table.gz (15/18): adding to final database dump
+0002.499 (0) backup_2020-03-15-1140_DAIICHI_LIFE_VIT_NAM_3c3582726ed1-db-table-wp_nextend2_smartslider3_sliders.table.gz (16/18): adding to final database dump
+0002.509 (0) backup_2020-03-15-1140_DAIICHI_LIFE_VIT_NAM_3c3582726ed1-db-table-wp_nextend2_smartslider3_sliders_xref.table.gz (17/18): adding to final database dump
+0002.514 (0) backup_2020-03-15-1140_DAIICHI_LIFE_VIT_NAM_3c3582726ed1-db-table-wp_nextend2_smartslider3_slides.table.gz (18/18): adding to final database dump
+0002.527 (0) backup_2020-03-15-1140_DAIICHI_LIFE_VIT_NAM_3c3582726ed1-db.gz: finished writing out complete database file (392 KB)
+0002.558 (0) Total database tables backed up: 18 (backup_2020-03-15-1140_DAIICHI_LIFE_VIT_NAM_3c3582726ed1-db.gz, size: 417994, sha1: bc16b6245b8629c69925e856211dac842d71564a, sha256: 464cf8ea006772e9e068d3b0041ecd7bf2123c688133aa770b92ddefd3dc7ae2)
+0002.580 (0) backup_2020-03-15-1140_DAIICHI_LIFE_VIT_NAM_3c3582726ed1-db.gz: db: This file has not yet been successfully uploaded: will queue
+0002.584 (0) Saving backup history. Total backup size: 408.2 KB
+0002.597 (0) Requesting upload of the files that have not yet been successfully uploaded (1)
+0002.612 (0) Cloud backup selection (1/1): googledrive with instance (1/1) (last)
+0002.617 (0) Beginning dispatch of backup to remote (googledrive) (instance identifier s-c4da4c426db711e65715b1b29bfaff59)
+0006.381 (0) Google Drive: quota usage: used=14.6 MB, total=15360 MB, available=15345.4 MB
+0006.387 (0) Google Drive: backup_2020-03-15-1140_DAIICHI_LIFE_VIT_NAM_3c3582726ed1-db.gz: Attempting to upload to Google Drive (into folder id: 1pmRZPcF9Wn0i6PQeXhRL62sbLsMbyW_f)
+0014.772 (0) Googledrive chunked upload: 100 % uploaded
+0014.786 (0) Google Drive: OK: Archive backup_2020-03-15-1140_DAIICHI_LIFE_VIT_NAM_3c3582726ed1-db.gz uploaded in 8.39 seconds
+0014.790 (0) Recording as successfully uploaded: backup_2020-03-15-1140_DAIICHI_LIFE_VIT_NAM_3c3582726ed1-db.gz
+0014.800 (0) Deleting local file: backup_2020-03-15-1140_DAIICHI_LIFE_VIT_NAM_3c3582726ed1-db.gz: OK
+0014.813 (0) Retain: beginning examination of existing backup sets; user setting: retain_files=2, retain_db=1
+0014.818 (0) Number of backup sets in history: 2; groups (db): 1
+0014.822 (0) Examining (for databases) backup set with group_id=0, nonce=3c3582726ed1, datestamp=1584247223 (Mar 15 2020 04:40:23)
+0014.826 (0) This backup set is the backup set just made, so will not be deleted.
+0014.826 (0) Examining (for databases) backup set with group_id=0, nonce=4627da578881, datestamp=1584193671 (Mar 14 2020 13:47:51)
+0014.826 (0) 1584193671: db: this set includes a database (backup_2020-03-14-2047_DAIICHI_LIFE_VIT_NAM_4627da578881-db.gz); db count is now 1
+0014.826 (0) 1584193671: db: over retain limit (1); will delete this database
+0014.826 (0) Delete file: backup_2020-03-14-2047_DAIICHI_LIFE_VIT_NAM_4627da578881-db.gz, service=googledrive
+0022.007 (0) Google Drive: backup_2020-03-14-2047_DAIICHI_LIFE_VIT_NAM_4627da578881-db.gz: Deletion successful
+0022.017 (0) This backup set is now empty; will remove from history
+0022.023 (0) Deleting log file (log.4627da578881.txt)
+0022.029 (0) Number of backup sets in history: 1; groups (files): 1
+0022.033 (0) Examining (for files) backup set with nonce=3c3582726ed1, datestamp=1584247223 (Mar 15 2020 04:40:23)
+0022.038 (0) This backup set remains non-empty (f=0/d=1); will retain in history
+0022.045 (0) Retain: saving new backup history (sets now: 1) and finishing retain operation
+0022.057 (0) Resume backup (3c3582726ed1, 0): finish run
+0022.069 (0) Decremented the semaphore (d) by 1
+0022.077 (0) Semaphore (d) unlocked
+0022.081 (0) There were no errors in the uploads, so the 'resume' event (1) is being unscheduled
+0022.097 (0) No email will/can be sent - the user has not configured an email address.
+0022.103 (0) The backup apparently succeeded and is now complete

@@ -7,7 +7,7 @@ function heateorSssDetermineWhatsappShareAPI(a){if(a)return-1!=navigator.userAge
 function heateorSssMoreSharingPopup(elem, postUrl, postTitle, twitterTitle){
 	postUrl = encodeURIComponent(postUrl);
 	concate = '</ul></div><div class="footer-panel"><p></p></div></div>';
-	var heateorSssMoreSharingServices = {
+	var heateorSssMoreSharingServices = {	  
 	  facebook: {
 		title: "Facebook",
 		locale: "en-US",
@@ -218,12 +218,6 @@ function heateorSssMoreSharingPopup(elem, postUrl, postTitle, twitterTitle){
 		locale: "en-US",
 		redirect_url: "http://www.plurk.com/m?content=" + postUrl + "&qualifier=shares",
 	  },
-	  wanelo: {
-		title: "Wanelo",
-		locale: "en-US",
-		redirect_url: "http://wanelo.com/p/post?bookmarklet=&images%5B%5D=&url=" + postUrl + "&title=" + postTitle + "&price=&shop=",
-		bookmarklet_url: "javascript:void ((function(url){if(!window.waneloBookmarklet){var productURL=encodeURIComponent(url),cacheBuster=Math.floor(Math.random()*1e3),element=document.createElement('script');element.setAttribute('src','//wanelo.com/bookmarklet/3/setup?*='+cacheBuster+'&url='+productURL),element.onload=init,element.setAttribute('type','text/javascript'),document.getElementsByTagName('head')[0].appendChild(element)}else init();function init(){window.waneloBookmarklet()}})(window.location.href))"
-	  },
 	  aim: {
 		title: "AIM",
 		locale: "en-US",
@@ -258,11 +252,6 @@ function heateorSssMoreSharingPopup(elem, postUrl, postTitle, twitterTitle){
 		title: "Flipboard",
 		locale: "en-US",
 		redirect_url: "https://share.flipboard.com/bookmarklet/popout?v=2&url=" + postUrl + "&title=" + postTitle,
-	  },
-	  mail: {
-		title: "Email",
-		locale: "en-US",
-		redirect_url: "mailto:?subject=" + postTitle + "&body=Link: " + postUrl,
 	  },
 	  pocket: {
 		title: "Pocket",
@@ -329,20 +318,10 @@ function heateorSssMoreSharingPopup(elem, postUrl, postTitle, twitterTitle){
 		locale: "en-US",
 		redirect_url: "http://www.care2.com/passport/login.html?promoID=10&pg=http://www.care2.com/news/compose?sharehint=news&share[share_type]news&bookmarklet=Y&share[title]=" + postTitle + "&share[link_url]=" + postUrl + "&share[content]=",
 	  },
-	  CiteULike: {
-		title: "Cite U Like",
-		locale: "en-US",
-		redirect_url: "http://www.citeulike.org/posturl?url=" + postUrl + "&title=" + postTitle,
-	  },
 	  Diary_Ru: {
 		title: "Diary.Ru",
 		locale: "en-US",
 		redirect_url: "http://www.diary.ru/?newpost&title=" + postTitle + "&text=" + postUrl,
-	  },
-	  dzone: {
-		title: "DZone",
-		locale: "en-US",
-		redirect_url: "http://www.dzone.com/links/add.html?url=" + postUrl + "&title=" + postTitle,
 	  },
 	  Folkd: {
 		title: "Folkd",
@@ -519,7 +498,7 @@ function heateorSssMoreSharingPopup(elem, postUrl, postTitle, twitterTitle){
 		locale: "en-US",
 		redirect_url: "//yoolink.to/addorshare?url_value=" + postUrl + "&title=" + postTitle,
 	  }
-	}
+	};
 	var heateorSssMoreSharingServicesHtml = '<button id="heateor_sss_sharing_popup_close" class="close-button separated"><img src="'+ heateorSssCloseIconPath +'" /></button><div id="heateor_sss_sharing_more_content" data-href="'+ decodeURIComponent(postUrl) +'"><div class="filter"><input type="text" onkeyup="heateorSssFilterSharing(this.value.trim())" placeholder="Search" class="search"></div><div class="all-services"><ul class="mini">';
 	for(var i in heateorSssMoreSharingServices){
 		var tempTitle = heateorSssCapitaliseFirstLetter(heateorSssMoreSharingServices[i].title.replace(/[_. ]/g, ""));

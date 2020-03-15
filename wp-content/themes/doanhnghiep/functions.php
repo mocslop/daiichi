@@ -2,7 +2,7 @@
 define('BASE_URL', get_template_directory_uri());
 include get_template_directory().'/includes/admin/function-admin.php';
 include get_template_directory().'/includes/admin/core.php';
-//include get_template_directory().'/includes/admin/custom-post-type.php';  
+include get_template_directory().'/includes/admin/custom-post-type.php';  
 include get_template_directory().'/includes/admin/aio-list-categories/aio-list-category.php';  
 
 function load_admin_style() {
@@ -52,13 +52,9 @@ function excerpt($limit) {
   // ADD FEATURED IMAGE SUPPORT
 function featured_images_setup(){
   add_theme_support('post-thumbnails');
-  add_image_size( 'thumbnail',300, 250, true ); //thumbnail
-    add_image_size( 'medium', 600, 400, true ); //medium
-    add_image_size( 'large', 1200, 800, true ); //large
   }
   add_action('after_setup_theme','featured_images_setup');
-  // ADD POST FORMAT SUPPORT
-  add_theme_support('post-formats',array('aside','gallery','link'));
+
   // ADD OUR WIDGETS LOCATION
   function our_widget_inits(){
 

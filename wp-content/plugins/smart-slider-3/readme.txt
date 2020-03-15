@@ -3,9 +3,9 @@ Contributors: nextendweb
 Tags: slider, wordpress slider, image slider, layer slider, responsive slider, slideshow, fullwidth slider, post slider, horizontal slider, vertical slider, photo slider, video slider
 Donate link: https://sites.fastspring.com/nextend/product/smartslider3donate
 Requires at least: 4.6
-Tested up to: 5.2
-Stable tag: 3.3.21
-Requires PHP: 5.4
+Tested up to: 5.3
+Stable tag: 3.3.27
+Requires PHP: 7.0.0
 License: GPLv3 or later
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -196,6 +196,82 @@ Of course! Smart Slider use protocol relative urls which works fine on http:// a
 
 == Changelog ==
 
+= 3.3.27 - 12. February 2020. =
+* Feature: Edge selector at Scroll to slider on user interaction 
+* Feature: Vimeo privacy enhanced mode 
+* Fix: Youtube video adding 
+* Fix: Wordfence array to string errors 
+* Fix: Twenty twenty theme video compatibility 
+* Fix: WP Rocket compatibility 
+* Fix: WordPress Post generator author URL and avatar image 
+* Fix: Exclude from OceanWP lightbox 
+* Fix: PHP 7.4.1 PHP notices fixed
+
+= 3.3.26 - 8. January 2020. =
+* Feature: Keyboard navigation detection improvement 
+* Feature: Control hover delay increased
+* Feature: WordPress disable pointer events in iframe in page builders  
+* Fix: Multiselect CSS issue at generator settings 
+* Fix: MobileDetect issues in rare cases 
+* Fix: Slider loading in Elementor Popup 
+* Fix: wp_delete_site action is used on WordPress 5.1 or newer sites instead of the deprecated delete_blog 
+* Fix: YouTube video conflict with Revolution Slider 
+* Fix: Shape divider height  
+* Fix: imagesloaded library 
+* Fix: iPhone ligthbox scroll 
+* Fix: Rubenz theme AJAX compatibility 
+* Fix: WordPress Posts by filter generator - wrong date in url variable 
+* Fix: Hide slider with CSS media query in the admin area 
+* Fix: Quix builder fix 
+* Fix: EasySocial user url fix 
+* Fix: Pointer Events Polyfill - Slide switching in browsers that doesn't support pointer events 
+* Fix: WordPress shortcode parameters 
+* Fix: Vimeo and Youtube layers
+* Deprecated: Help beacon
+
+= 3.3.25 - 28. November 2019. =
+* Feature: Keyboard navigation detection improvement
+* Fix: MobileDetect issues in rare cases 
+* Fix: Slider loading in Elementor Popup 
+* Fix: wp_delete_site action is used on WordPress 5.1 or newer sites instead of the deprecated delete_blog
+* Fix: MouseWheel timing adjusted for Apple Touchpad
+* Fix: YouTube video conflict with Revolution Slider
+
+= 3.3.24 - 14. November 2019. =
+* Fix: WordPress 5.3 backend compatibility
+
+= 3.3.23 - 12. November 2019. =
+* Feature: Mobile detection code update 
+* Feature: Easy Fancybox compatibility 
+* Feature: Google font list updated
+* Feature: TranslatePress support 
+* Fix: RTL fix on admin area
+* Fix: ScrollTo offset 
+* Fix: YouTube layer pause 
+* Fix: Gutenberg save (Slider render is disabled over REST API) 
+* Fix: Conflict with Embed Plus for YouTube - Gallery, Channel, Playlist, Live Stream plugin fixed 
+* Fix: The global $post variable is reset properly at generators
+* Fix: Compatibility with Divi plugin to avoid them overriding our styling (not the the Divi theme) 
+* Fix: Scrollable layer is now scrollable when the mouse wheel control is used. 
+* Fix: Generator image fallback 
+* Translation: Italian translation updated (Thanks, Fabio!)
+
+= 3.3.22 - 04. September 2019. =
+* Feature: Accessibility; the arrow's aria label is now the same as their alt tag 
+* Feature: New Google fonts added
+* Fix: Layer defaults 
+* Fix: YouTube video play on IOS in rare cases 
+* Fix: Padding issue in Thumbnails control 
+* Fix: Alias notice 
+* Fix: Toolset multiple embedding 
+* Fix: 4 byte characters removed from Add Post 
+* Fix: inline CSS parsing of :FOCUS selector  
+* Fix: hold touch action while main animation playing 
+* Fix: remove WordPress actions when multisite created
+* Fix: WP Smush image optimization won't mess up the slider anymore 
+* Translation: Spanish translation, thanks to Rodrigo! 
+* Deprecated: Smart Slider 3 will no longer run on PHP 5.4 or 5.5 version. The new minimum PHP version the slider requires is PHP 5.6.20! 
+
 = 3.3.21 - 05. July 2019. =
 * Feature: Slider default font size now uses rem instead of px
 * Fix: Col border
@@ -206,7 +282,6 @@ Of course! Smart Slider use protocol relative urls which works fine on http:// a
 * Other: French translation updated
 * Other: Spanish translation updated
 * Deprecated: Modernizr removed from the slider
-
 
 = 3.3.20 - 23. May 2019. =
 * Feature: WordPress Fusion builder element for Avada theme 

@@ -1,16 +1,16 @@
 <?php
-
 /**
  * Options page
  *
  * @since    1.0.0
  */
-defined( 'ABSPATH' ) or die("Cheating........Uh!!");
+defined( 'ABSPATH' ) or die( "Cheating........Uh!!" );
 ?>
 
 <div id="fb-root"></div>
 
 <div class="metabox-holder columns-2" id="post-body">
+	<h1>Sassy Social Share</h1>
 		<div>
 			<?php
 			echo sprintf( __( 'You can appreciate the effort put in this free plugin by rating it <a href="%s" target="_blank">here</a>', 'sassy-social-share' ), 'https://wordpress.org/support/view/plugin-reviews/sassy-social-share' );
@@ -66,6 +66,17 @@ defined( 'ABSPATH' ) or die("Cheating........Uh!!");
 										$line_height = $sharing_shape == 'rectangle' ? $sharing_height : $sharing_size;
 										?>
 										<style type="text/css">
+										<?php
+										if ( isset( $options['plain_instagram_bg'] ) ) {
+											?>
+											.heateorSssInstagramBackground{background-color:#527fa4}
+											<?php
+										} else {
+											?>
+											.heateorSssInstagramBackground{background:radial-gradient(circle at 30% 107%,#fdf497 0,#fdf497 5%,#fd5949 45%,#d6249f 60%,#285aeb 90%)}
+											<?php
+										}
+										?>
 										#heateor_sss_preview{
 											color:<?php echo $sharing_color ? $sharing_color : "#fff" ?>;
 										}
@@ -125,16 +136,16 @@ defined( 'ABSPATH' ) or die("Cheating........Uh!!");
 
 								<tr>
 									<th>
+										<label><?php _e( "Shape", 'sassy-social-share' ); ?></label>
 										<img id="heateor_sss_icon_shape_help" class="heateor_sss_help_bubble" src="<?php echo plugins_url( '../../images/info.png', __FILE__ ) ?>" />
-										<label><?php _e("Shape", 'sassy-social-share' ); ?></label>
 									</th>
 									<td>
 										<input id="heateor_sss_icon_round" onclick="tempHorShape = 'round';heateorSssSharingHorizontalPreview()" name="heateor_sss[horizontal_sharing_shape]" type="radio" <?php echo $sharing_shape == 'round' ? 'checked = "checked"' : '';?> value="round" />
-										<label style="margin-right:10px" for="heateor_sss_icon_round"><?php _e("Round", 'sassy-social-share' ); ?></label>
+										<label style="margin-right:10px" for="heateor_sss_icon_round"><?php _e( "Round", 'sassy-social-share' ); ?></label>
 										<input id="heateor_sss_icon_square" onclick="tempHorShape = 'square';heateorSssSharingHorizontalPreview()" name="heateor_sss[horizontal_sharing_shape]" type="radio" <?php echo $sharing_shape == 'square' ? 'checked = "checked"' : '';?> value="square" />
-										<label style="margin-right:10px" for="heateor_sss_icon_square"><?php _e("Square", 'sassy-social-share' ); ?></label>
+										<label style="margin-right:10px" for="heateor_sss_icon_square"><?php _e( "Square", 'sassy-social-share' ); ?></label>
 										<input id="heateor_sss_icon_rectangle" onclick="tempHorShape = 'rectangle';heateorSssSharingHorizontalPreview()" name="heateor_sss[horizontal_sharing_shape]" type="radio" <?php echo $sharing_shape == 'rectangle' ? 'checked = "checked"' : '';?> value="rectangle" />
-										<label for="heateor_sss_icon_rectangle"><?php _e("Rectangle", 'sassy-social-share' ); ?></label>
+										<label for="heateor_sss_icon_rectangle"><?php _e( "Rectangle", 'sassy-social-share' ); ?></label>
 									</td>
 								</tr>
 
@@ -149,8 +160,8 @@ defined( 'ABSPATH' ) or die("Cheating........Uh!!");
 								<tbody id="heateor_sss_size_options" <?php echo ! isset( $options['horizontal_sharing_shape'] ) || $options['horizontal_sharing_shape'] != 'rectangle' ? '' : 'style="display: none"'; ?>>	
 									<tr>
 										<th>
-											<img id="heateor_sss_icon_size_help" class="heateor_sss_help_bubble" src="<?php echo plugins_url( '../../images/info.png', __FILE__ ) ?>" />
 											<label><?php _e("Size (in pixels)", 'sassy-social-share' ); ?></label>
+											<img id="heateor_sss_icon_size_help" class="heateor_sss_help_bubble" src="<?php echo plugins_url( '../../images/info.png', __FILE__ ) ?>" />
 										</th>
 										<td>
 											<input style="width:50px" id="heateor_sss_icon_size" name="heateor_sss[horizontal_sharing_size]" type="text" value="<?php echo $sharing_size; ?>" />
@@ -175,8 +186,8 @@ defined( 'ABSPATH' ) or die("Cheating........Uh!!");
 								<tbody id="heateor_sss_rectangle_options" <?php echo isset( $options['horizontal_sharing_shape'] ) && $options['horizontal_sharing_shape'] == 'rectangle' ? '' : 'style="display: none"'; ?>>
 									<tr>
 										<th>
-											<img id="heateor_sss_icon_width_help" class="heateor_sss_help_bubble" src="<?php echo plugins_url( '../../images/info.png', __FILE__ ) ?>" />
 											<label><?php _e("Width (in pixels)", 'sassy-social-share' ); ?></label>
+											<img id="heateor_sss_icon_width_help" class="heateor_sss_help_bubble" src="<?php echo plugins_url( '../../images/info.png', __FILE__ ) ?>" />
 										</th>
 										<td>
 											<input style="width:50px" id="heateor_sss_icon_width" name="heateor_sss[horizontal_sharing_width]" type="text" value="<?php echo $sharing_width; ?>" />
@@ -199,8 +210,8 @@ defined( 'ABSPATH' ) or die("Cheating........Uh!!");
 
 									<tr>
 										<th>
-											<img id="heateor_sss_icon_height_help" class="heateor_sss_help_bubble" src="<?php echo plugins_url( '../../images/info.png', __FILE__ ) ?>" />
 											<label><?php _e("Height (in pixels)", 'sassy-social-share' ); ?></label>
+											<img id="heateor_sss_icon_height_help" class="heateor_sss_help_bubble" src="<?php echo plugins_url( '../../images/info.png', __FILE__ ) ?>" />
 										</th>
 										<td>
 											<input style="width:50px" id="heateor_sss_icon_height" name="heateor_sss[horizontal_sharing_height]" type="text" value="<?php echo $sharing_height; ?>" />
@@ -225,8 +236,8 @@ defined( 'ABSPATH' ) or die("Cheating........Uh!!");
 								<tbody id="heateor_sss_border_radius_options" <?php echo isset( $options['horizontal_sharing_shape'] ) && $options['horizontal_sharing_shape'] != 'round' ? '' : 'style="display: none"'; ?>>
 									<tr>
 										<th>
-											<img id="heateor_sss_icon_border_radius_help" class="heateor_sss_help_bubble" src="<?php echo plugins_url( '../../images/info.png', __FILE__ ) ?>" />
 											<label><?php _e("Border radius (in pixels)", 'sassy-social-share' ); ?></label>
+											<img id="heateor_sss_icon_border_radius_help" class="heateor_sss_help_bubble" src="<?php echo plugins_url( '../../images/info.png', __FILE__ ) ?>" />
 										</th>
 										<td>
 											<input style="width:50px" id="heateor_sss_icon_border_radius" name="heateor_sss[horizontal_border_radius]" type="text" value="<?php echo $sharing_border_radius; ?>" onkeyup="heateorSssSharingBorderRadius = this.value.trim() ? this.value.trim() + 'px' : '0px';heateorSssUpdateSharingPreview(heateorSssSharingBorderRadius, 'borderRadius', '0px', 'heateor_sss_preview' )" />
@@ -244,8 +255,8 @@ defined( 'ABSPATH' ) or die("Cheating........Uh!!");
 
 								<tr>
 									<th>
-										<img id="heateor_sss_font_color_help" class="heateor_sss_help_bubble" src="<?php echo plugins_url( '../../images/info.png', __FILE__ ) ?>" />
 										<label><?php _e("Logo Color", 'sassy-social-share' ); ?></label>
+										<img id="heateor_sss_font_color_help" class="heateor_sss_help_bubble" src="<?php echo plugins_url( '../../images/info.png', __FILE__ ) ?>" />
 									</th>
 									<td>
 										<script type="text/javascript">var heateorSssSharingTempColor = '<?php echo $sharing_color ? $sharing_color : "#fff" ?>';</script>
@@ -266,8 +277,8 @@ defined( 'ABSPATH' ) or die("Cheating........Uh!!");
 
 								<tr>
 									<th>
-										<img id="heateor_sss_bg_color_help" class="heateor_sss_help_bubble" src="<?php echo plugins_url( '../../images/info.png', __FILE__ ) ?>" />
 										<label><?php _e("Background Color", 'sassy-social-share' ); ?></label>
+										<img id="heateor_sss_bg_color_help" class="heateor_sss_help_bubble" src="<?php echo plugins_url( '../../images/info.png', __FILE__ ) ?>" />
 									</th>
 									<td>
 										<label for="heateor_sss_bg_color_default"><?php _e("Default", 'sassy-social-share' ); ?></label><input style="width: 100px" id="heateor_sss_bg_color_default" name="heateor_sss[horizontal_bg_color_default]" type="text" onkeyup="heateorSssSharingBg = this.value.trim() ? this.value.trim() : '#3C589A'; heateorSssUpdateSharingPreview(this.value.trim(), 'backgroundColor', '#3C589A', 'heateor_sss_preview' )" value="<?php echo $horizontal_bg ?>" />
@@ -285,8 +296,8 @@ defined( 'ABSPATH' ) or die("Cheating........Uh!!");
 
 								<tr>
 									<th>
-										<img id="heateor_sss_border_help" class="heateor_sss_help_bubble" src="<?php echo plugins_url( '../../images/info.png', __FILE__ ) ?>" />
 										<label><?php _e("Border", 'sassy-social-share' ); ?></label>
+										<img id="heateor_sss_border_help" class="heateor_sss_help_bubble" src="<?php echo plugins_url( '../../images/info.png', __FILE__ ) ?>" />
 									</th>
 									<td>
 										<script type="text/javascript">var heateorSssBorderWidthHover = '<?php echo $border_width_hover = isset( $options['horizontal_border_width_hover'] ) ? $options['horizontal_border_width_hover'] : ''; ?>', heateorSssBorderColorHover = '<?php echo $border_color_hover = isset( $options['horizontal_border_color_hover'] ) ? $options['horizontal_border_color_hover'] : ''; ?>'</script>
@@ -312,8 +323,8 @@ defined( 'ABSPATH' ) or die("Cheating........Uh!!");
 
 								<tr>
 									<th>
-										<img id="heateor_sss_counter_help" class="heateor_sss_help_bubble" src="<?php echo plugins_url( '../../images/info.png', __FILE__ ) ?>" />
 										<label><?php _e("Counter Position", 'sassy-social-share' ); ?><br/><?php _e("(applies, if counter enabled)", 'sassy-social-share' ); ?></label>
+										<img id="heateor_sss_counter_help" class="heateor_sss_help_bubble" src="<?php echo plugins_url( '../../images/info.png', __FILE__ ) ?>" />
 									</th>
 									<td>
 										<input id="heateor_sss_counter_left" name="heateor_sss[horizontal_counter_position]" onclick="heateorSssCounterPreview(this.value.trim() )" type="radio" <?php echo $counter_position == 'left' ? 'checked = "checked"' : '';?> value="left" />
@@ -340,6 +351,14 @@ defined( 'ABSPATH' ) or die("Cheating........Uh!!");
 									<td colspan="2">
 									<div>
 									<?php _e( 'Position of share counter', 'sassy-social-share' ) ?>
+									</div>
+									</td>
+								</tr>
+
+								<tr>
+									<td colspan="2">
+									<div>
+									<a href="https://www.heateor.com/comparison-between-sassy-social-share-pro-and-premium/" target="_blank"><img src="<?php echo plugins_url( '../../images/unlock/responsive-icons.png', __FILE__ ) ?>" /></a>
 									</div>
 									</td>
 								</tr>
@@ -433,8 +452,8 @@ defined( 'ABSPATH' ) or die("Cheating........Uh!!");
 
 								<tr>
 									<th>
-										<img id="heateor_sss_vertical_sharing_icon_shape_help" class="heateor_sss_help_bubble" src="<?php echo plugins_url( '../../images/info.png', __FILE__ ) ?>" />
 										<label><?php _e("Shape", 'sassy-social-share' ); ?></label>
+										<img id="heateor_sss_vertical_sharing_icon_shape_help" class="heateor_sss_help_bubble" src="<?php echo plugins_url( '../../images/info.png', __FILE__ ) ?>" />
 									</th>
 									<td>
 										<input id="heateor_sss_vertical_icon_round" onclick="tempVerticalShape = 'round';heateorSssSharingVerticalPreview()" name="heateor_sss[vertical_sharing_shape]" type="radio" <?php echo $vertical_sharing_shape == 'round' ? 'checked = "checked"' : '';?> value="round" />
@@ -457,8 +476,8 @@ defined( 'ABSPATH' ) or die("Cheating........Uh!!");
 								<tbody id="heateor_sss_vertical_size_options" <?php echo ! isset( $options['vertical_sharing_shape'] ) || $options['vertical_sharing_shape'] != 'rectangle' ? '' : 'style="display: none"'; ?>>	
 									<tr>
 										<th>
-											<img id="heateor_sss_vertical_sharing_icon_size_help" class="heateor_sss_help_bubble" src="<?php echo plugins_url( '../../images/info.png', __FILE__ ) ?>" />
 											<label><?php _e("Size (in pixels)", 'sassy-social-share' ); ?></label>
+											<img id="heateor_sss_vertical_sharing_icon_size_help" class="heateor_sss_help_bubble" src="<?php echo plugins_url( '../../images/info.png', __FILE__ ) ?>" />
 										</th>
 										<td>
 											<input style="width:50px" id="heateor_sss_vertical_sharing_icon_size" name="heateor_sss[vertical_sharing_size]" type="text" value="<?php echo $vertical_sharing_size; ?>" />
@@ -483,8 +502,8 @@ defined( 'ABSPATH' ) or die("Cheating........Uh!!");
 								<tbody id="heateor_sss_vertical_rectangle_options" <?php echo isset( $options['vertical_sharing_shape'] ) && $options['vertical_sharing_shape'] == 'rectangle' ? '' : 'style="display: none"'; ?>>
 									<tr>
 										<th>
-											<img id="heateor_sss_vertical_icon_width_help" class="heateor_sss_help_bubble" src="<?php echo plugins_url( '../../images/info.png', __FILE__ ) ?>" />
 											<label><?php _e("Width (in pixels)", 'sassy-social-share' ); ?></label>
+											<img id="heateor_sss_vertical_icon_width_help" class="heateor_sss_help_bubble" src="<?php echo plugins_url( '../../images/info.png', __FILE__ ) ?>" />
 										</th>
 										<td>
 											<input style="width:50px" id="heateor_sss_vertical_icon_width" name="heateor_sss[vertical_sharing_width]" type="text" value="<?php echo $vertical_sharing_width; ?>" />
@@ -507,8 +526,8 @@ defined( 'ABSPATH' ) or die("Cheating........Uh!!");
 
 									<tr>
 										<th>
-											<img id="heateor_sss_vertical_icon_height_help" class="heateor_sss_help_bubble" src="<?php echo plugins_url( '../../images/info.png', __FILE__ ) ?>" />
 											<label><?php _e("Height (in pixels)", 'sassy-social-share' ); ?></label>
+											<img id="heateor_sss_vertical_icon_height_help" class="heateor_sss_help_bubble" src="<?php echo plugins_url( '../../images/info.png', __FILE__ ) ?>" />
 										</th>
 										<td>
 											<input style="width:50px" id="heateor_sss_vertical_icon_height" name="heateor_sss[vertical_sharing_height]" type="text" value="<?php echo $vertical_sharing_height; ?>" />
@@ -533,8 +552,8 @@ defined( 'ABSPATH' ) or die("Cheating........Uh!!");
 								<tbody id="heateor_sss_vertical_border_radius_options" <?php echo isset( $options['vertical_sharing_shape'] ) && $options['vertical_sharing_shape'] != 'round' ? '' : 'style="display: none"'; ?>>
 									<tr>
 										<th>
-											<img id="heateor_sss_vertical_icon_border_radius_help" class="heateor_sss_help_bubble" src="<?php echo plugins_url( '../../images/info.png', __FILE__ ) ?>" />
 											<label><?php _e("Border radius (in pixels)", 'sassy-social-share' ); ?></label>
+											<img id="heateor_sss_vertical_icon_border_radius_help" class="heateor_sss_help_bubble" src="<?php echo plugins_url( '../../images/info.png', __FILE__ ) ?>" />
 										</th>
 										<td>
 											<input style="width:50px" id="heateor_sss_vertical_icon_border_radius" name="heateor_sss[vertical_border_radius]" type="text" value="<?php echo $vertical_sharing_border_radius; ?>" onkeyup="heateorSssVerticalBorderRadius = this.value.trim() ? this.value.trim() + 'px' : '0px';heateorSssUpdateSharingPreview(heateorSssVerticalBorderRadius, 'borderRadius', '0px', 'heateor_sss_vertical_preview' )" />
@@ -552,8 +571,8 @@ defined( 'ABSPATH' ) or die("Cheating........Uh!!");
 
 								<tr>
 									<th>
-										<img id="heateor_sss_vertical_font_color_help" class="heateor_sss_help_bubble" src="<?php echo plugins_url( '../../images/info.png', __FILE__ ) ?>" />
 										<label><?php _e("Logo Color", 'sassy-social-share' ); ?></label>
+										<img id="heateor_sss_vertical_font_color_help" class="heateor_sss_help_bubble" src="<?php echo plugins_url( '../../images/info.png', __FILE__ ) ?>" />
 									</th>
 									<td>
 										<script type="text/javascript">var heateorSssVerticalSharingTempColor = '<?php echo $vertical_sharing_color ? $vertical_sharing_color : "#fff" ?>';</script>
@@ -574,8 +593,8 @@ defined( 'ABSPATH' ) or die("Cheating........Uh!!");
 
 								<tr>
 									<th>
-										<img id="heateor_sss_vertical_icon_bg_color_help" class="heateor_sss_help_bubble" src="<?php echo plugins_url( '../../images/info.png', __FILE__ ) ?>" />
 										<label><?php _e("Background Color", 'sassy-social-share' ); ?></label>
+										<img id="heateor_sss_vertical_icon_bg_color_help" class="heateor_sss_help_bubble" src="<?php echo plugins_url( '../../images/info.png', __FILE__ ) ?>" />
 									</th>
 									<td>
 										<label for="heateor_sss_vertical_icon_bg_color_default"><?php _e("Default", 'sassy-social-share' ); ?></label><input style="width: 100px" id="heateor_sss_vertical_icon_bg_color_default" name="heateor_sss[vertical_bg_color_default]" type="text" onkeyup="heateorSssVerticalSharingBg = this.value.trim() ? this.value.trim() : '#3C589A'; heateorSssUpdateSharingPreview(this.value.trim(), 'backgroundColor', '#3C589A', 'heateor_sss_vertical_preview' )" value="<?php echo $vertical_bg ?>" />
@@ -593,8 +612,8 @@ defined( 'ABSPATH' ) or die("Cheating........Uh!!");
 
 								<tr>
 									<th>
-										<img id="heateor_sss_vertical_border_help" class="heateor_sss_help_bubble" src="<?php echo plugins_url( '../../images/info.png', __FILE__ ) ?>" />
 										<label><?php _e("Border", 'sassy-social-share' ); ?></label>
+										<img id="heateor_sss_vertical_border_help" class="heateor_sss_help_bubble" src="<?php echo plugins_url( '../../images/info.png', __FILE__ ) ?>" />
 									</th>
 									<td>
 										<label><strong><?php _e("Default", 'sassy-social-share' ); ?></strong></label>
@@ -619,8 +638,8 @@ defined( 'ABSPATH' ) or die("Cheating........Uh!!");
 
 								<tr>
 									<th>
-										<img id="heateor_sss_vertical_counter_help" class="heateor_sss_help_bubble" src="<?php echo plugins_url( '../../images/info.png', __FILE__ ) ?>" />
 										<label><?php _e("Counter Position", 'sassy-social-share' ); ?><br/><?php _e("(applies, if counter enabled)", 'sassy-social-share' ); ?></label>
+										<img id="heateor_sss_vertical_counter_help" class="heateor_sss_help_bubble" src="<?php echo plugins_url( '../../images/info.png', __FILE__ ) ?>" />
 									</th>
 									<td>
 										<input id="heateor_sss_vertical_counter_left" name="heateor_sss[vertical_counter_position]" onclick="heateorSssVerticalCounterPreview(this.value.trim() )" type="radio" <?php echo $vertical_counter_position == 'left' ? 'checked = "checked"' : '';?> value="left" />
@@ -667,8 +686,8 @@ defined( 'ABSPATH' ) or die("Cheating........Uh!!");
 					<table width="100%" border="0" cellspacing="0" cellpadding="0" class="form-table editcomment menu_content_table">
 						<tr>
 							<th>
-							<img id="heateor_sss_horizontal_enable_help" class="heateor_sss_help_bubble" src="<?php echo plugins_url( '../../images/info.png', __FILE__ ) ?>" />
 							<label for="heateor_sss_horizontal_enable"><?php _e("Enable Standard sharing interface", 'sassy-social-share' ); ?></label>
+							<img id="heateor_sss_horizontal_enable_help" class="heateor_sss_help_bubble" src="<?php echo plugins_url( '../../images/info.png', __FILE__ ) ?>" />
 							</th>
 							<td>
 							<input id="heateor_sss_horizontal_enable" onclick="heateorSssHorizontalSharingOptionsToggle(this)" name="heateor_sss[hor_enable]" type="checkbox" <?php echo isset( $options['hor_enable'] ) ? 'checked = "checked"' : '';?> value="1" />
@@ -688,8 +707,8 @@ defined( 'ABSPATH' ) or die("Cheating........Uh!!");
 						<tbody id="heateor_sss_horizontal_sharing_options" <?php echo isset( $options['hor_enable'] ) ? '' : 'style="display: none"'; ?>>
 						<tr>
 							<th>
-							<img id="heateor_sss_horizontal_target_url_help" class="heateor_sss_help_bubble" src="<?php echo plugins_url( '../../images/info.png', __FILE__ ) ?>" />
 							<label for="heateor_sss_horizontal_target_url"><?php _e("Target Url", 'sassy-social-share' ); ?></label>
+							<img id="heateor_sss_horizontal_target_url_help" class="heateor_sss_help_bubble" src="<?php echo plugins_url( '../../images/info.png', __FILE__ ) ?>" />
 							</th>
 							<td id="heateor_sss_target_url_column">
 							<input id="heateor_sss_target_url_default" name="heateor_sss[horizontal_target_url]" type="radio" <?php echo !isset( $options['horizontal_target_url'] ) || $options['horizontal_target_url'] == 'default' ? 'checked = "checked"' : '';?> value="default" />
@@ -711,8 +730,8 @@ defined( 'ABSPATH' ) or die("Cheating........Uh!!");
 						
 						<tr>
 							<th>
-							<img id="heateor_sss_title_help" class="heateor_sss_help_bubble" src="<?php echo plugins_url( '../../images/info.png', __FILE__ ) ?>" />
 							<label for="heateor_sss_fblogin_title"><?php _e("Title", 'sassy-social-share' ); ?></label>
+							<img id="heateor_sss_title_help" class="heateor_sss_help_bubble" src="<?php echo plugins_url( '../../images/info.png', __FILE__ ) ?>" />
 							</th>
 							<td>
 							<input id="heateor_sss_fblogin_title" name="heateor_sss[title]" type="text" value="<?php echo isset( $options['title'] ) ? $options['title'] : '' ?>" />
@@ -728,6 +747,12 @@ defined( 'ABSPATH' ) or die("Cheating........Uh!!");
 						</tr>
 
 						<?php
+						$youtube_username = '';
+						if ( isset( $options['youtube_username'] ) ) {
+							$youtube_username = $options['youtube_username'];
+						} elseif ( isset( $options['vertical_youtube_username'] ) ) {
+							$youtube_username = $options['vertical_youtube_username'];
+						}
 						$instagram_username = '';
 						if ( isset( $options['instagram_username'] ) ) {
 							$instagram_username = $options['instagram_username'];
@@ -740,13 +765,18 @@ defined( 'ABSPATH' ) or die("Cheating........Uh!!");
 						} elseif ( isset( $options['vertical_comment_container_id'] ) ) {
 							$commentform_container_id = $options['vertical_comment_container_id'];
 						}
+						if ( ! isset( $options['horizontal_re_providers'] ) ) {
+							$options['horizontal_re_providers'] = array();
+						}
+						if ( ! isset( $options['vertical_re_providers'] ) ) {
+							$options['vertical_re_providers'] = array();
+						}
 						?>
-
 						<tbody id="heateor_sss_instagram_options" <?php echo ! isset( $options['horizontal_re_providers'] ) || ! in_array( 'instagram', $options['horizontal_re_providers'] ) ? 'style = "display: none"' : '';?> >
 							<tr>
 								<th>
-								<img id="heateor_sss_instagram_username_help" class="heateor_sss_help_bubble" src="<?php echo plugins_url( '../../images/info.png', __FILE__ ) ?>" />
 								<label for="heateor_sss_instagram_username"><?php _e( "Instagram username", 'sassy-social-share' ); ?></label>
+								<img id="heateor_sss_instagram_username_help" class="heateor_sss_help_bubble" src="<?php echo plugins_url( '../../images/info.png', __FILE__ ) ?>" />
 								</th>
 								<td>
 								<input id="heateor_sss_instagram_username" name="heateor_sss[instagram_username]" type="text" value="<?php echo $instagram_username ?>" />
@@ -762,11 +792,31 @@ defined( 'ABSPATH' ) or die("Cheating........Uh!!");
 							</tr>
 						</tbody>
 
+						<tbody id="heateor_sss_youtube_options" <?php echo ! isset( $options['horizontal_re_providers'] ) || ! in_array( 'youtube', $options['horizontal_re_providers'] ) ? 'style = "display: none"' : '';?> >
+							<tr>
+								<th>
+								<label for="heateor_sss_youtube_username"><?php _e( "Youtube URL", 'sassy-social-share' ); ?></label>
+								<img id="heateor_sss_youtube_username_help" class="heateor_sss_help_bubble" src="<?php echo plugins_url( '../../images/info.png', __FILE__ ) ?>" />
+								</th>
+								<td>
+								<input id="heateor_sss_youtube_username" name="heateor_sss[youtube_username]" type="text" value="<?php echo $youtube_username ?>" />
+								</td>
+							</tr>
+							
+							<tr class="heateor_sss_help_content" id="heateor_sss_youtube_username_help_cont">
+								<td colspan="2">
+								<div>
+								<?php _e( 'Username of the Youtube account you want to redirect users to, on clicking the icon', 'sassy-social-share' ) ?>
+								</div>
+								</td>
+							</tr>
+						</tbody>	
+
 						<tbody id="heateor_sss_comment_options" <?php echo ! isset( $options['horizontal_re_providers'] ) || ! in_array( 'Comment', $options['horizontal_re_providers'] ) ? 'style = "display: none"' : '';?> >
 							<tr>
 								<th>
-								<img id="heateor_sss_comment_container_id_help" class="heateor_sss_help_bubble" src="<?php echo plugins_url( '../../images/info.png', __FILE__ ) ?>" />
 								<label for="heateor_sss_comment_container_id"><?php _e( "HTML ID of container element of comment form", 'sassy-social-share' ); ?></label>
+								<img id="heateor_sss_comment_container_id_help" class="heateor_sss_help_bubble" src="<?php echo plugins_url( '../../images/info.png', __FILE__ ) ?>" />
 								</th>
 								<td>
 								<input id="heateor_sss_comment_container_id" name="heateor_sss[comment_container_id]" type="text" value="<?php echo $commentform_container_id ?>" />
@@ -782,14 +832,20 @@ defined( 'ABSPATH' ) or die("Cheating........Uh!!");
 							</tr>
 						</tbody>
 						<?php
-						$likeButtons = array( 'facebook_share', 'facebook_like', 'facebook_recommend', 'twitter_tweet', 'linkedin_share', 'pinterest_pin', 'buffer_share', 'xing_share', 'yummly_share', 'reddit_badge' );
-						$sharingNetworks = array( 'facebook', 'twitter', 'linkedin', 'print', 'email', 'reddit', 'digg', 'float_it', 'tumblr', 'vkontakte', 'pinterest', 'xing', 'whatsapp', 'instagram', 'yummly', 'buffer', 'AIM', 'Amazon_Wish_List', 'AOL_Mail', 'App.net', 'Balatarin', 'BibSonomy', 'Bitty_Browser', 'Blinklist', 'Blogger_Post', 'BlogMarks', 'Bookmarks.fr', 'Box.net', 'BuddyMarks', 'Care2_News', 'CiteULike', 'Comment', 'Copy_Link', 'Diary.Ru', 'Diaspora', 'Diigo', 'Douban', 'Draugiem', 'DZone', 'Evernote', 'Facebook_Messenger', 'Fark', 'Fintel', 'Flipboard', 'Folkd', 'GentleReader', 'Google_Bookmarks', 'Google_Classroom', 'Google_Gmail', 'Hacker_News', 'Hatena', 'Instapaper', 'Jamespot', 'Kakao', 'Kik', 'Kindle_It', 'Known', 'Line', 'LiveJournal', 'Mail.Ru', 'Mendeley', 'Meneame', 'MeWe', 'mix', 'Mixi', 'MySpace', 'Netvouz', 'Odnoklassniki', 'Outlook.com', 'Papaly', 'Pinboard', 'Plurk', 'Pocket', 'PrintFriendly', 'Protopage_Bookmarks', 'Pusha', 'Qzone', 'Rediff MyPage', 'Refind', 'Renren', 'Sina Weibo', 'SiteJot', 'Skype', 'Slashdot', 'SMS', 'StockTwits', 'Svejo', 'Symbaloo_Feeds', 'Telegram', 'Threema', 'Trello', 'Tuenti', 'Twiddla', 'TypePad_Post', 'Viadeo', 'Viber', 'Wanelo', 'Webnews', 'WordPress', 'Wykop', 'Yahoo_Mail', 'Yoolink' );
+						$like_buttons = array( 'facebook_share', 'facebook_like', 'facebook_recommend', 'twitter_tweet', 'linkedin_share', 'pinterest_pin', 'buffer_share', 'xing_share', 'yummly_share', 'reddit_badge' );
+						$sharing_networks = array( 'facebook', 'twitter', 'linkedin', 'print', 'email', 'reddit', 'digg', 'float_it', 'tumblr', 'vkontakte', 'pinterest', 'xing', 'whatsapp', 'instagram', 'yummly', 'buffer', 'AIM', 'Amazon_Wish_List', 'AOL_Mail', 'App.net', 'Balatarin', 'BibSonomy', 'Bitty_Browser', 'Blinklist', 'Blogger_Post', 'BlogMarks', 'Bookmarks.fr', 'Box.net', 'BuddyMarks', 'Care2_News', 'Comment', 'Copy_Link', 'Diary.Ru', 'Diaspora', 'Diigo', 'Douban', 'Draugiem', 'Evernote', 'Facebook_Messenger', 'Fark', 'Fintel', 'Flipboard', 'Folkd', 'GentleReader', 'Goodreads', 'Google_Bookmarks', 'Google_Classroom', 'Google_Gmail', 'Hacker_News', 'Hatena', 'Instapaper', 'Jamespot', 'Kakao', 'Kik', 'Kindle_It', 'Known', 'Line', 'LiveJournal', 'Mail.Ru', 'Mendeley', 'Meneame', 'MeWe', 'mix', 'Mixi', 'MySpace', 'Netvouz', 'Odnoklassniki', 'Outlook.com', 'Papaly', 'Pinboard', 'Plurk', 'Pocket', 'PrintFriendly', 'Protopage_Bookmarks', 'Pusha', 'Qzone', 'Rediff MyPage', 'Refind', 'Renren', 'Sina Weibo', 'SiteJot', 'Skype', 'Slashdot', 'SMS', 'StockTwits', 'Svejo', 'Symbaloo_Feeds', 'Telegram', 'Threema', 'Trello', 'Tuenti', 'Twiddla', 'TypePad_Post', 'Viadeo', 'Viber', 'Webnews', 'WordPress', 'Wykop', 'Yahoo_Mail', 'Yoolink', 'youtube' );
 						?>
 
 						<tr>
+							<td colspan="2">
+								<a href="https://www.heateor.com/comparison-between-sassy-social-share-pro-and-premium/" target="_blank"><img src="<?php echo plugins_url( '../../images/unlock/multiple-instances.png', __FILE__ ) ?>" /></a>
+							</td>
+						</tr>
+
+						<tr>
 							<th>
-							<img id="heateor_sss_rearrange_help" class="heateor_sss_help_bubble" src="<?php echo plugins_url( '../../images/info.png', __FILE__ ) ?>" />
 							<label><?php _e( "Rearrange icons", 'sassy-social-share' ); ?></label>
+							<img id="heateor_sss_rearrange_help" class="heateor_sss_help_bubble" src="<?php echo plugins_url( '../../images/info.png', __FILE__ ) ?>" />
 							</th>
 						</tr>
 
@@ -808,22 +864,28 @@ defined( 'ABSPATH' ) or die("Cheating........Uh!!");
 								$horSharingStyle .= 'border-radius:' . $options['horizontal_border_radius'] . 'px;';
 							}
 							?>
-							var heateorSssHorSharingStyle = '<?php echo $horSharingStyle ?>', heateorSssHorDeliciousRadius = '<?php echo $horDeliciousRadius ?>', heateorSssLikeButtons = ["<?php echo implode( '","', $likeButtons) ?>"];
+							var heateorSssHorSharingStyle = '<?php echo $horSharingStyle ?>', heateorSssHorDeliciousRadius = '<?php echo $horDeliciousRadius ?>', heateorSssLikeButtons = ["<?php echo implode( '","', $like_buttons) ?>"];
 							</script>
 							<style type="text/css">
+							<?php if ( $horizontal_bg != '' ) { ?>
+								ul#heateor_sss_rearrange i.heateorSssInstagramBackground{background:<?php echo $horizontal_bg ?>!important;}
+							<?php } 
+							if ( $horizontal_bg_hover != '' ) { ?>
+								ul#heateor_sss_rearrange i.heateorSssInstagramBackground:hover{background:<?php echo $horizontal_bg_hover ?>!important;}
+							<?php } ?>
 							.heateorSssSharingBackground{
-								<?php if ( $horizontal_bg) { ?>
+								<?php if ( $horizontal_bg ) { ?>
 								background-color: <?php echo $horizontal_bg ?>;
-								<?php }if ( $border_width) { ?>
+								<?php } if ( $border_width ) { ?>
 								border-width: <?php echo $border_width ?>px;
 								border-style: solid;
 								<?php } ?>
 								border-color: <?php echo $border_color ? $border_color : 'transparent'; ?>;
 							}
 							.heateorSssSharingBackground:hover{
-								<?php if ( $horizontal_bg_hover) { ?>
+								<?php if ( $horizontal_bg_hover ) { ?>
 								background-color: <?php echo $horizontal_bg_hover ?>;
-								<?php }if ( $border_width_hover) { ?>
+								<?php }if ( $border_width_hover ) { ?>
 								border-width: <?php echo $border_width_hover ?>px;
 								border-style: solid;
 								<?php } ?>
@@ -836,7 +898,7 @@ defined( 'ABSPATH' ) or die("Cheating........Uh!!");
 									foreach ( $options['horizontal_re_providers'] as $rearrange ) {
 										?>
 										<li title="<?php echo ucfirst( str_replace( '_', ' ', $rearrange ) ) ?>" id="heateor_sss_re_horizontal_<?php echo str_replace(array( ' ', '.' ), '_', $rearrange) ?>" >
-										<i style="display:block;<?php echo $horSharingStyle ?>" class="<?php echo in_array( $rearrange, $likeButtons) ? '' : 'heateorSssSharingBackground' ?> heateorSss<?php echo ucfirst(str_replace(array( '_', '.', ' ' ), '', $rearrange) ) ?>Background"><div class="heateorSssSharingSvg heateorSss<?php echo ucfirst(str_replace(array( '_', ' ', '.' ), '', $rearrange) ) ?>Svg" style="<?php echo $horDeliciousRadius ?>"></div></i>
+										<i style="display:block;<?php echo $horSharingStyle ?>" class="<?php echo in_array( $rearrange, $like_buttons) ? '' : 'heateorSssSharingBackground' ?> heateorSss<?php echo ucfirst(str_replace(array( '_', '.', ' ' ), '', $rearrange) ) ?>Background"><div class="heateorSssSharingSvg heateorSss<?php echo ucfirst(str_replace(array( '_', ' ', '.' ), '', $rearrange) ) ?>Svg" style="<?php echo $horDeliciousRadius ?>"></div></i>
 										<input type="hidden" name="heateor_sss[horizontal_re_providers][]" value="<?php echo $rearrange ?>">
 										</li>
 										<?php
@@ -857,8 +919,8 @@ defined( 'ABSPATH' ) or die("Cheating........Uh!!");
 
 						<tr>
 							<th colspan="2">
-							<img id="heateor_sss_providers_help" class="heateor_sss_help_bubble" src="<?php echo plugins_url( '../../images/info.png', __FILE__ ) ?>" />
 							<label><?php _e( "Select Sharing Services", 'sassy-social-share' ); ?></label>
+							<img id="heateor_sss_providers_help" class="heateor_sss_help_bubble" src="<?php echo plugins_url( '../../images/info.png', __FILE__ ) ?>" />
 							</th>
 						</tr>
 
@@ -873,11 +935,11 @@ defined( 'ABSPATH' ) or die("Cheating........Uh!!");
 						<tr>
 							<td colspan="2" class="selectSharingNetworks">
 							<?php
-							foreach( $likeButtons as $likeButton ) {
+							foreach( $like_buttons as $like_button ) {
 								?>
 								<div class="heateorSssHorizontalSharingProviderContainer">
-								<input id="heateor_sss_<?php echo $likeButton ?>" type="checkbox" <?php echo isset( $options['horizontal_re_providers'] ) && in_array( $likeButton, $options['horizontal_re_providers'] ) ? 'checked = "checked"' : '';?> value="<?php echo $likeButton ?>" />
-								<label for="heateor_sss_<?php echo $likeButton ?>"><img src="<?php echo plugins_url( '../../images/sharing/'. $likeButton .'.png', __FILE__ ) ?>" /></label>
+								<input id="heateor_sss_<?php echo $like_button ?>" type="checkbox" <?php echo isset( $options['horizontal_re_providers'] ) && in_array( $like_button, $options['horizontal_re_providers'] ) ? 'checked = "checked"' : '';?> value="<?php echo $like_button ?>" />
+								<label for="heateor_sss_<?php echo $like_button ?>"><img src="<?php echo plugins_url( '../../images/sharing/'. $like_button .'.png', __FILE__ ) ?>" /></label>
 								</div>
 								<?php
 							}
@@ -886,12 +948,14 @@ defined( 'ABSPATH' ) or die("Cheating........Uh!!");
 							<div style="width:100%; margin: 10px 0"><input type="text" onkeyup="heateorSssSearchSharingNetworks(this.value.trim())" placeholder="<?php _e( 'Search social network', 'sassy-social-share' ) ?>" class="search" /></div>
 							<div style="clear:both"></div>
 							<?php
-							foreach( $sharingNetworks as $sharingNetwork) {
+							foreach( $sharing_networks as $sharing_network ) {
 								?>
 								<div class="heateorSssHorizontalSharingProviderContainer">
-								<input id="heateor_sss_<?php echo $sharingNetwork ?>" type="checkbox" <?php echo isset( $options['horizontal_re_providers'] ) && in_array( $sharingNetwork, $options['horizontal_re_providers'] ) ? 'checked = "checked"' : '';?> value="<?php echo $sharingNetwork ?>" />
-								<label for="heateor_sss_<?php echo $sharingNetwork ?>"><i style="display:block;width:18px;height:18px;" class="heateorSssSharing heateorSss<?php echo str_replace(array( '_', '.', ' ' ), '', ucfirst( $sharingNetwork) ) ?>Background"><ss style="display:block;" class="heateorSssSharingSvg heateorSss<?php echo str_replace(array( '_', '.', ' ' ), '', ucfirst( $sharingNetwork) ) ?>Svg"></ss></i></label>
-								<label for="heateor_sss_<?php echo $sharingNetwork ?>" class="lblSocialNetwork"><?php echo str_replace( '_', ' ', ucfirst( $sharingNetwork) ) ?></label>
+								<?php echo $sharing_network == 'Goodreads' ? '<a href="https://www.heateor.com/comparison-between-sassy-social-share-pro-and-premium/" target="_blank">' : ''; ?>
+								<input id="heateor_sss_<?php echo $sharing_network ?>" type="checkbox" <?php echo $sharing_network == 'Goodreads' ? 'disabled ' : ''; ?><?php echo isset( $options['horizontal_re_providers'] ) && in_array( $sharing_network, $options['horizontal_re_providers'] ) ? 'checked = "checked"' : '';?> value="<?php echo $sharing_network ?>" />
+								<label <?php echo $sharing_network != 'Goodreads' ? 'for="heateor_sss_' . $sharing_network . '"' : ''; ?>><i style="display:block;width:18px;height:18px;" class="heateorSssSharing heateorSss<?php echo str_replace( array( '_', '.', ' ' ), '', ucfirst( $sharing_network ) ) ?>Background"><ss style="display:block;" class="heateorSssSharingSvg heateorSss<?php echo str_replace(array( '_', '.', ' ' ), '', ucfirst( $sharing_network) ) ?>Svg"></ss></i></label>
+								<label <?php echo $sharing_network != 'Goodreads' ? 'for="heateor_sss_' . $sharing_network . '"' : ''; ?>><?php echo str_replace( '_', ' ', ucfirst( $sharing_network ) ) ?></label>
+								<?php echo $sharing_network == 'Goodreads' ? '</a>' : ''; ?>
 								</div>
 								<?php
 							}
@@ -901,8 +965,8 @@ defined( 'ABSPATH' ) or die("Cheating........Uh!!");
 						
 						<tr>
 							<th>
+							<label for="heateor_sss_hor_alignment"><?php _e( "Horizontal alignment", 'sassy-social-share' ); ?></label>
 							<img id="heateor_sss_hor_alignment_help" class="heateor_sss_help_bubble" src="<?php echo plugins_url( '../../images/info.png', __FILE__ ) ?>" />
-							<label for="heateor_sss_hor_alignment"><?php _e("Horizontal alignment", 'sassy-social-share' ); ?></label>
 							</th>
 							<td>
 							<select id="heateor_sss_hor_alignment" name="heateor_sss[hor_sharing_alignment]">
@@ -923,8 +987,8 @@ defined( 'ABSPATH' ) or die("Cheating........Uh!!");
 						
 						<tr>
 							<th>
-							<img id="heateor_sss_position_help" class="heateor_sss_help_bubble" src="<?php echo plugins_url( '../../images/info.png', __FILE__ ) ?>" />
 							<label><?php _e("Position with respect to content", 'sassy-social-share' ); ?></label>
+							<img id="heateor_sss_position_help" class="heateor_sss_help_bubble" src="<?php echo plugins_url( '../../images/info.png', __FILE__ ) ?>" />
 							</th>
 							<td>
 							<input id="heateor_sss_top" name="heateor_sss[top]" type="checkbox" <?php echo isset( $options['top'] ) ? 'checked = "checked"' : '';?> value="1" />
@@ -941,11 +1005,19 @@ defined( 'ABSPATH' ) or die("Cheating........Uh!!");
 							</div>
 							</td>
 						</tr>
+
+						<tr>
+							<td colspan="2">
+							<div>
+							<a href="https://www.heateor.com/comparison-between-sassy-social-share-pro-and-premium/" target="_blank"><img src="<?php echo plugins_url( '../../images/unlock/social-share-popup.png', __FILE__ ) ?>" /></a>
+							</div>
+							</td>
+						</tr>
 						
 						<tr>
 							<th>
-							<img id="heateor_sss_location_help" class="heateor_sss_help_bubble" src="<?php echo plugins_url( '../../images/info.png', __FILE__ ) ?>" />
 							<label><?php _e("Placement", 'sassy-social-share' ); ?></label>
+							<img id="heateor_sss_location_help" class="heateor_sss_help_bubble" src="<?php echo plugins_url( '../../images/info.png', __FILE__ ) ?>" />
 							</th>
 							<td>
 							<input id="heateor_sss_home" name="heateor_sss[home]" type="checkbox" <?php echo isset( $options['home'] ) ? 'checked = "checked"' : '';?> value="1" />
@@ -1022,7 +1094,7 @@ defined( 'ABSPATH' ) or die("Cheating........Uh!!");
 							<tr>
 								<td colspan="2">
 								<div style="color:green">
-								<?php _e( 'Save Facebook App Id and Secret in the "Miscellaneous" section for Facebook share count to work', 'sassy-social-share' ) ?>
+								<?php _e( 'Save Facebook App Id and Secret in the "Miscellaneous" section to track Facebook shares', 'sassy-social-share' ) ?>
 								</div>
 								</td>
 							</tr>
@@ -1030,8 +1102,8 @@ defined( 'ABSPATH' ) or die("Cheating........Uh!!");
 
 						<tr>
 							<th>
-							<img id="heateor_sss_count_help" class="heateor_sss_help_bubble" src="<?php echo plugins_url( '../../images/info.png', __FILE__ ) ?>" />
 							<label for="heateor_sss_counts"><?php _e( "Show share counts", 'sassy-social-share' ); ?></label>
+							<img id="heateor_sss_count_help" class="heateor_sss_help_bubble" src="<?php echo plugins_url( '../../images/info.png', __FILE__ ) ?>" />
 							</th>
 							<td>
 							<input id="heateor_sss_counts" name="heateor_sss[horizontal_counts]" type="checkbox" <?php echo isset( $options['horizontal_counts'] ) ? 'checked = "checked"' : '';?> value="1" onclick="if(this.checked){heateorSssHorizontalShares = true;}else{heateorSssHorizontalShares = false;} heateor_sss_toggle_fb_share_count_options()" />
@@ -1052,8 +1124,8 @@ defined( 'ABSPATH' ) or die("Cheating........Uh!!");
 
 						<tr>
 							<th>
-							<img id="heateor_sss_total_hor_shares_help" class="heateor_sss_help_bubble" src="<?php echo plugins_url( '../../images/info.png', __FILE__ ) ?>" />
 							<label for="heateor_sss_total_hor_shares"><?php _e("Show total shares", 'sassy-social-share' ); ?></label>
+							<img id="heateor_sss_total_hor_shares_help" class="heateor_sss_help_bubble" src="<?php echo plugins_url( '../../images/info.png', __FILE__ ) ?>" />
 							</th>
 							<td>
 							<input id="heateor_sss_total_hor_shares" name="heateor_sss[horizontal_total_shares]" type="checkbox" <?php echo isset( $options['horizontal_total_shares'] ) ? 'checked = "checked"' : '';?> value="1" onclick="if(this.checked){heateorSssHorizontalTotalShares = true;}else{heateorSssHorizontalTotalShares = false;} heateor_sss_toggle_fb_share_count_options()" />
@@ -1071,8 +1143,8 @@ defined( 'ABSPATH' ) or die("Cheating........Uh!!");
 
 						<tr>
 							<th>
-							<img id="heateor_sss_hmore_help" class="heateor_sss_help_bubble" src="<?php echo plugins_url( '../../images/info.png', __FILE__ ) ?>" />
 							<label for="heateor_sss_hmore"><?php _e( "Enable 'More' icon", 'sassy-social-share' ); ?></label>
+							<img id="heateor_sss_hmore_help" class="heateor_sss_help_bubble" src="<?php echo plugins_url( '../../images/info.png', __FILE__ ) ?>" />
 							</th>
 							<td>
 							<input id="heateor_sss_hmore" name="heateor_sss[horizontal_more]" type="checkbox" <?php echo isset( $options['horizontal_more'] ) ? 'checked = "checked"' : '';?> value="1" />
@@ -1083,6 +1155,14 @@ defined( 'ABSPATH' ) or die("Cheating........Uh!!");
 							<td colspan="2">
 							<div>
 							<?php _e( 'If enabled, "More" icon will be displayed after selected sharing icons which shows additional sharing networks in popup', 'sassy-social-share' ) ?>
+							</div>
+							</td>
+						</tr>
+
+						<tr>
+							<td colspan="2">
+							<div>
+							<a href="https://www.heateor.com/comparison-between-sassy-social-share-pro-and-premium/" target="_blank"><img src="<?php echo plugins_url( '../../images/unlock/hide-standard-share-bar.png', __FILE__ ) ?>" /></a>
 							</div>
 							</td>
 						</tr>
@@ -1104,8 +1184,8 @@ defined( 'ABSPATH' ) or die("Cheating........Uh!!");
 					<table width="100%" border="0" cellspacing="0" cellpadding="0" class="form-table editcomment menu_content_table">
 						<tr>
 							<th>
-							<img id="heateor_sss_vertical_enable_help" class="heateor_sss_help_bubble" src="<?php echo plugins_url( '../../images/info.png', __FILE__ ) ?>" />
 							<label for="heateor_sss_vertical_enable"><?php _e("Enable Floating sharing interface", 'sassy-social-share' ); ?></label>
+							<img id="heateor_sss_vertical_enable_help" class="heateor_sss_help_bubble" src="<?php echo plugins_url( '../../images/info.png', __FILE__ ) ?>" />
 							</th>
 							<td>
 							<input id="heateor_sss_vertical_enable" onclick="heateorSssVerticalSharingOptionsToggle(this)" name="heateor_sss[vertical_enable]" type="checkbox" <?php echo isset( $options['vertical_enable'] ) ? 'checked = "checked"' : '';?> value="1" />
@@ -1124,8 +1204,8 @@ defined( 'ABSPATH' ) or die("Cheating........Uh!!");
 						<tbody id="heateor_sss_vertical_sharing_options" <?php echo isset( $options['vertical_enable'] ) ? '' : 'style="display: none"'; ?>>
 						<tr>
 							<th>
-							<img id="heateor_sss_vertical_target_url_help" class="heateor_sss_help_bubble" src="<?php echo plugins_url( '../../images/info.png', __FILE__ ) ?>" />
 							<label for="heateor_sss_vertical_target_url"><?php _e("Target Url", 'sassy-social-share' ); ?></label>
+							<img id="heateor_sss_vertical_target_url_help" class="heateor_sss_help_bubble" src="<?php echo plugins_url( '../../images/info.png', __FILE__ ) ?>" />
 							</th>
 							<td id="heateor_sss_vertical_target_url_column">
 							<input id="heateor_sss_vertical_target_url_default" name="heateor_sss[vertical_target_url]" type="radio" <?php echo !isset( $options['vertical_target_url'] ) || $options['vertical_target_url'] == 'default' ? 'checked = "checked"' : '';?> value="default" />
@@ -1148,8 +1228,8 @@ defined( 'ABSPATH' ) or die("Cheating........Uh!!");
 						<tbody id="heateor_sss_vertical_instagram_options" <?php echo ! in_array( 'instagram', $options['vertical_re_providers'] ) ? 'style = "display: none"' : '';?> >
 							<tr>
 								<th>
-								<img id="heateor_sss_vertical_instagram_username_help" class="heateor_sss_help_bubble" src="<?php echo plugins_url( '../../images/info.png', __FILE__ ) ?>" />
 								<label for="heateor_sss_vertical_instagram_username"><?php _e("Instagram username", 'sassy-social-share' ); ?></label>
+								<img id="heateor_sss_vertical_instagram_username_help" class="heateor_sss_help_bubble" src="<?php echo plugins_url( '../../images/info.png', __FILE__ ) ?>" />
 								</th>
 								<td>
 								<input id="heateor_sss_vertical_instagram_username" name="heateor_sss[vertical_instagram_username]" type="text" value="<?php echo $instagram_username ?>" />
@@ -1164,12 +1244,32 @@ defined( 'ABSPATH' ) or die("Cheating........Uh!!");
 								</td>
 							</tr>
 						</tbody>
+						<tbody id="heateor_sss_vertical_youtube_options" <?php echo ! in_array( 'youtube', $options['vertical_re_providers'] ) ? 'style = "display: none"' : '';?> >
+						<tr>
+								<th>
+								<label for="heateor_sss_vertical_youtube_username"><?php _e( "Youtube URL", 'sassy-social-share' ); ?></label>
+								<img id="heateor_sss_vertical_youtube_username_help" class="heateor_sss_help_bubble" src="<?php echo plugins_url( '../../images/info.png', __FILE__ ) ?>" />
+								</th>
+								<td>
+									
 
+								<input id="heateor_sss_vertical_youtube_username" name="heateor_sss[vertical_youtube_username]" type="text" value="<?php echo $youtube_username ?>" />
+								</td>
+							</tr>
+							
+							<tr class="heateor_sss_help_content" id="heateor_sss_vertical_instagram_username_help_cont">
+								<td colspan="2">
+								<div>
+								<?php _e( 'Username of the Instagram account you want to redirect users to, on clicking the icon', 'sassy-social-share' ) ?>
+								</div>
+								</td>
+							</tr>
+						</tbody>
 						<tbody id="heateor_sss_vertical_comment_options" <?php echo ! in_array( 'Comment', $options['vertical_re_providers'] ) ? 'style = "display: none"' : '';?> >
 							<tr>
 								<th>
-								<img id="heateor_sss_vertical_comment_container_id_help" class="heateor_sss_help_bubble" src="<?php echo plugins_url( '../../images/info.png', __FILE__ ) ?>" />
 								<label for="heateor_sss_vertical_comment_container_id"><?php _e( "HTML ID of container element of comment form", 'sassy-social-share' ); ?></label>
+								<img id="heateor_sss_vertical_comment_container_id_help" class="heateor_sss_help_bubble" src="<?php echo plugins_url( '../../images/info.png', __FILE__ ) ?>" />
 								</th>
 								<td>
 								<input id="heateor_sss_vertical_comment_container_id" name="heateor_sss[vertical_comment_container_id]" type="text" value="<?php echo $commentform_container_id ?>" />
@@ -1187,8 +1287,8 @@ defined( 'ABSPATH' ) or die("Cheating........Uh!!");
 
 						<tr>
 							<th>
-							<img id="heateor_sss_vertical_rearrange_help" class="heateor_sss_help_bubble" src="<?php echo plugins_url( '../../images/info.png', __FILE__ ) ?>" />
 							<label><?php _e( "Rearrange icons", 'sassy-social-share' ); ?></label>
+							<img id="heateor_sss_vertical_rearrange_help" class="heateor_sss_help_bubble" src="<?php echo plugins_url( '../../images/info.png', __FILE__ ) ?>" />
 							</th>
 						</tr>
 						
@@ -1208,8 +1308,14 @@ defined( 'ABSPATH' ) or die("Cheating........Uh!!");
 							var heateorSssVerticalSharingStyle = '<?php echo $verticalSharingStyle ?>', heateorSssVerticalDeliciousRadius = '<?php echo $verticalDeliciousRadius ?>';
 							</script>
 							<style type="text/css">
+							<?php if ( $options['vertical_bg_color_default'] != '' ) {?>
+								ul#heateor_sss_vertical_rearrange  i.heateorSssInstagramBackground{background:<?php echo $vertical_bg ?>!important;}
+							<?php }
+							if ( $options['vertical_bg_color_hover'] != '' ) { ?>
+								ul#heateor_sss_vertical_rearrange i.heateorSssInstagramBackground:hover{background:<?php echo $vertical_bg_hover ?>!important;}
+							<?php } ?>
 							.heateorSssVerticalSharingBackground{
-								<?php if ( $vertical_bg) { ?>
+								<?php if ( $vertical_bg ) { ?>
 								background-color: <?php echo $vertical_bg ?>;
 								<?php }if ( $vertical_border_width) { ?>
 								border-width: <?php echo $vertical_border_width ?>px;
@@ -1218,9 +1324,9 @@ defined( 'ABSPATH' ) or die("Cheating........Uh!!");
 								border-color: <?php echo $vertical_border_color ? $vertical_border_color : 'transparent'; ?>;
 							}
 							.heateorSssVerticalSharingBackground:hover{
-								<?php if ( $vertical_bg_hover) { ?>
+								<?php if ( $vertical_bg_hover ) { ?>
 								background-color: <?php echo $vertical_bg_hover ?>;
-								<?php }if ( $vertical_border_width_hover) { ?>
+								<?php } if ( $vertical_border_width_hover ) { ?>
 								border-width: <?php echo $vertical_border_width_hover ?>px;
 								border-style: solid;
 								<?php } ?>
@@ -1232,8 +1338,8 @@ defined( 'ABSPATH' ) or die("Cheating........Uh!!");
 								if ( isset( $options['vertical_re_providers'] ) ) {
 									foreach ( $options['vertical_re_providers'] as $rearrange ) {
 										?>
-										<li title="<?php echo ucfirst( str_replace( '_', ' ', $rearrange ) ) ?>" id="heateor_sss_re_vertical_<?php echo str_replace( array( ' ', '.' ), '_', $rearrange) ?>" >
-										<i style="display:block;<?php echo $verticalSharingStyle ?>" class="<?php echo in_array( $rearrange, $likeButtons) ? '' : 'heateorSssVerticalSharingBackground' ?> heateorSss<?php echo ucfirst(str_replace( array( '_', '.', ' ' ), '', $rearrange) ) ?>Background"><div class="heateorSssSharingSvg heateorSss<?php echo ucfirst(str_replace( array( '_', '.', ' ' ), '', $rearrange ) ) ?>Svg" style="<?php echo $verticalDeliciousRadius ?>"></div></i>
+										<li title="<?php echo ucfirst( str_replace( '_', ' ', $rearrange ) ) ?>" id="heateor_sss_re_vertical_<?php echo str_replace( array( ' ', '.' ), '_', $rearrange ) ?>" >
+										<i style="display:block;<?php echo $verticalSharingStyle ?>" class="<?php echo in_array( $rearrange, $like_buttons ) ? '' : 'heateorSssVerticalSharingBackground' ?> heateorSss<?php echo ucfirst( str_replace( array( '_', '.', ' ' ), '', $rearrange ) ) ?>Background"><div class="heateorSssSharingSvg heateorSss<?php echo ucfirst( str_replace( array( '_', '.', ' ' ), '', $rearrange ) ) ?>Svg" style="<?php echo $verticalDeliciousRadius ?>"></div></i>
 										<input type="hidden" name="heateor_sss[vertical_re_providers][]" value="<?php echo $rearrange ?>">
 										</li>
 										<?php
@@ -1254,8 +1360,8 @@ defined( 'ABSPATH' ) or die("Cheating........Uh!!");
 
 						<tr>
 							<th colspan="2">
-							<img id="heateor_sss_vertical_providers_help" class="heateor_sss_help_bubble" src="<?php echo plugins_url( '../../images/info.png', __FILE__ ) ?>" />
 							<label><?php _e("Select Sharing Services", 'sassy-social-share' ); ?></label>
+							<img id="heateor_sss_vertical_providers_help" class="heateor_sss_help_bubble" src="<?php echo plugins_url( '../../images/info.png', __FILE__ ) ?>" />
 							</th>
 						</tr>
 
@@ -1270,11 +1376,11 @@ defined( 'ABSPATH' ) or die("Cheating........Uh!!");
 						<tr>
 							<td colspan="2" class="selectSharingNetworks">
 							<?php
-							foreach( $likeButtons as $likeButton) {
+							foreach( $like_buttons as $like_button ) {
 								?>
 								<div class="heateorSssVerticalSharingProviderContainer">
-								<input id="heateor_sss_vertical_<?php echo $likeButton ?>" type="checkbox" <?php echo isset( $options['vertical_re_providers'] ) && in_array( $likeButton, $options['vertical_re_providers'] ) ? 'checked = "checked"' : '';?> value="<?php echo $likeButton ?>" />
-								<label for="heateor_sss_vertical_<?php echo $likeButton ?>"><img src="<?php echo plugins_url( '../../images/sharing/'. $likeButton .'.png', __FILE__ ) ?>" /></label>
+								<input id="heateor_sss_vertical_<?php echo $like_button ?>" type="checkbox" <?php echo isset( $options['vertical_re_providers'] ) && in_array( $like_button, $options['vertical_re_providers'] ) ? 'checked = "checked"' : '';?> value="<?php echo $like_button ?>" />
+								<label for="heateor_sss_vertical_<?php echo $like_button ?>"><img src="<?php echo plugins_url( '../../images/sharing/'. $like_button .'.png', __FILE__ ) ?>" /></label>
 								</div>
 								<?php
 							}
@@ -1283,12 +1389,12 @@ defined( 'ABSPATH' ) or die("Cheating........Uh!!");
 							<div style="width:100%; margin: 10px 0"><input type="text" onkeyup="heateorSssSearchSharingNetworks(this.value.trim())" placeholder="<?php _e( 'Search social network', 'sassy-social-share' ) ?>" class="search" /></div>
 							<div style="clear:both"></div>
 							<?php
-							foreach( $sharingNetworks as $sharingNetwork) {
+							foreach( $sharing_networks as $sharing_network) {
 								?>
 								<div class="heateorSssVerticalSharingProviderContainer">
-								<input id="heateor_sss_vertical_sharing_<?php echo $sharingNetwork ?>" type="checkbox" <?php echo isset( $options['vertical_re_providers'] ) && in_array( $sharingNetwork, $options['vertical_re_providers'] ) ? 'checked = "checked"' : '';?> value="<?php echo $sharingNetwork ?>" />
-								<label for="heateor_sss_vertical_sharing_<?php echo $sharingNetwork ?>"><i style="display:block;width:18px;height:18px;" class="heateorSssSharing heateorSss<?php echo str_replace(array( '_', '.', ' ' ), '', ucfirst( $sharingNetwork) ) ?>Background"><ss style="display:block;" class="heateorSssSharingSvg heateorSss<?php echo str_replace(array( '_', '.', ' ' ), '', ucfirst( $sharingNetwork) ) ?>Svg"></ss></i></label>
-								<label for="heateor_sss_vertical_sharing_<?php echo $sharingNetwork ?>" class="lblSocialNetwork"><?php echo str_replace( '_', ' ', ucfirst( $sharingNetwork) ) ?></label>
+								<input id="heateor_sss_vertical_sharing_<?php echo $sharing_network ?>" type="checkbox" <?php echo isset( $options['vertical_re_providers'] ) && in_array( $sharing_network, $options['vertical_re_providers'] ) ? 'checked = "checked"' : '';?> value="<?php echo $sharing_network ?>" />
+								<label for="heateor_sss_vertical_sharing_<?php echo $sharing_network ?>"><i style="display:block;width:18px;height:18px;" class="heateorSssSharing heateorSss<?php echo str_replace(array( '_', '.', ' ' ), '', ucfirst( $sharing_network) ) ?>Background"><ss style="display:block;" class="heateorSssSharingSvg heateorSss<?php echo str_replace(array( '_', '.', ' ' ), '', ucfirst( $sharing_network) ) ?>Svg"></ss></i></label>
+								<label for="heateor_sss_vertical_sharing_<?php echo $sharing_network ?>"><?php echo str_replace( '_', ' ', ucfirst( $sharing_network) ) ?></label>
 								</div>
 								<?php
 							}
@@ -1298,8 +1404,8 @@ defined( 'ABSPATH' ) or die("Cheating........Uh!!");
 						
 						<tr>
 							<th>
-							<img id="heateor_sss_vertical_bg_color_help" class="heateor_sss_help_bubble" src="<?php echo plugins_url( '../../images/info.png', __FILE__ ) ?>" />
 							<label><?php _e("Background Color", 'sassy-social-share' ); ?></label>
+							<img id="heateor_sss_vertical_bg_color_help" class="heateor_sss_help_bubble" src="<?php echo plugins_url( '../../images/info.png', __FILE__ ) ?>" />
 							</th>
 							<td>
 							<input style="width: 100px" name="heateor_sss[vertical_bg]" type="text" value="<?php echo isset( $options['vertical_bg'] ) ? $options['vertical_bg'] : '' ?>" />
@@ -1316,8 +1422,8 @@ defined( 'ABSPATH' ) or die("Cheating........Uh!!");
 						
 						<tr>
 							<th>
-							<img id="heateor_sss_alignment_help" class="heateor_sss_help_bubble" src="<?php echo plugins_url( '../../images/info.png', __FILE__ ) ?>" />
 							<label for="heateor_sss_alignment"><?php _e("Horizontal alignment", 'sassy-social-share' ); ?></label>
+							<img id="heateor_sss_alignment_help" class="heateor_sss_help_bubble" src="<?php echo plugins_url( '../../images/info.png', __FILE__ ) ?>" />
 							</th>
 							<td>
 							<select onchange="heateorSssToggleOffset(this.value)" id="heateor_sss_alignment" name="heateor_sss[alignment]">
@@ -1338,8 +1444,8 @@ defined( 'ABSPATH' ) or die("Cheating........Uh!!");
 						<tbody id="heateor_sss_left_offset_rows" <?php echo ( isset( $options['alignment'] ) && $options['alignment'] == 'left' ) ? '' : 'style="display: none"' ?>>
 						<tr>
 							<th>
-							<img id="heateor_sss_left_offset_help" class="heateor_sss_help_bubble" src="<?php echo plugins_url( '../../images/info.png', __FILE__ ) ?>" />
 							<label for="heateor_sss_left_offset"><?php _e("Left offset", 'sassy-social-share' ); ?></label>
+							<img id="heateor_sss_left_offset_help" class="heateor_sss_help_bubble" src="<?php echo plugins_url( '../../images/info.png', __FILE__ ) ?>" />
 							</th>
 							<td>
 							<input style="width: 100px" id="heateor_sss_left_offset" name="heateor_sss[left_offset]" type="text" value="<?php echo isset( $options['left_offset'] ) ? $options['left_offset'] : '' ?>" />px
@@ -1358,8 +1464,8 @@ defined( 'ABSPATH' ) or die("Cheating........Uh!!");
 						<tbody id="heateor_sss_right_offset_rows" <?php echo ( isset( $options['alignment'] ) && $options['alignment'] == 'right' ) ? '' : 'style="display: none"' ?>>
 						<tr>
 							<th>
-							<img id="heateor_sss_right_offset_help" class="heateor_sss_help_bubble" src="<?php echo plugins_url( '../../images/info.png', __FILE__ ) ?>" />
 							<label for="heateor_sss_right_offset"><?php _e("Right offset", 'sassy-social-share' ); ?></label>
+							<img id="heateor_sss_right_offset_help" class="heateor_sss_help_bubble" src="<?php echo plugins_url( '../../images/info.png', __FILE__ ) ?>" />
 							</th>
 							<td>
 							<input style="width: 100px" id="heateor_sss_right_offset" name="heateor_sss[right_offset]" type="text" value="<?php echo isset( $options['right_offset'] ) ? $options['right_offset'] : '' ?>" />px
@@ -1377,8 +1483,8 @@ defined( 'ABSPATH' ) or die("Cheating........Uh!!");
 						
 						<tr>
 							<th>
-							<img id="heateor_sss_top_offset_help" class="heateor_sss_help_bubble" src="<?php echo plugins_url( '../../images/info.png', __FILE__ ) ?>" />
 							<label for="heateor_sss_top_offset"><?php _e("Top offset", 'sassy-social-share' ); ?></label>
+							<img id="heateor_sss_top_offset_help" class="heateor_sss_help_bubble" src="<?php echo plugins_url( '../../images/info.png', __FILE__ ) ?>" />
 							</th>
 							<td>
 							<input style="width: 100px" id="heateor_sss_top_offset" name="heateor_sss[top_offset]" type="text" value="<?php echo isset( $options['top_offset'] ) ? $options['top_offset'] : '' ?>" />px
@@ -1395,8 +1501,8 @@ defined( 'ABSPATH' ) or die("Cheating........Uh!!");
 						
 						<tr>
 							<th>
-							<img id="heateor_sss_vertical_location_help" class="heateor_sss_help_bubble" src="<?php echo plugins_url( '../../images/info.png', __FILE__ ) ?>" />
 							<label><?php _e("Placement", 'sassy-social-share' ); ?></label>
+							<img id="heateor_sss_vertical_location_help" class="heateor_sss_help_bubble" src="<?php echo plugins_url( '../../images/info.png', __FILE__ ) ?>" />
 							</th>
 							<td>
 							<input id="heateor_sss_vertical_home" name="heateor_sss[vertical_home]" type="checkbox" <?php echo isset( $options['vertical_home'] ) ? 'checked = "checked"' : '';?> value="1" />
@@ -1454,7 +1560,7 @@ defined( 'ABSPATH' ) or die("Cheating........Uh!!");
 							<tr>
 								<td colspan="2">
 								<div style="color:green">
-								<?php _e( 'Save Facebook App Id and Secret in the "Miscellaneous" section for Facebook share count to work', 'sassy-social-share' ) ?>
+								<?php _e( 'Save Facebook App Id and Secret in the "Miscellaneous" section to track Facebook shares', 'sassy-social-share' ) ?>
 								</div>
 								</td>
 							</tr>
@@ -1462,8 +1568,8 @@ defined( 'ABSPATH' ) or die("Cheating........Uh!!");
 
 						<tr>
 							<th>
-							<img id="heateor_sss_vertical_count_help" class="heateor_sss_help_bubble" src="<?php echo plugins_url( '../../images/info.png', __FILE__ ) ?>" />
 							<label for="heateor_sss_vertical_counts"><?php _e( "Show share counts", 'sassy-social-share' ); ?></label>
+							<img id="heateor_sss_vertical_count_help" class="heateor_sss_help_bubble" src="<?php echo plugins_url( '../../images/info.png', __FILE__ ) ?>" />
 							</th>
 							<td>
 							<input id="heateor_sss_vertical_counts" name="heateor_sss[vertical_counts]" type="checkbox" <?php echo isset( $options['vertical_counts'] ) ? 'checked = "checked"' : '';?> value="1" onclick="if(this.checked){heateorSssVerticalShares = true;}else{heateorSssVerticalShares = false;} heateor_sss_toggle_fb_share_count_options()" />
@@ -1484,8 +1590,8 @@ defined( 'ABSPATH' ) or die("Cheating........Uh!!");
 
 						<tr>
 							<th>
-							<img id="heateor_sss_total_vertical_shares_help" class="heateor_sss_help_bubble" src="<?php echo plugins_url( '../../images/info.png', __FILE__ ) ?>" />
 							<label for="heateor_sss_total_vertical_shares"><?php _e( "Show total shares", 'sassy-social-share' ); ?></label>
+							<img id="heateor_sss_total_vertical_shares_help" class="heateor_sss_help_bubble" src="<?php echo plugins_url( '../../images/info.png', __FILE__ ) ?>" />
 							</th>
 							<td>
 							<input id="heateor_sss_total_vertical_shares" name="heateor_sss[vertical_total_shares]" type="checkbox" onclick="if(this.checked){heateorSssVerticalTotalShares = true;}else{heateorSssVerticalTotalShares = false;} heateor_sss_toggle_fb_share_count_options()" <?php echo isset( $options['vertical_total_shares'] ) ? 'checked = "checked"' : '';?> value="1" />
@@ -1503,8 +1609,8 @@ defined( 'ABSPATH' ) or die("Cheating........Uh!!");
 
 						<tr>
 							<th>
-							<img id="heateor_sss_vmore_help" class="heateor_sss_help_bubble" src="<?php echo plugins_url( '../../images/info.png', __FILE__ ) ?>" />
 							<label for="heateor_sss_vmore"><?php _e("Enable 'More' icon", 'sassy-social-share' ); ?></label>
+							<img id="heateor_sss_vmore_help" class="heateor_sss_help_bubble" src="<?php echo plugins_url( '../../images/info.png', __FILE__ ) ?>" />
 							</th>
 							<td>
 							<input id="heateor_sss_vmore" name="heateor_sss[vertical_more]" type="checkbox" <?php echo isset( $options['vertical_more'] ) ? 'checked = "checked"' : '';?> value="1" />
@@ -1521,8 +1627,8 @@ defined( 'ABSPATH' ) or die("Cheating........Uh!!");
 
 						<tr>
 							<th>
-							<img id="heateor_sss_hslider_help" class="heateor_sss_help_bubble" src="<?php echo plugins_url( '../../images/info.png', __FILE__ ) ?>" />
 							<label for="heateor_sss_hslider"><?php _e( "Hide floating slider", 'sassy-social-share' ); ?></label>
+							<img id="heateor_sss_hslider_help" class="heateor_sss_help_bubble" src="<?php echo plugins_url( '../../images/info.png', __FILE__ ) ?>" />
 							</th>
 							<td>
 							<input id="heateor_sss_hslider" name="heateor_sss[hide_slider]" type="checkbox" <?php echo isset( $options['hide_slider'] ) ? 'checked = "checked"' : '';?> value="1" />
@@ -1557,8 +1663,8 @@ defined( 'ABSPATH' ) or die("Cheating........Uh!!");
 
 						<tr>
 							<th>
-							<img id="heateor_sss_mobile_sharing_bottom_help" class="heateor_sss_help_bubble" src="<?php echo plugins_url( '../../images/info.png', __FILE__ ) ?>" />
 							<label for="heateor_sss_mobile_sharing_bottom"><?php _e("Horizontal floating bar responsiveness", 'sassy-social-share' ); ?></label>
+							<img id="heateor_sss_mobile_sharing_bottom_help" class="heateor_sss_help_bubble" src="<?php echo plugins_url( '../../images/info.png', __FILE__ ) ?>" />
 							</th>
 							<td>
 							<input id="heateor_sss_mobile_sharing_bottom" name="heateor_sss[bottom_mobile_sharing]" type="checkbox" <?php echo isset( $options['bottom_mobile_sharing'] ) ? 'checked = "checked"' : '';?> value="1" /><label><?php echo sprintf( __( 'Stick vertical floating interface horizontally at bottom only when screen is narrower than %s pixels', 'sassy-social-share' ), '<input style="width:46px" name="heateor_sss[horizontal_screen_width]" type="text" value="' . ( isset( $options['horizontal_screen_width'] ) ? $options['horizontal_screen_width'] : '' ) . '" />' ) ?></label>
@@ -1577,8 +1683,8 @@ defined( 'ABSPATH' ) or die("Cheating........Uh!!");
 						<tbody id="heateor_sss_bottom_sharing_options" <?php echo isset( $options['bottom_mobile_sharing'] ) ? '' : 'style="display: none"'; ?>>
 							<tr>
 								<th>
-								<img id="heateor_sss_mobile_sharing_position_help" class="heateor_sss_help_bubble" src="<?php echo plugins_url( '../../images/info.png', __FILE__ ) ?>" />
 								<label for="heateor_sss_mobile_sharing_position"><?php _e("Horizontal floating bar position", 'sassy-social-share' ); ?></label>
+								<img id="heateor_sss_mobile_sharing_position_help" class="heateor_sss_help_bubble" src="<?php echo plugins_url( '../../images/info.png', __FILE__ ) ?>" />
 								</th>
 								<td>
 								<input type="radio" id="bottom_sharing_position_radio_nonresponsive" <?php echo $options['bottom_sharing_position_radio'] == 'nonresponsive' ? 'checked' : ''; ?> name="heateor_sss[bottom_sharing_position_radio]" value="nonresponsive" /><label for="bottom_sharing_position_radio_nonresponsive"><?php echo sprintf( __( '%s pixels from %s', 'sassy-social-share' ), '<input id="heateor_sss_mobile_sharing_position" style="width:46px" name="heateor_sss[bottom_sharing_position]" type="text" value="' . ( isset( $options['bottom_sharing_position'] ) ? $options['bottom_sharing_position'] : '' ) . '" />', '<select style="width:63px" name="heateor_sss[bottom_sharing_alignment]"><option value="right" ' . ( ! isset( $options['bottom_sharing_alignment'] ) || $options['bottom_sharing_alignment'] == 'right' ? 'selected' : '' ) . '>right</option><option value="left" ' . ( isset( $options['bottom_sharing_alignment'] ) && $options['bottom_sharing_alignment'] == 'left' ? 'selected' : '' ) . '>left</option></select>' ) ?></label><br/>
@@ -1618,8 +1724,8 @@ defined( 'ABSPATH' ) or die("Cheating........Uh!!");
 							</tr>
 							<tr>
 								<th>
-								<img id="heateor_sss_fb_key_help" class="heateor_sss_help_bubble" src="<?php echo plugins_url( '../../images/info.png', __FILE__ ) ?>" />
 								<label for="heateor_sss_fb_key"><?php _e( "Facebook App ID", 'sassy-social-share' ); ?></label>
+								<img id="heateor_sss_fb_key_help" class="heateor_sss_help_bubble" src="<?php echo plugins_url( '../../images/info.png', __FILE__ ) ?>" />
 								</th>
 								<td>
 								<input id="heateor_sss_fb_key" name="heateor_sss[fb_key]" type="text" value="<?php echo $options['fb_key'] ?>" />
@@ -1629,15 +1735,15 @@ defined( 'ABSPATH' ) or die("Cheating........Uh!!");
 							<tr class="heateor_sss_help_content" id="heateor_sss_fb_key_help_cont">
 								<td colspan="2">
 								<div>
-								<?php echo sprintf( __( 'Required for Facebook share count to work. Please follow the documentation at <a href="%s" target="_blank">this link</a> to get Facebook App ID', 'sassy-social-share' ), 'http://support.heateor.com/how-to-get-facebook-app-id/' ) ?>
+								<?php echo sprintf( __( 'Required to track Facebook shares. Please follow the documentation at <a href="%s" target="_blank">this link</a> to get Facebook App ID', 'sassy-social-share' ), 'http://support.heateor.com/how-to-get-facebook-app-id/' ) ?>
 								</div>
 								</td>
 							</tr>
 
 							<tr>
 								<th>
-								<img id="heateor_sss_fb_secret_help" class="heateor_sss_help_bubble" src="<?php echo plugins_url( '../../images/info.png', __FILE__ ) ?>" />
 								<label for="heateor_sss_fblogin_secret"><?php _e( "Facebook App Secret", 'sassy-social-share' ); ?></label>
+								<img id="heateor_sss_fb_secret_help" class="heateor_sss_help_bubble" src="<?php echo plugins_url( '../../images/info.png', __FILE__ ) ?>" />
 								</th>
 								<td>
 								<input id="heateor_sss_fblogin_secret" name="heateor_sss[fb_secret]" type="text" value="<?php echo $options['fb_secret'] ?>" />
@@ -1647,7 +1753,7 @@ defined( 'ABSPATH' ) or die("Cheating........Uh!!");
 							<tr class="heateor_sss_help_content" id="heateor_sss_fb_secret_help_cont">
 								<td colspan="2">
 								<div>
-								<?php echo sprintf( __( 'Required for Facebook share count to work. Please follow the documentation at <a href="%s" target="_blank">this link</a> to get Facebook App Secret', 'sassy-social-share' ), 'http://support.heateor.com/how-to-get-facebook-app-id/' ) ?>
+								<?php echo sprintf( __( 'Required to track Facebook shares. Please follow the documentation at <a href="%s" target="_blank">this link</a> to get Facebook App Secret', 'sassy-social-share' ), 'http://support.heateor.com/how-to-get-facebook-app-id/' ) ?>
 								</div>
 								</td>
 							</tr>
@@ -1662,8 +1768,26 @@ defined( 'ABSPATH' ) or die("Cheating........Uh!!");
 					<table width="100%" border="0" cellspacing="0" cellpadding="0" class="form-table editcomment menu_content_table">
 						<tr>
 							<th>
-							<img id="heateor_sss_footer_script_help" class="heateor_sss_help_bubble" src="<?php echo plugins_url( '../../images/info.png', __FILE__ ) ?>" />
+							<label for="heateor_sss_insta_bg"><?php _e( "Use plain background for Instagram icon", 'sassy-social-share' ) ?></label>
+							<img id="heateor_sss_insta_bg_help" class="heateor_sss_help_bubble" src="<?php echo plugins_url( '../../images/info.png', __FILE__ ) ?>" />
+							</th>
+							<td>
+							<input id="heateor_sss_insta_bg" name="heateor_sss[plain_instagram_bg]" type="checkbox" <?php echo isset( $options['plain_instagram_bg'] ) ? 'checked = "checked"' : '';?> value="1" />
+							</td>
+						</tr>
+
+						<tr class="heateor_sss_help_content" id="heateor_sss_insta_bg_help_cont">
+							<td colspan="2">
+							<div>
+							<?php _e( 'Uses plain background for Instagram icon instead of multicolored background', 'sassy-social-share' ) ?>
+							</div>
+							</td>
+						</tr>
+
+						<tr>
+							<th>
 							<label for="heateor_sss_footer_script"><?php _e( "Load Javascript files in footer", 'sassy-social-share' ) ?></label>
+							<img id="heateor_sss_footer_script_help" class="heateor_sss_help_bubble" src="<?php echo plugins_url( '../../images/info.png', __FILE__ ) ?>" />
 							</th>
 							<td>
 							<input id="heateor_sss_footer_script" name="heateor_sss[footer_script]" type="checkbox" <?php echo isset( $options['footer_script'] ) ? 'checked = "checked"' : '';?> value="1" />
@@ -1673,15 +1797,33 @@ defined( 'ABSPATH' ) or die("Cheating........Uh!!");
 						<tr class="heateor_sss_help_content" id="heateor_sss_footer_script_help_cont">
 							<td colspan="2">
 							<div>
-							<?php _e( 'If enabled (recommended), Javascript files will be included in the footer of your website.', 'sassy-social-share' ) ?>
+							<?php _e( 'If enabled (recommended), Javascript files will be included in the footer of your website', 'sassy-social-share' ) ?>
 							</div>
 							</td>
 						</tr>
 
 						<tr>
 							<th>
-							<img id="heateor_sss_delete_options_help" class="heateor_sss_help_bubble" src="<?php echo plugins_url( '../../images/info.png', __FILE__ ) ?>" />
+							<label for="heateor_sss_js_when_needed"><?php _e( "Load Javascript only when needed", 'sassy-social-share' ) ?></label>
+							<img id="heateor_sss_js_when_needed_help" class="heateor_sss_help_bubble" src="<?php echo plugins_url( '../../images/info.png', __FILE__ ) ?>" />
+							</th>
+							<td>
+							<input id="heateor_sss_js_when_needed" name="heateor_sss[js_when_needed]" type="checkbox" <?php echo isset( $options['js_when_needed'] ) ? 'checked = "checked"' : '';?> value="1" />
+							</td>
+						</tr>
+
+						<tr class="heateor_sss_help_content" id="heateor_sss_js_when_needed_help_cont">
+							<td colspan="2">
+							<div>
+							<?php _e( 'Javascript file will be loaded only at the webpages where share icons have been integrated', 'sassy-social-share' ) ?>
+							</div>
+							</td>
+						</tr>
+
+						<tr>
+							<th>
 							<label for="heateor_sss_delete_options"><?php _e("Delete all the options on plugin deletion", 'sassy-social-share' ); ?></label>
+							<img id="heateor_sss_delete_options_help" class="heateor_sss_help_bubble" src="<?php echo plugins_url( '../../images/info.png', __FILE__ ) ?>" />
 							</th>
 							<td>
 							<input id="heateor_sss_delete_options" name="heateor_sss[delete_options]" type="checkbox" <?php echo isset( $options['delete_options'] ) ? 'checked = "checked"' : '';?> value="1" />
@@ -1705,8 +1847,8 @@ defined( 'ABSPATH' ) or die("Cheating........Uh!!");
 					<table width="100%" border="0" cellspacing="0" cellpadding="0" class="form-table editcomment menu_content_table">
 						<tr>
 							<th>
-							<img id="heateor_sss_share_count_cache_help" class="heateor_sss_help_bubble" src="<?php echo plugins_url( '../../images/info.png', __FILE__ ) ?>" />
 							<label for="heateor_sss_share_count_cache"><?php _e( "Refresh Share Count cache every", 'sassy-social-share' ) ?></label>
+							<img id="heateor_sss_share_count_cache_help" class="heateor_sss_help_bubble" src="<?php echo plugins_url( '../../images/info.png', __FILE__ ) ?>" />
 							</th>
 							<td>
 							<input style="width: 50px;" id="heateor_sss_share_count_cache" name="heateor_sss[share_count_cache_refresh_count]" type="text" value="<?php echo $options['share_count_cache_refresh_count']; ?>" />
@@ -1729,8 +1871,8 @@ defined( 'ABSPATH' ) or die("Cheating........Uh!!");
 
 						<tr>
 							<th style="width:215px">
-							<img id="heateor_sss_clear_share_count_cache_help" class="heateor_sss_help_bubble" src="<?php echo plugins_url( '../../images/info.png', __FILE__ ) ?>" />
 							<input type="button" class="button-primary" value="<?php _e( 'Clear Share Counts Cache', 'sassy-social-share' ) ?>" onclick="heateorSssClearShareCountCache()" />
+							<img id="heateor_sss_clear_share_count_cache_help" class="heateor_sss_help_bubble" src="<?php echo plugins_url( '../../images/info.png', __FILE__ ) ?>" />
 							</th>
 							<td>
 							<img src="<?php echo plugins_url( '../../images/ajax_loader.gif', __FILE__ ) ?>" id="share_count_cache_loading" style="display:none" />
@@ -1755,8 +1897,8 @@ defined( 'ABSPATH' ) or die("Cheating........Uh!!");
 					<table width="100%" border="0" cellspacing="0" cellpadding="0" class="form-table editcomment menu_content_table">
 						<tr>
 							<th>
-							<img id="heateor_sss_surl_enable_help" class="heateor_sss_help_bubble" src="<?php echo plugins_url( '../../images/info.png', __FILE__ ) ?>" />
 							<label for="heateor_sss_surl_enable"><?php _e("Use shortlinks already installed", 'sassy-social-share' ); ?></label>
+							<img id="heateor_sss_surl_enable_help" class="heateor_sss_help_bubble" src="<?php echo plugins_url( '../../images/info.png', __FILE__ ) ?>" />
 							</th>
 							<td>
 							<input id="heateor_sss_surl_enable" name="heateor_sss[use_shortlinks]" type="checkbox" <?php echo isset( $options['use_shortlinks'] ) ? 'checked = "checked"' : '';?> value="1" />
@@ -1773,8 +1915,8 @@ defined( 'ABSPATH' ) or die("Cheating........Uh!!");
 
 						<tr>
 							<th>
-							<img id="heateor_sss_bitly_enable_help" class="heateor_sss_help_bubble" src="<?php echo plugins_url( '../../images/info.png', __FILE__ ) ?>" />
 							<label for="heateor_sss_bitly_enable"><?php _e("Enable bit.ly url shortener for sharing", 'sassy-social-share' ); ?></label>
+							<img id="heateor_sss_bitly_enable_help" class="heateor_sss_help_bubble" src="<?php echo plugins_url( '../../images/info.png', __FILE__ ) ?>" />
 							</th>
 							<td>
 							<input id="heateor_sss_bitly_enable" name="heateor_sss[bitly_enable]" type="checkbox" <?php echo isset( $options['bitly_enable'] ) ? 'checked = "checked"' : '';?> value="1" />
@@ -1791,8 +1933,8 @@ defined( 'ABSPATH' ) or die("Cheating........Uh!!");
 						
 						<tr>
 							<th>
-							<img id="heateor_sss_bitly_login_help" class="heateor_sss_help_bubble" src="<?php echo plugins_url( '../../images/info.png', __FILE__ ) ?>" />
 							<label for="heateor_sss_bitly_login"><?php _e("bit.ly Login", 'sassy-social-share' ); ?></label>
+							<img id="heateor_sss_bitly_login_help" class="heateor_sss_help_bubble" src="<?php echo plugins_url( '../../images/info.png', __FILE__ ) ?>" />
 							</th>
 							<td>
 							<input id="heateor_sss_bitly_login" name="heateor_sss[bitly_username]" type="text" value="<?php echo isset( $options['bitly_username'] ) ? $options['bitly_username'] : '' ?>" />
@@ -1810,8 +1952,8 @@ defined( 'ABSPATH' ) or die("Cheating........Uh!!");
 						
 						<tr>
 							<th>
-							<img id="heateor_sss_bitly_key_help" class="heateor_sss_help_bubble" src="<?php echo plugins_url( '../../images/info.png', __FILE__ ) ?>" />
 							<label for="heateor_sss_bitly_key"><?php _e("bit.ly API Key", 'sassy-social-share' ); ?></label>
+							<img id="heateor_sss_bitly_key_help" class="heateor_sss_help_bubble" src="<?php echo plugins_url( '../../images/info.png', __FILE__ ) ?>" />
 							</th>
 							<td>
 							<input id="heateor_sss_bitly_key" name="heateor_sss[bitly_key]" type="text" value="<?php echo isset( $options['bitly_key'] ) ? $options['bitly_key'] : '' ?>" />
@@ -1829,8 +1971,8 @@ defined( 'ABSPATH' ) or die("Cheating........Uh!!");
 
 						<tr>
 							<th>
-							<img id="heateor_sss_clear_shorturl_cache_help" class="heateor_sss_help_bubble" src="<?php echo plugins_url( '../../images/info.png', __FILE__ ) ?>" />
 							<input type="button" class="button-primary" value="<?php _e( 'Clear Bitly Cache', 'sassy-social-share' ) ?>" onclick="heateorSssClearShorturlCache()" />
+							<img id="heateor_sss_clear_shorturl_cache_help" class="heateor_sss_help_bubble" src="<?php echo plugins_url( '../../images/info.png', __FILE__ ) ?>" />
 							</th>
 							<td>
 							<img src="<?php echo plugins_url( '../../images/ajax_loader.gif', __FILE__ ) ?>" id="shorturl_cache_loading" style="display:none" />
@@ -1855,11 +1997,11 @@ defined( 'ABSPATH' ) or die("Cheating........Uh!!");
 					<table width="100%" border="0" cellspacing="0" cellpadding="0" class="form-table editcomment menu_content_table">
 						<tr>
 							<th>
-							<img id="heateor_sss_sc_language_help" class="heateor_sss_help_bubble" src="<?php echo plugins_url( '../../images/info.png', __FILE__ ) ?>" />
 							<label for="heateor_sss_sc_language"><?php _e("Language", 'sassy-social-share' ); ?></label>
+							<img id="heateor_sss_sc_language_help" class="heateor_sss_help_bubble" src="<?php echo plugins_url( '../../images/info.png', __FILE__ ) ?>" />
 							</th>
 							<td>
-							<input id="heateor_sss_sc_language" name="heateor_sss[language]" type="text" value="<?php echo $this->options['language'] ? $this->options['language'] : '' ?>" />
+							<input id="heateor_sss_sc_language" name="heateor_sss[language]" type="text" value="<?php echo $options['language'] ? $options['language'] : '' ?>" />
 							</td>
 						</tr>
 						
@@ -1880,8 +2022,8 @@ defined( 'ABSPATH' ) or die("Cheating........Uh!!");
 					<table width="100%" border="0" cellspacing="0" cellpadding="0" class="form-table editcomment menu_content_table">
 						<tr>
 							<th>
-							<img id="heateor_sss_twitter_username_help" class="heateor_sss_help_bubble" src="<?php echo plugins_url( '../../images/info.png', __FILE__ ) ?>" />
 							<label for="heateor_sss_twitter_username"><?php _e("Twitter username (without @)", 'sassy-social-share' ); ?></label>
+							<img id="heateor_sss_twitter_username_help" class="heateor_sss_help_bubble" src="<?php echo plugins_url( '../../images/info.png', __FILE__ ) ?>" />
 							</th>
 							<td>
 							<input id="heateor_sss_twitter_username" name="heateor_sss[twitter_username]" type="text" value="<?php echo isset( $options['twitter_username'] ) ? $options['twitter_username'] : '' ?>" />
@@ -1899,8 +2041,8 @@ defined( 'ABSPATH' ) or die("Cheating........Uh!!");
 
 						<tr>
 							<th>
-							<img id="heateor_sss_buffer_username_help" class="heateor_sss_help_bubble" src="<?php echo plugins_url( '../../images/info.png', __FILE__ ) ?>" />
 							<label for="heateor_sss_buffer_username"><?php _e("Buffer username (without @)", 'sassy-social-share' ); ?></label>
+							<img id="heateor_sss_buffer_username_help" class="heateor_sss_help_bubble" src="<?php echo plugins_url( '../../images/info.png', __FILE__ ) ?>" />
 							</th>
 							<td>
 							<input id="heateor_sss_buffer_username" name="heateor_sss[buffer_username]" type="text" value="<?php echo isset( $options['buffer_username'] ) ? $options['buffer_username'] : '' ?>" />
@@ -1924,8 +2066,8 @@ defined( 'ABSPATH' ) or die("Cheating........Uh!!");
 					<table width="100%" border="0" cellspacing="0" cellpadding="0" class="form-table editcomment menu_content_table">
 						<tr>
 							<th>
-							<img id="heateor_sss_amp_enable_help" class="heateor_sss_help_bubble" src="<?php echo plugins_url( '../../images/info.png', __FILE__ ) ?>" />
 							<label for="heateor_sss_amp_enable"><?php _e("Enable sharing on AMP pages", 'sassy-social-share' ); ?></label>
+							<img id="heateor_sss_amp_enable_help" class="heateor_sss_help_bubble" src="<?php echo plugins_url( '../../images/info.png', __FILE__ ) ?>" />
 							</th>
 							<td>
 							<input id="heateor_sss_amp_enable" name="heateor_sss[amp_enable]" type="checkbox" <?php echo isset( $options['amp_enable'] ) ? 'checked = "checked"' : '';?> value="1" />
@@ -1949,8 +2091,8 @@ defined( 'ABSPATH' ) or die("Cheating........Uh!!");
 					<table width="100%" border="0" cellspacing="0" cellpadding="0" class="form-table editcomment menu_content_table">
 						<tr>
 							<th>
-							<img id="heateor_sss_custom_css_help" class="heateor_sss_help_bubble" src="<?php echo plugins_url( '../../images/info.png', __FILE__ ) ?>" />
 							<label for="heateor_sss_custom_css"><?php _e("Custom CSS", 'sassy-social-share' ); ?></label>
+							<img id="heateor_sss_custom_css_help" class="heateor_sss_help_bubble" src="<?php echo plugins_url( '../../images/info.png', __FILE__ ) ?>" />
 							</th>
 							<td>
 							<textarea rows="7" cols="63" id="heateor_sss_custom_css" name="heateor_sss[custom_css]"><?php echo isset( $options['custom_css'] ) ? $options['custom_css'] : '' ?></textarea>
@@ -1966,6 +2108,10 @@ defined( 'ABSPATH' ) or die("Cheating........Uh!!");
 						</tr>
 					</table>
 					</div>
+				</div>
+
+				<div>
+					<a href="https://www.heateor.com/comparison-between-sassy-social-share-pro-and-premium/" target="_blank"><img src="<?php echo plugins_url( '../../images/unlock/custom-icon-url.png', __FILE__ ) ?>" /></a>
 				</div>
 							
 				</div>
@@ -1984,8 +2130,8 @@ defined( 'ABSPATH' ) or die("Cheating........Uh!!");
 						<table width="100%" border="0" cellspacing="0" cellpadding="0" class="form-table editcomment menu_content_table">
 							<tr>
 								<th>
-								<img id="heateor_sss_mycred_referral_id_help" class="heateor_sss_help_bubble" src="<?php echo plugins_url( '../../images/info.png', __FILE__ ) ?>" />
 								<label for="heateor_sss_mycred_referral_id"><?php _e( "Append myCRED referral ID to the urls being shared", 'sassy-social-share' ); ?></label>
+								<img id="heateor_sss_mycred_referral_id_help" class="heateor_sss_help_bubble" src="<?php echo plugins_url( '../../images/info.png', __FILE__ ) ?>" />
 								</th>
 								<td>
 								<input id="heateor_sss_mycred_referral_id" name="heateor_sss[mycred_referral]" type="checkbox" <?php echo isset( $options['mycred_referral'] ) ? 'checked = "checked"' : '';?> value="1" />
@@ -2007,7 +2153,9 @@ defined( 'ABSPATH' ) or die("Cheating........Uh!!");
 				<div class="stuffbox">
 					<h3><label><?php _e( 'Shortcode & Widget', 'sassy-social-share' );?></label></h3>
 					<div class="inside" style="padding-left:7px">
-						<p><a style="text-decoration:none" href="http://support.heateor.com/sassy-social-share-shortcode-and-widget" target="_blank"><?php _e( 'Shortcode & Widget', 'sassy-social-share' ) ?></a></p>
+						<p><a style="text-decoration:none" href="http://support.heateor.com/sassy-social-share-shortcode-and-widget" target="_blank"><?php _e( 'Social Share Shortcode & Widget', 'sassy-social-share' ) ?></a></p>
+						<p><a style="text-decoration:none" href="http://support.heateor.com/sassy-follow-icons-shortcode" target="_blank"><?php _e( 'Follow Icons Shortcode & Widget', 'sassy-social-share' ) ?></a></p>
+						<p><a href="https://www.heateor.com/comparison-between-sassy-social-share-pro-and-premium/" target="_blank"><img src="<?php echo plugins_url( '../../images/unlock/click-to-tweet-shortcode.png', __FILE__ ) ?>" /></a></p>
 					</div>
 				</div>
 				</div>
@@ -2041,9 +2189,9 @@ defined( 'ABSPATH' ) or die("Cheating........Uh!!");
 					<h3><label><?php _e( 'FAQ', 'sassy-social-share' ) ?></label></h3>
 					<div class="inside faq" style="padding-left:8px">
 						<p><?php _e( '<strong>Note:</strong> Plugin will not work on local server. You should have an online website for the plugin to function properly.', 'sassy-social-share' ); ?></p>
-						<p><a href="http://support.heateor.com/why-is-sharer-not-showing-the-correct-image-title-and-other-meta-tags-content" target="_blank"><?php _e( 'Why is sharer not showing the correct image, title and other meta tags content?', 'sassy-social-share' ) ?></a></p>
+						<p><a href="http://support.heateor.com/why-is-sharer-not-showing-the-correct-image-title-and-other-meta-tags-content" target="_blank"><?php _e( 'Why is sharer not showing the correct image, title and other content when sharing a webpage?', 'sassy-social-share' ) ?></a></p>
 						<a href="javascript:void(0)"><?php _e( 'Why is Facebook share count not working?', 'sassy-social-share' ); ?></a>
-						<div><?php _e( 'Save Facebook App Id and Secret in the "Miscellaneous" section for Facebook share count to work', 'sassy-social-share' ); ?></div>
+						<div><?php _e( 'Save Facebook App Id and Secret in the "Miscellaneous" section to track Facebook shares', 'sassy-social-share' ); ?></div>
 						<p><a href="http://support.heateor.com/how-to-customize-the-url-being-shared" target="_blank"><?php _e( 'How to Customize the Url being Shared?', 'sassy-social-share' ) ?></a></p>
 						<a href="javascript:void(0)"><?php _e( 'Why is Instagram icon redirecting to Instagram website?', 'sassy-social-share' ); ?></a>
 						<div><?php _e( 'Instagram icon is there to send website visitors to the Instagram page of your choice. You can save the desired Instagram handle in "Instagram Username" option in "Standard Interface" and "Floating Interface" sections.', 'sassy-social-share' ); ?></div>

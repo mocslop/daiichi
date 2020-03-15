@@ -71,12 +71,12 @@ N2D('SmartSliderBackgrounds', function ($, undefined) {
         if (this.lazyLoad == 1) {
             this.preLoadSlides = this.preloadSlidesLazyNeighbor;
 
-            this.load = this.whenWithProgress($, this.preLoadSlides(this.slider.getVisibleSlides(this.slider.currentSlide)));
+            this.load = this.whenWithProgress(this.preLoadSlides(this.slider.getVisibleSlides(this.slider.currentSlide)));
         } else if (this.lazyLoad == 2) { // delayed
             this.preLoadSlides = this._preLoadSlides;
             $(window).on('load', $.proxy(this.preLoadAll, this));
 
-            this.load = this.whenWithProgress($, this.preLoadSlides(this.slider.getVisibleSlides(this.slider.currentSlide)));
+            this.load = this.whenWithProgress(this.preLoadSlides(this.slider.getVisibleSlides(this.slider.currentSlide)));
         } else {
             this.preLoadSlides = this._preLoadSlides;
 
@@ -574,7 +574,8 @@ N2D('SmartSliderApi', function ($, undefined) {
             }
         },
         element: function (selector) {
-            scroll.to($(selector).offset().top);
+            var offset = $(window.n2ScrollOffsetSelector).height();
+            scroll.to($(selector).offset().top - offset);
         }
     };
 
@@ -618,7 +619,10 @@ N2D('SmartSliderAbstract', function ($, undefined) {
         this.elementID = id;
 
         if (window[id] && window[id] instanceof SmartSliderAbstract) {
-            if (window[id].sliderElement === undefined) {
+
+            if (window[id].__$sliderElement && !$.contains(document.body, window[id].__$sliderElement.get(0))) {
+                // Slider element might get removed even before shown. Fix for Elementor Popup
+            } else if (window[id].sliderElement === undefined) {
                 console.error('Slider [#' + id + '] inited multiple times');
                 return;
             } else if ($.contains(document.body, window[id].sliderElement.get(0))) {
@@ -703,6 +707,8 @@ N2D('SmartSliderAbstract', function ($, undefined) {
     };
 
     SmartSliderAbstract.prototype.onSliderExists = function (id, parameters, $sliderElement) {
+
+        this.__$sliderElement = $sliderElement;
 
         if ($sliderElement.prop('tagName') === 'TEMPLATE') {
             var dependency = $sliderElement.data('dependency'),
@@ -837,7 +843,7 @@ N2D('SmartSliderAbstract', function ($, undefined) {
                 enabled: 0
             },
             postBackgroundAnimations: false,
-            initCallbacks: [],
+            initCallbacks: false,
             dynamicHeight: 0,
             lightbox: [],
             lightboxDeviceImages: [],
@@ -974,8 +980,8 @@ N2D('SmartSliderAbstract', function ($, undefined) {
         this.startCurrentSlideIndex();
         this.firstSlideReady.resolve(this.currentSlide);
 
-        for (var j = 0; j < this.parameters.initCallbacks.length; j++) {
-            (new Function('$', this.parameters.initCallbacks[j])).call(this, $);
+        if (typeof this.parameters.initCallbacks === 'function') {
+            this.parameters.initCallbacks.call(this, $);
         }
 
         if (this.disableLayerAnimations === true) {
@@ -984,17 +990,27 @@ N2D('SmartSliderAbstract', function ($, undefined) {
 
         this.widgets = new N2Classes.SmartSliderWidgets(this);
 
+        var isHover = false,
+            hoverTimeout;
+
         this.sliderElement.on({
             universalenter: $.proxy(function (e) {
+
                 if (!$(e.target).closest('.n2-full-screen-widget').length) {
+                    clearTimeout(hoverTimeout);
+                    isHover = true;
+
                     this.sliderElement.addClass('n2-hover');
                     this.widgets.setState('hover', true);
                 }
             }, this),
             universalleave: $.proxy(function (e) {
                 e.stopPropagation();
-                this.sliderElement.removeClass('n2-hover');
-                this.widgets.setState('hover', false);
+                hoverTimeout = setTimeout($.proxy(function () {
+                    isHover = false;
+                    this.sliderElement.removeClass('n2-hover');
+                    this.widgets.setState('hover', false);
+                }, this), 1000);
             }, this)
         });
 
@@ -1039,48 +1055,12 @@ N2D('SmartSliderAbstract', function ($, undefined) {
                 });
             });
 
-            this.sliderElement.find('[data-click]').each(function (i, el) {
-                var el = $(el).on('click', function (event) {
-                    eval(el.data('click'));
-                }).css('cursor', 'pointer');
-            });
-
             this.sliderElement.find('[data-n2middleclick]').on('mousedown', function (event) {
                 var el = $(this);
                 if (event.which == 2 || event.which == 4) {
                     event.preventDefault();
                     eval(el.data('n2middleclick'));
                 }
-            });
-
-            this.sliderElement.find('[data-mouseenter]').each(function (i, el) {
-                var el = $(el).on('mouseenter', function (event) {
-                    eval(el.data('mouseenter'));
-                });
-            });
-
-            this.sliderElement.find('[data-mouseleave]').each(function (i, el) {
-                var el = $(el).on('mouseleave', function (event) {
-                    eval(el.data('mouseleave'));
-                });
-            });
-
-            this.sliderElement.find('[data-play]').each(function (i, el) {
-                var el = $(el).on('n2play', function (event) {
-                    eval(el.data('play'));
-                });
-            });
-
-            this.sliderElement.find('[data-pause]').each(function (i, el) {
-                var el = $(el).on('n2pause', function (event) {
-                    eval(el.data('pause'));
-                });
-            });
-
-            this.sliderElement.find('[data-stop]').each(function (i, el) {
-                var el = $(el).on('n2stop', function (event) {
-                    eval(el.data('stop'));
-                });
             });
 
 
@@ -1316,35 +1296,61 @@ N2D('SmartSliderAbstract', function ($, undefined) {
                 windowHeight = $(window).height(),
                 sliderBoundingClientRect = this.sliderElement[0].getBoundingClientRect(),
                 topLine = sliderBoundingClientRect.top - focusOffsetTop,
-                bottomLine = windowHeight - sliderBoundingClientRect.bottom - focusOffsetBottom;
+                bottomLine = windowHeight - sliderBoundingClientRect.bottom - focusOffsetBottom,
+                focusEdge = this.responsive.parameters.focusEdge,
+                edge = '';
 
-            if (topLine <= 0 && bottomLine <= 0) {
-                // Do nothing, slider is taller than the screen and the the slider on the screen
-            } else if (topLine > 0 && bottomLine > 0) {
-                // Do nothing, slider is shorter than the screen and the the slider on the screen
+            if (focusEdge === 'top-force') {
+                edge = 'top';
+            } else if (focusEdge === 'bottom-force') {
+                edge = 'bottom';
             } else {
-                var targetTop = scrollTop;
-                if (topLine < 0) {
-                    if (-topLine <= bottomLine) {
-                        // scroll to the top edge
-                        targetTop = scrollTop - focusOffsetTop + sliderBoundingClientRect.top;
-                    } else {
-                        // scroll to the bottom edge
-                        targetTop = scrollTop + focusOffsetBottom + sliderBoundingClientRect.bottom - windowHeight;
-                    }
-                } else if (bottomLine < 0) {
-                    if (-bottomLine <= topLine) {
-                        // scroll to the bottom edge
-                        targetTop = scrollTop + focusOffsetBottom + sliderBoundingClientRect.bottom - windowHeight;
-                    } else {
-                        // scroll to the top edge
-                        targetTop = scrollTop - focusOffsetTop + sliderBoundingClientRect.top;
-                    }
-                }
 
-                if (targetTop !== scrollTop) {
-                    return this._scrollTo(targetTop, Math.abs(scrollTop - targetTop));
+                if (topLine <= 0 && bottomLine <= 0) {
+                    // Slider is taller than the screen and the the slider on the screen
+                } else if (topLine > 0 && bottomLine > 0) {
+                    // Do nothing, slider is shorter than the screen and the the slider on the screen
+                } else {
+                    if (topLine < 0) {
+                        if (focusEdge === 'top') {
+                            edge = 'top';
+                        } else if (focusEdge === 'bottom') {
+                            edge = 'bottom';
+                        } else {
+                            if (-topLine <= bottomLine) {
+                                edge = 'top';
+                            } else {
+                                edge = 'bottom';
+                            }
+                        }
+                    } else if (bottomLine < 0) {
+                        if (focusEdge === 'top') {
+                            edge = 'top';
+                        } else if (focusEdge === 'bottom') {
+                            edge = 'bottom';
+                        } else {
+                            if (-bottomLine <= topLine) {
+                                edge = 'bottom';
+                            } else {
+                                edge = 'top';
+                            }
+                        }
+                    }
                 }
+            }
+
+            var targetTop = scrollTop;
+
+            if (edge === 'top') {
+                // scroll to the top edge
+                targetTop = scrollTop - focusOffsetTop + sliderBoundingClientRect.top;
+            } else if (edge === 'bottom') {
+                // scroll to the bottom edge
+                targetTop = scrollTop + focusOffsetBottom + sliderBoundingClientRect.bottom - windowHeight;
+            }
+
+            if (targetTop !== scrollTop) {
+                return this._scrollTo(targetTop, Math.abs(scrollTop - targetTop));
             }
         }
 
@@ -1384,13 +1390,16 @@ N2D('SmartSliderAbstract', function ($, undefined) {
     SmartSliderAbstract.prototype.initNotCarousel = function () {
         this.next = function (isSystem, customAnimation) {
             var nextIndex = this.currentSlide.index + 1;
-            if (nextIndex < this.slides.length) {
+            if (nextIndex <= this.slides.length - this.getActivatedSlides()) {
                 return this.changeTo(nextIndex, false, isSystem, customAnimation);
             }
             return false;
         };
         this.previous = function (isSystem, customAnimation) {
             var nextIndex = this.currentSlide.index - 1;
+            if (nextIndex >= this.slides.length - this.getActivatedSlides()) {
+                nextIndex = this.slides.length - this.getActivatedSlides() - 1;
+            }
             if (nextIndex >= 0) {
                 return this.changeTo(nextIndex, true, isSystem, customAnimation);
             }
@@ -1417,12 +1426,13 @@ N2D('SmartSliderAbstract', function ($, undefined) {
         };
 
         var hideOrShowArrows = $.proxy(function (i) {
-            if (i === 0) {
+            if (i === 0 || this.slides.length <= this.getActivatedSlides()) {
                 this.widgets.setState('nonCarouselFirst', true);
             } else {
                 this.widgets.setState('nonCarouselFirst', false);
             }
-            if (i === this.slides.length - 1) {
+
+            if (i > this.slides.length - 1 - this.getActivatedSlides()) {
                 this.widgets.setState('nonCarouselLast', true);
             } else {
                 this.widgets.setState('nonCarouselLast', false);
@@ -1436,6 +1446,14 @@ N2D('SmartSliderAbstract', function ($, undefined) {
         this.sliderElement.on('sliderSwitchTo', function (e, i) {
             hideOrShowArrows(i);
         });
+
+        this.sliderElement.on('SliderResize', $.proxy(function (e) {
+            hideOrShowArrows(this.currentSlide.index);
+        }, this));
+    };
+
+    SmartSliderAbstract.prototype.getActivatedSlides = function () {
+        return 1;
     };
 
     SmartSliderAbstract.prototype.isChangePossibleCarousel = function (direction) {
@@ -1463,6 +1481,28 @@ N2D('SmartSliderAbstract', function ($, undefined) {
         this.next = this.nextCarousel;
         this.previous = this.previousCarousel;
         this.isChangePossible = this.isChangePossibleCarousel;
+
+        var hideOrShowArrows = $.proxy(function () {
+            if (this.slides.length <= this.getActivatedSlides()) {
+                this.widgets.setState('nonCarouselFirst', true);
+                this.widgets.setState('nonCarouselLast', true);
+            } else {
+                this.widgets.setState('nonCarouselFirst', false);
+                this.widgets.setState('nonCarouselLast', false);
+            }
+        }, this);
+
+        this.startedDeferred.done($.proxy(function () {
+            hideOrShowArrows(this.currentSlide.index);
+        }, this));
+
+        this.sliderElement.on('sliderSwitchTo', function (e, i) {
+            hideOrShowArrows(i);
+        });
+
+        this.sliderElement.on('SliderResize', $.proxy(function (e) {
+            hideOrShowArrows(this.currentSlide.index);
+        }, this));
     };
 
     SmartSliderAbstract.prototype.nextCarousel = function (isSystem, customAnimation) {
@@ -1503,33 +1543,35 @@ N2D('SmartSliderAbstract', function ($, undefined) {
             var time = $.now();
             $.when($.when.apply($, this.backgrounds.preLoadSlides(this.getVisibleSlides(this.slides[nextSlideIndex]))), this.focus(isSystem)).done($.proxy(function () {
 
-                if (this.mainAnimationLastChangeTime <= time) {
-                    this.mainAnimationLastChangeTime = time;
-                    // If the current main animation haven't finished yet or the prefered next slide is the same as our current slide we have nothing to do
-                    var state = this.mainAnimation.getState();
-                    if (state === 'ended') {
+                if (nextSlideIndex !== this.currentSlide.index) {
+                    if (this.mainAnimationLastChangeTime <= time) {
+                        this.mainAnimationLastChangeTime = time;
+                        // If the current main animation haven't finished yet or the prefered next slide is the same as our current slide we have nothing to do
+                        var state = this.mainAnimation.getState();
+                        if (state === 'ended') {
 
-                        if (typeof isSystem === 'undefined') {
-                            isSystem = false;
+                            if (typeof isSystem === 'undefined') {
+                                isSystem = false;
+                            }
+
+                            var animation = this.mainAnimation;
+                            if (typeof customAnimation !== 'undefined') {
+                                animation = customAnimation;
+                            }
+
+                            this._changeTo(nextSlideIndex, reversed, isSystem, customAnimation);
+
+                            n2c.log('Change From:', this.currentSlide.index, ' To: ', nextSlideIndex, ' Reversed: ', reversed, ' System: ', isSystem);
+                            animation.changeTo(this.currentSlide, this.slides[nextSlideIndex], reversed, isSystem);
+
+                            this._changeCurrentSlide(nextSlideIndex);
+
+                        } else if (state === 'initAnimation' || state === 'playing') {
+                            this.sliderElement.off('.fastChange').one('mainAnimationComplete.fastChange', $.proxy(function () {
+                                this.changeTo.call(this, nextSlideIndex, reversed, isSystem, customAnimation);
+                            }, this));
+                            this.mainAnimation.timeScale(this.mainAnimation.timeScale() * 2);
                         }
-
-                        var animation = this.mainAnimation;
-                        if (typeof customAnimation !== 'undefined') {
-                            animation = customAnimation;
-                        }
-
-                        this._changeTo(nextSlideIndex, reversed, isSystem, customAnimation);
-
-                        n2c.log('Change From:', this.currentSlide.index, ' To: ', nextSlideIndex, ' Reversed: ', reversed, ' System: ', isSystem);
-                        animation.changeTo(this.currentSlide, this.slides[nextSlideIndex], reversed, isSystem);
-
-                        this._changeCurrentSlide(nextSlideIndex);
-
-                    } else if (state === 'initAnimation' || state === 'playing') {
-                        this.sliderElement.off('.fastChange').one('mainAnimationComplete.fastChange', $.proxy(function () {
-                            this.changeTo.call(this, nextSlideIndex, reversed, isSystem, customAnimation);
-                        }, this));
-                        this.mainAnimation.timeScale(this.mainAnimation.timeScale() * 2);
                     }
                 }
             }, this));
@@ -2969,6 +3011,72 @@ N2D('SmartSliderControlFullscreen', function ($, undefined) {
 N2D('SmartSliderControlKeyboard', function ($, undefined) {
     "use strict";
 
+    var keyboardManager;
+
+    function KeyboardManager() {
+        /**
+         * @type {SmartSliderControlKeyboard[]}
+         */
+        this.controls = [];
+        document.addEventListener('keydown', this.onKeyDown.bind(this));
+        document.addEventListener('mousemove', this.onMouseMove.bind(this), {
+            capture: true
+        });
+    }
+
+    KeyboardManager.prototype.onMouseMove = function (e) {
+        this.mouseEvent = e;
+    };
+
+    /**
+     * @param {SmartSliderControlKeyboard} control
+     */
+    KeyboardManager.prototype.addControl = function (control) {
+        this.controls.push(control);
+    };
+
+    KeyboardManager.prototype.onKeyDown = function (e) {
+        if (e.target.tagName.match(/BODY|DIV|IMG/) && !e.target.isContentEditable) {
+            var $slider;
+
+            if (this.mouseEvent) {
+                $slider = this.findSlider(document.elementFromPoint(this.mouseEvent.clientX, this.mouseEvent.clientY));
+                if ($slider) {
+                    $slider.trigger('SliderKeyDown', e);
+                    return;
+                }
+            }
+
+            if (document.activeElement !== document.body) {
+                $slider = this.findSlider(document.activeElement);
+                if ($slider) {
+                    $slider.trigger('SliderKeyDown', e);
+                    return;
+                }
+            }
+
+            for (var i = 0; i < this.controls.length; i++) {
+                this.controls[i].onKeyDown(false, e);
+            }
+        }
+    };
+
+    KeyboardManager.prototype.findSlider = function (element) {
+        var $slider,
+            $element = $(element);
+        if (!$element.hasClass('n2-ss-slider')) {
+            $slider = $element.closest('.n2-ss-slider');
+        } else {
+            $slider = $element;
+        }
+
+        if ($slider.length) {
+            return $slider;
+        }
+
+        return false;
+    };
+
     /**
      * @memberOf N2Classes
      *
@@ -2989,7 +3097,13 @@ N2D('SmartSliderControlKeyboard', function ($, undefined) {
             this.parseEvent = SmartSliderControlKeyboard.prototype.parseEventHorizontal;
         }
 
-        $(document).on('keydown', $.proxy(this.onKeyDown, this));
+        if (!keyboardManager) {
+            keyboardManager = new KeyboardManager();
+        }
+
+        keyboardManager.addControl(this);
+
+        this.slider.sliderElement.on('SliderKeyDown', this.onKeyDown.bind(this));
 
         slider.controls.keyboard = this;
     }
@@ -3004,15 +3118,11 @@ N2D('SmartSliderControlKeyboard', function ($, undefined) {
         return false;
     };
 
-    SmartSliderControlKeyboard.prototype.onKeyDown = function (e) {
+    SmartSliderControlKeyboard.prototype.onKeyDown = function (e, keyDownEvent) {
 
-        if (e.target.tagName.match(/BODY|DIV|IMG/)) {
-            if (this.isSliderOnScreen()) {
-                e = e || window.event;
-                if (this.parseEvent.call(this, e)) {
-                    e.preventDefault();
-                    e.stopImmediatePropagation();
-                }
+        if (!keyDownEvent.defaultPrevented && this.isSliderOnScreen()) {
+            if (this.parseEvent.call(this, keyDownEvent)) {
+                keyDownEvent.preventDefault();
             }
         }
     };
@@ -3069,72 +3179,181 @@ N2D('SmartSliderControlMouseWheel', function ($, undefined) {
      */
     function SmartSliderControlMouseWheel(slider) {
 
-        this.preventScroll = false;
-        this.preventScrollGlobal = false;
+        this.preventScroll = {
+            local: false,
+            curve: false,
+            curveGlobal: false,
+            global: false,
+            localTimeout: false,
+            curveTimeout: false,
+            curveGlobalTimeout: false,
+            globalTimeout: false
+        };
+
+        this.maxDelta = 0;
 
         this.slider = slider;
 
-        slider.sliderElement.on('wheel', $.proxy(this.onMouseWheel, this));
+        document.addEventListener('wheel', $.proxy(this.onGlobalMouseWheel, this), {
+            passive: false
+        });
 
         slider.controls.mouseWheel = this;
     }
 
+    SmartSliderControlMouseWheel.prototype.hasScrollableParentRecursive = function (isUp, el) {
+
+        if (el === this.slider.sliderElement[0]) {
+            return false;
+        }
+
+        if (el.scrollHeight > el.clientHeight) {
+            var overflow = $(el).css('overflow');
+
+            if (overflow !== 'hidden' &&
+                overflow !== 'visible') {
+                if (isUp) {
+                    if (el.scrollTop > 0) {
+                        return true;
+                    }
+                } else {
+                    if (el.scrollTop + el.clientHeight < el.scrollHeight) {
+                        return true;
+                    }
+                }
+            }
+        }
+
+        return this.hasScrollableParentRecursive(isUp, el.parentNode);
+    };
+
+    SmartSliderControlMouseWheel.prototype.onGlobalMouseWheel = function (e) {
+
+        this.onCurveEvent(e);
+
+        if (this.preventScroll.local || this.preventScroll.curve || Math.abs(e.deltaY) < this.maxDelta / 2) {
+            e.preventDefault();
+        } else {
+            if (this.preventScroll.global) {
+                e.preventDefault();
+            }
+            if (this.slider.sliderElement[0] === e.target || $.contains(this.slider.sliderElement[0], e.target)) {
+                if (!e.shiftKey && !this.hasScrollableParentRecursive(e.deltaY < 0, e.target)) {
+                    this.onMouseWheel(e);
+                }
+            }
+        }
+    };
+
     SmartSliderControlMouseWheel.prototype.onMouseWheel = function (e) {
 
-        if (this.preventScroll === false) {
+        var up = e.deltaY < 0;
+        if (up) {
+            if (!this.slider.isChangeCarousel('previous') || !this.slider.parameters.controls.blockCarouselInteraction) {
 
-            var up = e.originalEvent.deltaY < 0;
+                this.slider.previous();
 
-            if (up) {
-                if (!this.slider.isChangeCarousel('previous') || !this.slider.parameters.controls.blockCarouselInteraction) {
+                e.preventDefault();
 
-                    this.slider.previous();
-
-                    e.preventDefault();
-
-                    this.preventRepeat();
-                    this.preventGlobal();
-                }
-            } else {
-                if (!this.slider.isChangeCarousel('next') || !this.slider.parameters.controls.blockCarouselInteraction) {
-
-                    this.slider.next();
-
-                    e.preventDefault();
-
-                    this.preventRepeat();
-                    this.preventGlobal();
-                }
+                this.startCurveWatcher(e);
+                this.local();
+                this.global();
             }
         } else {
-            e.preventDefault();
+            if (!this.slider.isChangeCarousel('next') || !this.slider.parameters.controls.blockCarouselInteraction) {
 
-            this.preventRepeat(e);
+                this.slider.next();
+
+                e.preventDefault();
+
+                this.startCurveWatcher(e);
+                this.local();
+                this.global();
+            }
         }
     };
 
-    SmartSliderControlMouseWheel.prototype.preventRepeat = function () {
-        if (this.preventScroll !== false) {
-            clearTimeout(this.preventScroll);
+    SmartSliderControlMouseWheel.prototype.startCurveWatcher = function (e) {
+
+        if (this.preventScroll.curve !== false) {
+            clearTimeout(this.preventScroll.curveTimeout);
         }
-        this.preventScroll = setTimeout($.proxy(function () {
-            this.preventScroll = false;
-            if (this.preventScrollGlobal !== false) {
-                clearTimeout(this.preventScrollGlobal);
-                this.preventScrollGlobal = false;
-            }
-        }, this), 200);
+
+        if (!this.preventScroll.curveGlobal) {
+            this.dynamicDelta = false;
+            this.lastDeltaY = e.deltaY;
+            this.preventScroll.curveGlobal = true;
+
+            this.preventScroll.curveGlobalTimeout = setTimeout($.proxy(function () {
+                this.preventScroll.curveGlobal = false;
+                this.maxDelta = 0;
+            }, this), 500);
+        }
+
+        this.preventScroll.curve = true;
+
+        this.preventScroll.curveTimeout = setTimeout($.proxy(this.releaseCurveLock, this), 5000);
     };
 
-    SmartSliderControlMouseWheel.prototype.preventGlobal = function () {
-        if (this.preventScrollGlobal !== false) {
-            clearTimeout(this.preventScrollGlobal);
-        }
-        this.preventScrollGlobal = setTimeout($.proxy(function () {
-            if (this.preventScroll !== false) {
-                clearTimeout(this.preventScroll);
+    SmartSliderControlMouseWheel.prototype.onCurveEvent = function (e) {
+        if (this.preventScroll.curveGlobal) {
+
+            if (!this.dynamicDelta && this.lastDeltaY !== e.deltaY) {
+                this.lastDeltaY = e.deltaY;
+                this.dynamicDelta = true;
             }
-            this.preventScroll = false;
+
+            var absdeltaY = Math.abs(e.deltaY);
+            if (this.preventScroll.curve && this.maxDelta / 2 > absdeltaY) {
+                // It seems like curve is going to down. We can allow new scroll change action
+                this.releaseCurveLock();
+            }
+
+            this.maxDelta = Math.max(this.maxDelta, absdeltaY);
+
+
+            if (this.preventScroll.curveGlobalTimeout) {
+                clearTimeout(this.preventScroll.curveGlobalTimeout);
+            }
+
+            this.preventScroll.curveGlobalTimeout = setTimeout($.proxy(function () {
+                this.preventScroll.curveGlobal = false;
+                this.maxDelta = 0;
+            }, this), 500);
+        }
+    };
+
+    SmartSliderControlMouseWheel.prototype.releaseCurveLock = function () {
+        this.preventScroll.curve = false;
+        clearTimeout(this.preventScroll.curveTimeout);
+    };
+
+    SmartSliderControlMouseWheel.prototype.local = function () {
+
+        if (this.preventScroll.local !== false) {
+            clearTimeout(this.preventScroll.localTimeout);
+        }
+
+        this.preventScroll.local = true;
+
+        this.preventScroll.localTimeout = setTimeout($.proxy(function () {
+            this.preventScroll.local = false;
+            if (!this.dynamicDelta) {
+                this.releaseCurveLock();
+            }
+        }, this), 1000);
+    };
+
+    SmartSliderControlMouseWheel.prototype.global = function () {
+
+        if (this.preventScroll.global !== false) {
+            clearTimeout(this.preventScroll.globalTimeout);
+        }
+
+        this.preventScroll.global = true;
+
+        this.preventScroll.globalTimeout = setTimeout($.proxy(function () {
+            this.preventScroll.global = false;
         }, this), 2000);
     };
 
@@ -3210,8 +3429,6 @@ N2D('SmartSliderControlTouch', function ($, undefined) {
 
     SmartSliderControlTouch.prototype._start = function (event) {
 
-        this.swipeElement.addClass('n2-grabbing');
-
         this.currentInteraction = {
             type: event.type === 'pointerdown' ? 'pointer' : (event.type === 'touchstart' ? 'touch' : 'mouse'),
             state: $.extend({}, this.state),
@@ -3230,7 +3447,7 @@ N2D('SmartSliderControlTouch', function ($, undefined) {
     SmartSliderControlTouch.prototype._move = function (event, start, diff, isRealScrolling) {
         if (!isRealScrolling || this.currentInteraction.action !== 'unknown') {
 
-            this.currentInteraction.diection = this.measure(diff);
+            this.currentInteraction.direction = this.measure(diff);
 
             var distance = this.get(diff);
 
@@ -3240,9 +3457,11 @@ N2D('SmartSliderControlTouch', function ($, undefined) {
                     this.setTouchProgress(distance, diff.y);
                 }
 
-                if (this.currentInteraction.type === 'touch' && event.cancelable && this.currentInteraction.action === 'switch') {
-                    this.currentInteraction.hadDirection = true;
-                    return true;
+                if (this.currentInteraction.type === 'touch' && event.cancelable) {
+                    if (this.currentInteraction.action === 'switch' || this.currentInteraction.action === 'hold') {
+                        this.currentInteraction.hadDirection = true;
+                        return true;
+                    }
                 }
             }
         }
@@ -3267,6 +3486,8 @@ N2D('SmartSliderControlTouch', function ($, undefined) {
                     this.callAction(this.currentInteraction.animationStartDirection)
                 }
             }
+
+            this.swipeElement.removeClass('n2-grabbing');
         }
 
         this.onEnd();
@@ -3278,8 +3499,6 @@ N2D('SmartSliderControlTouch', function ($, undefined) {
         } else {
             nextend.preventClick();
         }
-
-        this.swipeElement.removeClass('n2-grabbing');
     };
 
     SmartSliderControlTouch.prototype.onEnd = function () {
@@ -3347,7 +3566,7 @@ N2D('SmartSliderControlTouch', function ($, undefined) {
 
                 this._animation.setTouchProgress(progress);
             }
-        } else {
+        } else if (this.currentInteraction.action === 'unknown' || this.currentInteraction.action === 'scroll') {
             this.startScrollInteraction(distanceY);
         }
     };
@@ -3381,28 +3600,33 @@ N2D('SmartSliderControlTouch', function ($, undefined) {
     };
 
     SmartSliderControlTouch.prototype.recognizeSwitchInteraction = function () {
-        if (this._animation.state === 'ended' && this.currentInteraction.action === 'unknown') {
-            var direction = this.currentInteraction.diection;
-            if (direction !== 'unknown') {
-                /**
-                 * This direction is allowed to change slides
-                 */
-                if (this.currentInteraction.state[direction]) {
+        if (this.currentInteraction.action === 'unknown') {
+            if (this._animation.state === 'ended') {
+                var direction = this.currentInteraction.direction;
+                if (direction !== 'unknown') {
+                    /**
+                     * This direction is allowed to change slides
+                     */
+                    if (this.currentInteraction.state[direction]) {
 
-                    this.currentInteraction.animationStartDirection = direction;
+                        this.currentInteraction.animationStartDirection = direction;
 
-                    if (this.interactiveDrag) {
-                        // Force the main animation into touch mode horizontal/vertical
-                        this._animation.setTouch(this.axis);
+                        if (this.interactiveDrag) {
+                            // Force the main animation into touch mode horizontal/vertical
+                            this._animation.setTouch(this.axis);
 
-                        var isChangePossible = this.callAction(direction, false);
-                        if (!isChangePossible) {
-                            // Prevent scroll enabled, but carousel not. Do not allow to scroll
+                            var isChangePossible = this.callAction(direction, false);
+                            if (!isChangePossible) {
+                                // Prevent scroll enabled, but carousel not. Do not allow to scroll
+                            }
                         }
-                    }
 
-                    this.currentInteraction.action = 'switch';
+                        this.currentInteraction.action = 'switch';
+                        this.swipeElement.addClass('n2-grabbing');
+                    }
                 }
+            } else if (this._animation.state === 'playing') {
+                this.currentInteraction.action = 'hold';
             }
         }
     };
@@ -3575,6 +3799,10 @@ N2D('SmartSliderControlTouchHorizontal', 'SmartSliderControlTouch', function ($,
         }
 
         this.swipeElement.css('touch-action', touchActions.join(' '));
+
+        if (window.PointerEventsPolyfill) {
+            this.swipeElement.attr('touch-action', touchActions.join(' '));
+        }
     };
 
 
@@ -3635,8 +3863,6 @@ N2D('SmartSliderControlTouchVertical', 'SmartSliderControlTouch', function ($, u
 
     SmartSliderControlTouchVertical.prototype.updatePanDirections = function () {
 
-        var isPreviousCarousel = this.slider.isChangeCarousel('previous');
-
         this.setState({
             down: !this.slider.isChangeCarousel('previous') || !this.slider.parameters.controls.blockCarouselInteraction,
             up: !this.slider.isChangeCarousel('next') || !this.slider.parameters.controls.blockCarouselInteraction
@@ -3673,6 +3899,10 @@ N2D('SmartSliderControlTouchVertical', 'SmartSliderControlTouch', function ($, u
         }
 
         this.swipeElement.css('touch-action', touchActions.join(' '));
+
+        if (window.PointerEventsPolyfill) {
+            this.swipeElement.attr('touch-action', touchActions.join(' '));
+        }
     };
 
     SmartSliderControlTouchVertical.prototype._start = function (event) {
@@ -5178,6 +5408,7 @@ N2D('SmartSliderResponsive', function ($, undefined) {
             decreaseSliderHeight: 0,
 
             focusUser: 1,
+            focusEdge: 'auto',
 
             deviceModes: {
                 desktopLandscape: 1,
@@ -5588,7 +5819,17 @@ N2D('SmartSliderResponsive', function ($, undefined) {
 
     SmartSliderResponsive.prototype._getOrientation = function () {
         if (this.orientationMode == SmartSliderResponsive.OrientationMode.SCREEN) {
-            if (window.innerHeight <= window.innerWidth) {
+            if (window.orientation !== undefined) {
+                /**
+                 * window.innerWidth and window.innerHeight are messed up in IOS Chrome
+                 * So we will use the deprecated window.orientation.
+                 */
+                if (Math.abs(window.orientation) === 90) {
+                    return SmartSliderResponsive.DeviceOrientation.LANDSCAPE;
+                } else {
+                    return SmartSliderResponsive.DeviceOrientation.PORTRAIT;
+                }
+            } else if (window.innerHeight <= window.innerWidth) {
                 return SmartSliderResponsive.DeviceOrientation.LANDSCAPE;
             } else {
                 return SmartSliderResponsive.DeviceOrientation.PORTRAIT;
@@ -5831,7 +6072,7 @@ N2D('SmartSliderResponsive', function ($, undefined) {
             if (this.parameters.type === 'fullpage') {
                 var clientHeight = 0;
                 if (this.parameters.sliderHeightBasedOn === '100vh') {
-                    clientHeight = this.$viewportHeight.height();
+                    clientHeight = window.n2ClientHeight || this.$viewportHeight.height();
                 } else {
                     if (window.matchMedia && (/Android|iPhone|iPad|iPod|BlackBerry/i).test(navigator.userAgent || navigator.vendor || window.opera)) {
                         var innerHeight,
@@ -6508,6 +6749,7 @@ N2D('FrontendItemVimeo', function ($, undefined) {
         this.state = {
             scroll: false,
             slide: false,
+            InComplete: false,
             play: false,
             continuePlay: false
         };
@@ -6529,11 +6771,24 @@ N2D('FrontendItemVimeo', function ($, undefined) {
             portrait: "0",
             loop: "0",
             color: "00adef",
-            volume: "-1"
+            volume: "-1",
+            dnt: "0"
         }, parameters);
 
-        if (navigator.userAgent.toLowerCase().indexOf("android") > -1) {
-            this.parameters.autoplay = 0;
+
+        if (parseInt(this.parameters.autoplay) === 1) {
+            if (navigator.userAgent.toLowerCase().indexOf("android") > -1) {
+                this.parameters.volume = 0;
+            } else if (n2const.isIOS) {
+                this.parameters.autoplay = 0;
+                try {
+                    if ('playsInline' in document.createElement('video')) {
+                        this.parameters.autoplay = 1;
+                        this.parameters.volume = 0;
+                    }
+                } catch (e) {
+                }
+            }
         }
 
         if (parseInt(this.parameters.autoplay) === 1 || !hasImage || n2const.isMobile) {
@@ -6562,14 +6817,16 @@ N2D('FrontendItemVimeo', function ($, undefined) {
     };
 
     FrontendItemVimeo.prototype.initVimeoPlayer = function () {
+
         var playerElement = $('<iframe allow="autoplay; encrypted-media" id="' + this.playerId + '-frame" src="https://player.vimeo.com/video/' + this.parameters.vimeocode + '?autoplay=0&' +
             '_video&title=' + this.parameters.title + '&byline=' + this.parameters.byline + "&background=" + this.parameters.background + '&portrait=' + this.parameters.portrait + '&color=' + this.parameters.color +
-            '&loop=' + this.parameters.loop + (this.parameters.quality == '-1' ? '' : '&quality=' + this.parameters.quality) + '" style="position: absolute; top:0; left: 0; width: 100%; height: 100%;" frameborder="0" webkitAllowFullScreen mozallowfullscreen allowFullScreen></iframe>');
+            '&loop=' + this.parameters.loop + (this.parameters.quality == '-1' ? '' : '&quality=' + this.parameters.quality) + '&dnt=' + this.parameters['privacy-enhanced'] + '" style="position: absolute; top:0; left: 0; width: 100%; height: 100%;" frameborder="0" webkitAllowFullScreen mozallowfullscreen allowFullScreen></iframe>');
         this.$playerElement.prepend(playerElement);
 
         this.isStatic = playerElement.closest('.n2-ss-static-slide').length;
 
-        this.player = new Vimeo.Player(playerElement[0], {autoplay: true});
+        this.player = new Vimeo.Player(playerElement[0], {autoplay: false});
+
         this.promise = this.player.ready();
         this.promise.then($.proxy(this.onReady, this));
     };
@@ -6582,13 +6839,14 @@ N2D('FrontendItemVimeo', function ($, undefined) {
 
         this.slide = this.slider.findSlideByElement(this.$playerElement);
 
-        var layer = this.$playerElement.closest(".n2-ss-layer");
+        var $layer = this.$playerElement.closest(".n2-ss-layer");
+        this.layer = $layer.data('layer');
 
         if (this.$cover.length) {
             if (n2const.isMobile) {
-                this.$cover.css('pointer-events', 'none');
+                this.$cover.on('click', $.proxy(this.safePlay, this));
             }
-            layer.one('n2play', $.proxy(function () {
+            $layer.one('n2play', $.proxy(function () {
                 NextendTween.to(this.$cover, 0.3, {
                     opacity: 0,
                     onComplete: $.proxy(function () {
@@ -6602,11 +6860,11 @@ N2D('FrontendItemVimeo', function ($, undefined) {
             if (!this.isStatic) {
                 this.slider.sliderElement.trigger('mediaStarted', this.playerId);
             }
-            layer.triggerHandler('n2play');
+            $layer.triggerHandler('n2play');
         }, this));
 
         this.player.on('pause', $.proxy(function () {
-            layer.triggerHandler('n2pause');
+            $layer.triggerHandler('n2pause');
             if (this.state.continuePlay) {
                 this.setState('continuePlay', false);
                 this.setState('play', true);
@@ -6619,7 +6877,7 @@ N2D('FrontendItemVimeo', function ($, undefined) {
             if (!this.isStatic) {
                 this.slider.sliderElement.trigger('mediaEnded', this.playerId);
             }
-            layer.triggerHandler('n2stop');
+            $layer.triggerHandler('n2stop');
             this.setState('play', false);
         }, this));
 
@@ -6660,6 +6918,8 @@ N2D('FrontendItemVimeo', function ($, undefined) {
     };
 
     FrontendItemVimeo.prototype.initAutoplay = function () {
+        this.setState('InComplete', true, true);
+    
 
         if (!this.isStatic) {
             //change slide
@@ -6688,7 +6948,7 @@ N2D('FrontendItemVimeo', function ($, undefined) {
         this.state[name] = value;
 
         if (doAction) {
-            if (this.state.play && this.state.slide && this.state.scroll) {
+            if (this.state.play && this.state.slide && this.state.InComplete && this.state.scroll) {
                 this.play();
             } else {
                 this.pause();
@@ -6830,21 +7090,40 @@ N2D('FrontendItemYouTube', function ($, undefined) {
     FrontendItemYouTube.YTDeferred = null;
 
     FrontendItemYouTube.prototype.ready = function (callback) {
+
         if (FrontendItemYouTube.YTDeferred === null) {
             FrontendItemYouTube.YTDeferred = $.Deferred();
+
             if (window.YT === undefined) {
                 $.getScript("https://www.youtube.com/iframe_api");
             }
-            (function (deferred) {
-                var check = function () {
-                    if (window.YT !== undefined && window.YT.loaded) {
-                        deferred.resolve();
-                    } else {
-                        setTimeout(check, 100);
-                    }
-                };
-                check();
-            })(FrontendItemYouTube.YTDeferred);
+
+            if (window._EPYT_ !== undefined) {
+                /**
+                 * Fix for https://wordpress.org/plugins/youtube-embed-plus/
+                 */
+                (function (deferred) {
+                    var check = function () {
+                        if (window._EPADashboard_.initStarted === true) {
+                            deferred.resolve();
+                        } else {
+                            setTimeout(check, 100);
+                        }
+                    };
+                    check();
+                })(FrontendItemYouTube.YTDeferred);
+            } else {
+                (function (deferred) {
+                    var check = function () {
+                        if (window.YT !== undefined && window.YT.loaded) {
+                            deferred.resolve();
+                        } else {
+                            setTimeout(check, 100);
+                        }
+                    };
+                    check();
+                })(FrontendItemYouTube.YTDeferred);
+            }
         }
         FrontendItemYouTube.YTDeferred.done(callback);
     };
@@ -6867,7 +7146,7 @@ N2D('FrontendItemYouTube', function ($, undefined) {
 
         if (this.$cover.length) {
             if (n2const.isMobile) {
-                this.$cover.css('pointer-events', 'none');
+                this.$cover.on('click', $.proxy(this.play, this));
             }
             $layer.one('n2play', $.proxy(this.fadeOutCover, this));
         }
@@ -6933,8 +7212,11 @@ N2D('FrontendItemYouTube', function ($, undefined) {
                 onStateChange: $.proxy(function (state) {
                     switch (state.data) {
                         case YT.PlayerState.PLAYING:
+                        case YT.PlayerState.BUFFERING:
                             if (!this.isStatic) {
-                                this.slider.sliderElement.trigger('mediaStarted', this.playerId);
+                                if ($.inArray(this.slide, this.slider.getVisibleSlides(this.slider.currentSlide)) !== -1) {
+                                    this.slider.sliderElement.trigger('mediaStarted', this.playerId);
+                                }
                             }
                             $layer.triggerHandler('n2play');
                             break;
@@ -6965,7 +7247,7 @@ N2D('FrontendItemYouTube', function ($, undefined) {
             }
         };
 
-        if (this.parameters['privacy-enhanced']) {
+        if (this.parameters['privacy-enhanced'] || (jQuery && jQuery.fn.revolution)) {
             data.host = 'https://www.youtube-nocookie.com';
         }
 
@@ -7010,7 +7292,9 @@ N2D('FrontendItemYouTube', function ($, undefined) {
             if (parseInt(this.parameters.reset)) {
                 this.slider.sliderElement.on("mainAnimationComplete", $.proxy(function (e, mainAnimation, previousSlideIndex, currentSlideIndex) {
                     if ($.inArray(this.slide, this.slider.getVisibleSlides(this.slider.slides[currentSlideIndex])) == -1) {
-                        this.player.seekTo(this.parameters.start);
+                        if (this.player.getCurrentTime() !== 0) {
+                            this.player.seekTo(this.parameters.start);
+                        }
                     }
                 }, this));
             }
@@ -7114,7 +7398,6 @@ N2D('FrontendItemYouTube', function ($, undefined) {
         var state = this.player.getPlayerState();
         switch (state) {
             case -1:
-            case 0:
             case 2:
             case 5:
                 return true;

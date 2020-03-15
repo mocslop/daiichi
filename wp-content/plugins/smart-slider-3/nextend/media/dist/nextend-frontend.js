@@ -42,10 +42,12 @@ window.n2c = (function (origConsole) {
 }(window.console));
 
 n2c.debug(false);
+var isIpad13 = navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1;
+
 window.n2const = {
     passiveEvents: false,
     devicePixelRatio: window.devicePixelRatio || 1,
-    isIOS: /iPad|iPhone|iPod/.test(navigator.platform),
+    isIOS: /iPad|iPhone|iPod/.test(navigator.platform) || isIpad13,
     isEdge: (function () {
         var m = navigator.userAgent.match(/Edge\/([0-9]+)/);
         if (m === null) {
@@ -55,7 +57,7 @@ window.n2const = {
         return m[1];
     })(),
     isFirefox: navigator.userAgent.toLowerCase().indexOf('firefox') > -1,
-    isMobile: /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini|Silk/i.test(navigator.userAgent),
+    isMobile: /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini|Silk/i.test(navigator.userAgent) || isIpad13,
     isPhone: (/Android/i.test(navigator.userAgent) && /mobile/i.test(navigator.userAgent)) || /webOS|iPhone|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent),
     isIE: (function () {
         var ua = window.navigator.userAgent;
@@ -118,7 +120,7 @@ window.n2const.IOSVersion = (function () {
 
 window.n2const.isTablet = (function () {
     if (!window.n2const.isPhone) {
-        return /Android|iPad|tablet|Silk/i.test(navigator.userAgent);
+        return /Android|iPad|tablet|Silk/i.test(navigator.userAgent) || isIpad13;
     }
     return false;
 })();
@@ -360,6 +362,8 @@ N2D('Base64', function () {
  */
 
 N2D('ImagesLoaded', function ($, undefined) {
+
+    var local = {};
     /*!
      * EventEmitter v4.2.6 - git.io/ee
      * Oliver Caldwell
@@ -815,7 +819,7 @@ N2D('ImagesLoaded', function ($, undefined) {
         };
 
 
-        this.EventEmitter = EventEmitter;
+        local.EventEmitter = EventEmitter;
     }.call(window));
 
     /*!
@@ -887,7 +891,7 @@ N2D('ImagesLoaded', function ($, undefined) {
         };
 
         // browser global
-        window.eventie = eventie;
+        local.eventie = eventie;
 
     })(window);
 
@@ -902,10 +906,10 @@ N2D('ImagesLoaded', function ($, undefined) {
         // universal module definition
 
         // browser global
-        window.imagesLoaded = factory(
+        factory(
             window,
-            window.EventEmitter,
-            window.eventie
+            local.EventEmitter,
+            local.eventie
         );
 
     })(window,
@@ -1600,7 +1604,7 @@ N2D('EventBurrito', function ($, undefined) {
         options && mergeObjects(o, options);
 
         var support = {
-                pointerEvents: !!(window.PointerEvent || window.MSPointerEvent || window.navigator.msPointerEnabled || window.navigator.pointerEnabled)
+                pointerEvents: !!(window.PointerEvent || window.MSPointerEvent || window.navigator.msPointerEnabled || window.navigator.pointerEnabled || window.PointerEventsPolyfill)
             },
             start = {},
             diff = {},
@@ -1697,7 +1701,7 @@ N2D('EventBurrito', function ($, undefined) {
             isDragStarted = true;
 
             //attach event listeners to the document, so that the slider
-            //will continue to recieve events wherever the pointer is
+            //will continue to receive events wherever the pointer is
             if (eventType !== 0) {
                 addEvent(document, events[eventType][1], tMove, false);
             }
@@ -1854,7 +1858,7 @@ N2D('RAF', function () {
     function RAF() {
         this._isTicking = false;
         this._isMobile = false;
-        this._lastTick = 0;
+        this._lastTick = -1;
         this._ticks = [];
         this._postTickCallbacks = [];
 
@@ -1907,7 +1911,7 @@ N2D('RAF', function () {
     }
 
     RAF.prototype.addTick = function (callback) {
-        if (this._ticks.indexOf(callback) == -1) {
+        if (this._ticks.indexOf(callback) === -1) {
             this._ticks.push(callback);
         }
         if (!this._isTicking) {
@@ -1920,14 +1924,13 @@ N2D('RAF', function () {
         N2ArrayRemove(this._ticks, callback);
 
         if (this._ticks.length === 0 && this._isTicking) {
-            this._lastTick = 0;
+            this._lastTick = -1;
             this._isTicking = false;
         }
     };
 
     RAF.prototype._tickStart = function (time) {
         this._lastTick = time;
-        //this._tick(time);
 
         if (this._isTicking) {
             this._lastTick = time;
@@ -1937,13 +1940,15 @@ N2D('RAF', function () {
 
 
     RAF.prototype._tick = function (time) {
-        var delta = (time - this._lastTick) / 1000;
-        if (delta != 0) {
-            for (var i = 0; i < this._ticks.length; i++) {
-                this._ticks[i].call(null, delta);
-            }
+        if (this._lastTick !== -1) {
+            var delta = (time - this._lastTick) / 1000;
+            if (delta != 0) {
+                for (var i = 0; i < this._ticks.length; i++) {
+                    this._ticks[i].call(null, delta);
+                }
 
-            this.postTick();
+                this.postTick();
+            }
         }
         this._continueTick(time);
     };

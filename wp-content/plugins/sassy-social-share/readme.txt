@@ -1,10 +1,10 @@
 ﻿=== WordPress Social Sharing Plugin - Sassy Social Share ===
-Contributors: Heateor
+Contributors: Heateor, jatin8heateor, farhan8heateor
 Donate link: https://www.heateor.com/donate/?action=Sassy+Social+Share
 Tags: social share, social sharing, social media share, share facebook, facebook social share, wordpress social share, share buttons, social share buttons, facebook like, twitter tweet, whatsapp share, line share
 Requires at least: 2.5.0
-Tested up to: 5.2.2
-Stable tag: 3.2.26
+Tested up to: 5.3.2
+Stable tag: 3.3.8
 License: GPLv2 or later
 
 Slickest, Simplest and Optimized Share buttons. Facebook, Twitter, Reddit, Pinterest, WhatsApp and over 100 more.
@@ -123,6 +123,53 @@ Yes, we can help you with it. Just drop an email at support[at]heateor[dot]com
 4. **Universal Sharing Popup**: Universal Sharing popup having all the supported sharing and bookmarking services
 
 == Changelog ==
+= 3.3.8 [16 January 2020] =
+[Bugfix] [Sassy_Follow_Icons] shortcode was not accepting "=" in the url of social networks. Now it can be used in encoded form.
+[Bugfix] Social Media Follow Icons were appearing broken in some cases
+[Improvement] Admin UI improvement
+[Improvement] Removed Wanelo, CiteULike and DZone from social share networks as these services are not functional anymore
+
+= 3.3.7 [14 December 2019] =
+[New] Christmas surprise
+[Bugfix] Pinterest Pin button was showing pin count even if share count was disabled from options
+
+= 3.3.6 [28 November 2019] =
+[Bugfix] Previous version was breaking social share on custom posts
+[New] Added option (in Miscellaneous section) to control if Javascript should be loaded on every page or only where it's needed
+
+= 3.3.5 [27 November 2019] =
+[Improvement] Javascript is being loaded only at the webpages where social share icons are integrated
+[Improvement] Admin UI improvements (<a href="https://www.heateor.com/comparison-between-sassy-social-share-pro-and-premium/">Pro and Premium</a> versions now available)
+[Bugfix] "Load Javascript files in footer" option was coming twice at plugin options page
+
+= 3.3.4 [6 November 2019] =
+[Bugfix] Fixed XSS vulnerability on "heateor_sss_sharing_count" AJAX action
+
+= 3.3.3 [26 October 2019] =
+[Bugfix] Changing Alignment of floating follow icons was not changing the label of offset option right below that in "Sassy Social Share - Follow Icons" widget
+
+= 3.3.2 [24 September 2019] =
+[Bugfix] Custom theme for Social Media Follow icons was not working for Instagram icon, if multi-colored background was enabled
+
+= 3.3.1 [23 September 2019] =
+[New] Added option in "Miscellaneous" section to adjust the background color (plain or multi-colored) of Instagram share and follow icon
+
+= 3.3 [21 September 2019] =
+* [New] Added shortcode <a target="_blank" href="http://support.heateor.com/sassy-follow-icons-shortcode/">[Sassy_Follow_Icons]</a> to integrate social media follow icons
+* [New] Added option in the social media follow widget to float follow icons vertically
+* [New] Added Youtube icon in social share networks
+* [Improvement] Floating social share icons are now compatible with AMP
+* [Improvement] Using 'wp_add_inline_script' to add inline Javascript code right above the sassy-social-share-public.js file
+* [Improvement] Updated background of Instagram button to the multicolored one
+* [Improvement] Facebook App ID for Facebook Messenger is being used from the options (if there is saved any) instead of the hardcoded one
+* [Bugfix] Email share icon was appearing twice when searching in the "more" share popup
+* [Bugfix] Center aligning the standard share icons was not center aligning the title above share bar
+
+= 3.2.28 [13 August 2019] =
+* [Bugfix] Social share icons were not working with standard and transitional AMP modes
+* [Bugfix] Fixed a PHP warning appearing at plugin options page in some cases
+* [Improvement] Assigned class "heateor_sss_sharing_title" to the title appearing above the social share icons rendered via shortcode
+
 = 3.2.26 [19 June 2019] =
 * [New] Added option to customize logo and background color of social media follow icons
 * [New] Added Whatsapp in Social Media Follow icons
@@ -386,7 +433,6 @@ Yes, we can help you with it. Just drop an email at support[at]heateor[dot]com
 * [Bugfix] Plugin was not picking the homepage url correctly if it was different from the WordPress installation directory
 * [New] Included StockTwits and Instagram in sharing networks
 * [New] Included official Facebook share button in sharing networks
-* [Improvement] Using 'wp_add_inline_script' function to load inline Javascript with external Javascript file
 
 = 2.3 =
 * [Bugfix] '&' in post/page title was breaking the subject in email sharing
@@ -528,7 +574,6 @@ Yes, we can help you with it. Just drop an email at support[at]heateor[dot]com
 * [Bugfix] Plugin was not picking the homepage url correctly if it was different from the WordPress installation directory
 * [New] Included StockTwits and Instagram in sharing networks
 * [New] Included official Facebook share button in sharing networks
-* [Improvement] Using 'wp_add_inline_script' function to load inline Javascript with external Javascript file
 
 = 2.4.1 =
 * [Bugfix] Share counts suddenly stopped appearing because of deprecated Facebook share count API
@@ -788,3 +833,50 @@ Yes, we can help you with it. Just drop an email at support[at]heateor[dot]com
 * [New] Added Whatsapp in Social Media Follow icons
 * [Bugfix] Fixed the PHP notices being generated when using the widget
 * [Bugfix] Updated the background color for Reddit share icon for AMP according to the Reddit branding guidelines
+
+= 3.2.28 [13 August 2019] =
+* [Bugfix] Social share icons were not working with standard and transitional AMP modes
+* [Bugfix] Fixed a PHP warning appearing at plugin options page in some cases
+* [Improvement] Assigned class "heateor_sss_sharing_title" to the title appearing above the social share icons rendered via shortcode
+
+= 3.3 [21 September 2019] =
+* [New] Added shortcode <a target="_blank" href="http://support.heateor.com/sassy-follow-icons-shortcode/">[Sassy_Follow_Icons]</a> to integrate social media follow icons
+* [New] Added option in the social media follow widget to float follow icons vertically
+* [New] Added Youtube icon in social share networks
+* [Improvement] Floating social share icons are now compatible with AMP
+* [Improvement] Using 'wp_add_inline_script' to add inline Javascript code right above the sassy-social-share-public.js file
+* [Improvement] Updated background of Instagram button to the multicolored one
+* [Improvement] Facebook App ID for Facebook Messenger is being used from the options (if there is saved any) instead of the hardcoded one
+* [Bugfix] Email share icon was appearing twice when searching in the "more" share popup
+* [Bugfix] Center aligning the standard share icons was not center aligning the title above share bar
+
+= 3.3.1 [23 September 2019] =
+[New] Added option in "Miscellaneous" section to adjust the background color (plain or multi-colored) of Instagram share and follow icon
+
+= 3.3.2 [24 September 2019] =
+[Bugfix] Custom theme for Social Media Follow icons was not working for Instagram icon, if multi-colored background was enabled
+
+= 3.3.3 [26 October 2019] =
+[Bugfix] Changing Alignment of floating follow icons was not changing the label of offset option right below that in "Sassy Social Share - Follow Icons" widget
+
+= 3.3.4 [6 November 2019] =
+[Bugfix] Fixed XSS vulnerability on "heateor_sss_sharing_count" AJAX action
+
+= 3.3.5 [27 November 2019] =
+[Improvement] Javascript is being loaded only at the webpages where social share icons are integrated
+[Improvement] Admin UI improvements (<a href="https://www.heateor.com/comparison-between-sassy-social-share-pro-and-premium/">Pro and Premium</a> versions now available)
+[Bugfix] "Load Javascript files in footer" option was coming twice at plugin options page
+
+= 3.3.6 [28 November 2019] =
+[Bugfix] Previous version was breaking social share on custom posts
+[New] Added option (in Miscellaneous section) to control if Javascript should be loaded on every page or only where it's needed
+
+= 3.3.7 [14 December 2019] =
+[New] Christmas surprise
+[Bugfix] Pinterest Pin button was showing pin count even if share count was disabled from options
+
+= 3.3.8 [16 January 2020] =
+[Bugfix] [Sassy_Follow_Icons] shortcode was not accepting "=" in the url of social networks. Now it can be used in encoded form.
+[Bugfix] Social Media Follow Icons were appearing broken in some cases
+[Improvement] Admin UI improvement
+[Improvement] Removed Wanelo, CiteULike and DZone from social share networks as these services are not functional anymore

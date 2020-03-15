@@ -16,28 +16,28 @@
 class Sassy_Social_Share_Admin {
 
 	/**
-	 * Options saved in database.
+	 * Options saved in database
 	 *
 	 * @since    1.0.0
 	 */
 	private $options;
 
 	/**
-	 * Current version of the plugin.
+	 * Current version of the plugin
 	 *
 	 * @since    1.0.0
 	 */
 	private $version;
 
 	/**
-	 * Flag to check if BuddyPress is active.
+	 * Flag to check if BuddyPress is active
 	 *
 	 * @since    1.0.0
 	 */
 	private $is_bp_active = false;
 
 	/**
-	 * Get saved options.
+	 * Get saved options
 	 *
 	 * @since    1.0.0
      * @param    array    $options    Plugin options saved in database
@@ -58,16 +58,87 @@ class Sassy_Social_Share_Admin {
 
 		$page = add_menu_page( __( 'Sassy Social Share by Heateor', 'sassy-social-share' ), 'Sassy Social Share', 'manage_options', 'heateor-sss-options', array( $this, 'options_page' ), plugins_url( '../images/logo.png', __FILE__ ) );
 		// options
-		$options_page = add_submenu_page( 'heateor-sss-options', __( "Sassy Social Share - General Options", 'sassy-social-share' ), __( "Sassy Social Share", 'sassy-social-share' ), 'manage_options', 'heateor-sss-options', array( $this, 'options_page' ) );
+		$options_page = add_submenu_page( 'heateor-sss-options', __( "Sassy Social Share", 'sassy-social-share' ), __( "Sassy Social Share", 'sassy-social-share' ), 'manage_options', 'heateor-sss-options', array( $this, 'options_page' ) );
+		//adding mycred addon in submenu
+		$my_cred = add_submenu_page( 'heateor-sss-options', __( "Social Share myCRED Integration", 'sassy-social-share' ), __( "Social Share myCRED Integration", 'sassy-social-share' ), 'manage_options', 'heateor-sss-mycred-options', array( $this, 'mycred_options_page' ) );
+		//adding recover sharing counts addon in submenu
+		$rssc = add_submenu_page( 'heateor-sss-options', __( "Recover Social Share Counts", 'sassy-social-share' ), __( "Recover Social Share Counts", 'sassy-social-share' ), 'manage_options', 'heateor-sss-rssc-options', array( $this, 'rssc_option_page' ) );
+		//adding analytics addon in submenu
+		$ssga = add_submenu_page( 'heateor-sss-options', __( "Social Analytics", 'sassy-social-share' ), __( "Social Analytics", 'sassy-social-share' ), 'manage_options', 'heateor-sss-ssga-options', array( $this, 'ssga_option_page' ) );
+		
 		add_action( 'admin_print_scripts-' . $page, array( $this, 'admin_scripts' ) );
 		add_action( 'admin_print_scripts-' . $page, array( $this, 'admin_style' ) );
+		add_action( 'admin_print_scripts-' . $ssga, array( $this, 'admin_scripts' ) );
+		add_action( 'admin_print_scripts-' . $ssga, array( $this, 'admin_style' ) );
+		add_action( 'admin_print_scripts-' . $ssga, array( $this, 'fb_sdk_script' ) );
+		add_action( 'admin_print_styles-' . $ssga, array( $this, 'admin_options_style' ) );
+		add_action( 'admin_print_scripts-' . $rssc, array( $this, 'admin_scripts' ) );
+		add_action( 'admin_print_scripts-' . $rssc, array( $this, 'admin_style' ) );
+		add_action( 'admin_print_scripts-' . $rssc, array( $this, 'fb_sdk_script' ) );
+		add_action( 'admin_print_styles-' . $rssc, array( $this, 'admin_options_style' ) );
+		add_action( 'admin_print_scripts-' . $my_cred, array( $this, 'admin_scripts' ) );
+		add_action( 'admin_print_scripts-' . $my_cred, array( $this, 'admin_style' ) );
+		add_action( 'admin_print_scripts-' . $my_cred, array( $this, 'fb_sdk_script' ) );
+		add_action( 'admin_print_styles-' . $my_cred, array( $this, 'admin_options_style' ) );
 		add_action( 'admin_print_scripts-' . $page, array( $this, 'fb_sdk_script' ) );
+		add_action( 'admin_print_styles-' . $page, array( $this, 'admin_options_style' ) );
 		add_action( 'admin_print_scripts-' . $options_page, array( $this, 'admin_scripts' ) );
 		add_action( 'admin_print_scripts-' . $options_page, array( $this, 'fb_sdk_script' ) );
 		add_action( 'admin_print_styles-' . $options_page, array( $this, 'admin_style' ) );
 		add_action( 'admin_print_scripts-' . $options_page, array( $this, 'admin_options_scripts' ) );
 		add_action( 'admin_print_styles-' . $options_page, array( $this, 'admin_options_style' ) );
 	
+	}
+
+	/**
+	 * myCRED integration options page
+	 *
+	 * @since    3.3.8
+	 */
+	public function mycred_options_page() {
+		?>
+		<div class="metabox-holder columns-2" id="post-body">
+			<h1>Social Share myCRED Integration</h1>
+			<div class="heateor_sss_left_column">
+				<a href="https://www.heateor.com/sassy-social-share-premium/" target="_blank"><img src="<?php echo plugins_url( '../images/unlock/mycred-options.png', __FILE__ ) ?>" /></a>
+			</div>
+			<?php include 'partials/sassy-social-share-about.php'; ?>
+		</div>
+		<?php
+	}
+
+	/**
+	 * Options page for Recover Social Share Counts module
+	 *
+	 * @since    3.3.8
+	 */
+	public function rssc_option_page() {
+		?>
+		<div class="metabox-holder columns-2" id="post-body">
+			<h1>Recover Social Share Counts</h1>
+			<div class="heateor_sss_left_column">
+				<a href="https://www.heateor.com/sassy-social-share-premium/" target="_blank"><img src="<?php echo plugins_url( '../images/unlock/rssc-options.png', __FILE__ ) ?>" /></a>
+			</div>
+			<?php include 'partials/sassy-social-share-about.php'; ?>
+		</div>
+		<?php
+	}
+
+	/**
+	 * Options page for Social Analytics module
+	 *
+	 * @since    3.3.8
+	 */
+	public function ssga_option_page() {
+		?>
+		<div class="metabox-holder columns-2" id="post-body">
+			<h1>Social Analytics</h1>
+			<div class="heateor_sss_left_column">
+				<a href="https://www.heateor.com/sassy-social-share-premium/" target="_blank"><img src="<?php echo plugins_url( '../images/unlock/ssga-options.png', __FILE__ ) ?>" /></a>
+			</div>
+			<?php include 'partials/sassy-social-share-about.php'; ?>
+		</div>
+		<?php
 	}
 
 	/**
@@ -91,7 +162,7 @@ class Sassy_Social_Share_Admin {
 		}
 
 	}
-
+	
 	/**
 	 * Update options in all the old blogs.
 	 *
@@ -121,7 +192,7 @@ class Sassy_Social_Share_Admin {
 		add_blog_option( $blog_id, 'heateor_sss', $this->options );
 	
 	}
-
+	
 	/**
 	 * Show sharing meta options
 	 *
@@ -669,6 +740,12 @@ class Sassy_Social_Share_Admin {
 				heateor_sss_update_svg_css( $this->options['vertical_font_color_hover'], 'sassy-social-share-hover-svg-vertical' );
 			}
 			
+			if ( version_compare( '3.3', $current_version ) > 0 ) {
+				$this->options['youtube_username'] = '';
+				$this->options['vertical_youtube_username'] = '';
+				update_option( 'heateor_sss', $this->options );
+			}
+
 			if ( version_compare( '3.2.24', $current_version ) > 0 ) {
 				if ( ! $this->options['fb_key'] && ! $this->options['fb_secret'] && $this->options['vertical_fb_key'] && $this->options['vertical_fb_secret'] ) {
 					$this->options['fb_key'] = $this->options['vertical_fb_key'];

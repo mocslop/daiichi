@@ -27,7 +27,7 @@ class Sassy_Social_Share_Public {
 	 *
 	 * @since    1.0.0
 	 */
-	private $version;
+	public $version;
 
 	/**
 	 * Variable to track number of times 'the_content' hook called at homepage.
@@ -85,18 +85,10 @@ class Sassy_Social_Share_Public {
 		// stylesheet files for front-end of website
 		add_action( 'wp_enqueue_scripts', array( $this, 'frontend_css' ) );
 
-		if ( isset( $this->options['amp_enable'] ) ) {
-			$amp_options = array();
-			if ( class_exists( 'AMP_Options_Manager' ) && null !== AMP_Options_Manager::OPTION_NAME ) {
-				$amp_options = get_option( AMP_Options_Manager::OPTION_NAME );
-				if ( isset( $amp_options['theme_support'] ) && ( $amp_options['theme_support'] == 'paired' || $amp_options['theme_support'] == 'native' ) ) {
-					add_action( 'wp_print_styles', array( $this, 'frontend_amp_css' ) );
-				} else {
-					// stylesheet files for AMP pages
-					add_action( 'amp_post_template_css', array( $this, 'frontend_amp_css' ) );
-				}
-			}
-		}
+		if ( isset( $this->options['amp_enable'] ) && function_exists( 'is_amp_endpoint' ) ) {
+			add_action( 'wp_print_styles', array( $this, 'frontend_amp_css' ) );
+        	add_action( 'amp_post_template_css', array( $this, 'frontend_amp_css' ) );
+    	}
 	
 	}
 
@@ -114,673 +106,26 @@ class Sassy_Social_Share_Public {
 			if ( $post ) {
 				$sharing_meta = get_post_meta( $post->ID, '_heateor_sss_meta', true );
 				if ( is_front_page() || ! isset( $sharing_meta['sharing'] ) || $sharing_meta['sharing'] != 1 || ! isset( $sharing_meta['vertical_sharing'] ) || $sharing_meta['vertical_sharing'] != 1 ) {
-					$inline_script .= 'var heateorSssSharingAjaxUrl = \''. get_admin_url() .'admin-ajax.php\', heateorSssCloseIconPath = \''. plugins_url( '../images/close.png', __FILE__ ) .'\', heateorSssPluginIconPath = \''. plugins_url( '../images/logo.png', __FILE__ ) .'\', heateorSssHorizontalSharingCountEnable = '. ( isset( $this->options['hor_enable'] ) && ( isset( $this->options['horizontal_counts'] ) || isset( $this->options['horizontal_total_shares'] ) ) ? 1 : 0 ) .', heateorSssVerticalSharingCountEnable = '. ( isset( $this->options['vertical_enable'] ) && ( isset( $this->options['vertical_counts'] ) || isset( $this->options['vertical_total_shares'] ) ) ? 1 : 0 ) .', heateorSssSharingOffset = '. ( isset( $this->options['alignment'] ) && $this->options['alignment'] != '' && isset( $this->options[$this->options['alignment'].'_offset'] ) && $this->options[$this->options['alignment'].'_offset'] != '' ? $this->options[$this->options['alignment'].'_offset'] : 0 ) . '; var heateorSssMobileStickySharingEnabled = ' . ( isset( $this->options['vertical_enable'] ) && isset( $this->options['bottom_mobile_sharing'] ) && $this->options['horizontal_screen_width'] != '' ? 1 : 0 ) . ';';
-					$inline_script .= 'var heateorSssCopyLinkMessage = "' . htmlspecialchars( __( 'Link copied.', 'sassy-social-share' ), ENT_QUOTES ) . '";';
-					if ( isset( $this->options['horizontal_counts'] ) && isset( $this->options['horizontal_counter_position'] ) ) {
-						$inline_script .= in_array( $this->options['horizontal_counter_position'], array( 'inner_left', 'inner_right' ) ) ? 'var heateorSssReduceHorizontalSvgWidth = true;' : '';
-						$inline_script .= in_array( $this->options['horizontal_counter_position'], array( 'inner_top', 'inner_bottom' ) ) ? 'var heateorSssReduceHorizontalSvgHeight = true;' : '';
-					}
-					if ( isset( $this->options['vertical_counts'] ) ) {
-						$inline_script .= isset( $this->options['vertical_counter_position'] ) && in_array( $this->options['vertical_counter_position'], array( 'inner_left', 'inner_right' ) ) ? 'var heateorSssReduceVerticalSvgWidth = true;' : '';
-						$inline_script .= ! isset( $this->options['vertical_counter_position'] ) || in_array( $this->options['vertical_counter_position'], array( 'inner_top', 'inner_bottom' ) ) ? 'var heateorSssReduceVerticalSvgHeight = true;' : '';
-					}
-					$inline_script .= 'var heateorSssUrlCountFetched = [], heateorSssSharesText = \''. htmlspecialchars(__('Shares', 'sassy-social-share'), ENT_QUOTES) .'\', heateorSssShareText = \''. htmlspecialchars(__('Share', 'sassy-social-share'), ENT_QUOTES) .'\';';
-					$inline_script .= 'function heateorSssPopup(e) {window.open(e,"popUpWindow","height=400,width=600,left=400,top=100,resizable,scrollbars,toolbar=0,personalbar=0,menubar=no,location=no,directories=no,status")}';
-					if ( $this->facebook_like_recommend_enabled() || $this->facebook_share_enabled() ) {
-						$inline_script .= 'function heateorSssInitiateFB() {FB.init({appId:"",channelUrl:"",status:!0,cookie:!0,xfbml:!0,version:"v2.11"})}window.fbAsyncInit=function() {heateorSssInitiateFB(),' . ( defined( 'HEATEOR_SOCIAL_SHARE_MYCRED_INTEGRATION_VERSION' ) && $this->facebook_like_recommend_enabled() ? 1 : 0 ) . '&&(FB.Event.subscribe("edge.create",function(e) {heateorSsmiMycredPoints("Facebook_like_recommend","",e?e:"")}),FB.Event.subscribe("edge.remove",function(e) {heateorSsmiMycredPoints("Facebook_like_recommend","",e?e:"","Minus point(s) for undoing Facebook like-recommend")}) ),'. ( defined( 'HEATEOR_SHARING_GOOGLE_ANALYTICS_VERSION' ) ? 1 : 0 ) .'&&(FB.Event.subscribe("edge.create",function(e) {heateorSsgaSocialPluginsTracking("Facebook","Like",e?e:"")}),FB.Event.subscribe("edge.remove",function(e) {heateorSsgaSocialPluginsTracking("Facebook","Unlike",e?e:"")}) )},function(e) {var n,i="facebook-jssdk",o=e.getElementsByTagName("script")[0];e.getElementById(i)||(n=e.createElement("script"),n.id=i,n.async=!0,n.src="//connect.facebook.net/'. ( $this->options['language'] ? $this->options['language'] : 'en_US' ) .'/sdk.js",o.parentNode.insertBefore(n,o) )}(document);';
-					}
-					if ( current_filter() == 'amp_post_template_head' ) {
-						// default post url
-						global $post;
-						$post_url = html_entity_decode( esc_url( $this->get_http_protocol() . $_SERVER["HTTP_HOST"] . $_SERVER["REQUEST_URI"] ) );
-						if ( $this->options['horizontal_target_url'] == 'default' ) {
-							$post_url = get_permalink( $post->ID );
-							if ( $post_url == '' ) {
-								$post_url = html_entity_decode( esc_url( $this->get_http_protocol() . $_SERVER["HTTP_HOST"] . $_SERVER["REQUEST_URI"] ) );
-							}
-						} elseif ( $this->options['horizontal_target_url'] == 'home' ) {
-							$post_url = home_url();
-						} elseif ( $this->options['horizontal_target_url'] == 'custom' ) {
-							$post_url = $this->options['horizontal_target_url_custom'] ? $this->options['horizontal_target_url_custom'] : get_permalink( $post->ID );
+					if ( ! isset( $this->options['js_when_needed'] ) || ( ( ( isset( $this->options['home'] ) || isset( $this->options['vertical_home'] ) ) && is_front_page() ) || ( ( isset( $this->options['category'] ) || isset($this->options['vertical_category'] ) ) && is_category() ) ||( ( isset( $this->options['archive'] ) || isset( $this->options['vertical_archive'] ) ) && is_archive() ) || ( ( isset( $this->options['post'] ) || isset( $this->options['vertical_post'] ) ) && is_single() && isset( $post->post_type ) && $post->post_type == 'post' ) || ( ( isset( $this->options['page'] ) || isset( $this->options['vertical_page'] ) ) && is_page() && isset( $post->post_type ) && $post->post_type == 'page' ) || ( ( isset( $this->options['excerpt'] ) || isset( $this->options['vertical_excerpt'] ) ) && ( is_home() || current_filter() == 'the_excerpt' ) ) || (  ( isset( $this->options['bb_forum'] ) || isset( $this->options['vertical_bb_forum'] ) ) && current_filter() == 'bbp_template_before_single_forum' ) || ( ( isset( $this->options['bb_topic'] ) || isset( $this->options['vertical_bb_topic'] ) ) && in_array( current_filter(), array( 'bbp_template_before_single_topic', 'bbp_template_before_lead_topic' ) ) ) || ( current_filter() == 'bp_before_group_header' && ( isset( $this->options['bp_group'] ) || isset( $this->options['vertical_bb_group'] ) ) ) ) ) {
+						$inline_script .= 'var heateorSssSharingAjaxUrl = \''. get_admin_url() .'admin-ajax.php\', heateorSssCloseIconPath = \''. plugins_url( '../images/close.png', __FILE__ ) .'\', heateorSssPluginIconPath = \''. plugins_url( '../images/logo.png', __FILE__ ) .'\', heateorSssHorizontalSharingCountEnable = '. ( isset( $this->options['hor_enable'] ) && ( isset( $this->options['horizontal_counts'] ) || isset( $this->options['horizontal_total_shares'] ) ) ? 1 : 0 ) .', heateorSssVerticalSharingCountEnable = '. ( isset( $this->options['vertical_enable'] ) && ( isset( $this->options['vertical_counts'] ) || isset( $this->options['vertical_total_shares'] ) ) ? 1 : 0 ) .', heateorSssSharingOffset = '. ( isset( $this->options['alignment'] ) && $this->options['alignment'] != '' && isset( $this->options[$this->options['alignment'].'_offset'] ) && $this->options[$this->options['alignment'].'_offset'] != '' ? $this->options[$this->options['alignment'].'_offset'] : 0 ) . '; var heateorSssMobileStickySharingEnabled = ' . ( isset( $this->options['vertical_enable'] ) && isset( $this->options['bottom_mobile_sharing'] ) && $this->options['horizontal_screen_width'] != '' ? 1 : 0 ) . ';';
+						$inline_script .= 'var heateorSssCopyLinkMessage = "' . htmlspecialchars( __( 'Link copied.', 'sassy-social-share' ), ENT_QUOTES ) . '";';
+						if ( isset( $this->options['horizontal_counts'] ) && isset( $this->options['horizontal_counter_position'] ) ) {
+							$inline_script .= in_array( $this->options['horizontal_counter_position'], array( 'inner_left', 'inner_right' ) ) ? 'var heateorSssReduceHorizontalSvgWidth = true;' : '';
+							$inline_script .= in_array( $this->options['horizontal_counter_position'], array( 'inner_top', 'inner_bottom' ) ) ? 'var heateorSssReduceHorizontalSvgHeight = true;' : '';
 						}
-						
-						$sharing_url = $this->get_short_url( $post_url, $post->ID );
-
-						$post_title = $post->post_title;
-						
-						$post_title = $this->sanitize_post_title( $post_title );
-						
-						$inline_script .= 'var heateorSssAmpTargetUrl = \''. $post_url .'\';
-						heateorSssLoadEvent(
-							function(){
-								var moreIcons = document.getElementsByClassName("heateorSssMoreBackground");
-								for(var i = 0; i < moreIcons.length; i++){
-									moreIcons[i].onclick = function(){
-										heateorSssMoreSharingPopup(null, \''. ( $sharing_url ? $sharing_url : $post_url) .'\', \''. $post_title .'\', \''. $this->sanitize_post_title( $this->wpseo_twitter_title( $post ) ) .'\')
-									}
-								}
-
-								var printIcons = document.getElementsByClassName("heateorSssPrintBackground");
-								for(var i = 0; i < printIcons.length; i++){
-									printIcons[i].onclick = function(){
-										window.print();
-									}
-								}
-
-								var pinterestIcons = document.getElementsByClassName("heateorSssPinterestBackground");
-								for(var i = 0; i < pinterestIcons.length; i++){
-									pinterestIcons[i].onclick = function(){
-										var e = document.createElement(\'script\');e.setAttribute(\'type\',\'text/javascript\');e.setAttribute(\'charset\',\'UTF-8\');e.setAttribute(\'src\',\'//assets.pinterest.com/js/pinmarklet.js?r=\'+Math.random()*99999999);document.body.appendChild(e);
-									}
-								}
-							}
-						);
-						
-						function heateorSssCapitaliseFirstLetter(e) {
-						    return e.charAt(0).toUpperCase() + e.slice(1)
+						if ( isset( $this->options['vertical_counts'] ) ) {
+							$inline_script .= isset( $this->options['vertical_counter_position'] ) && in_array( $this->options['vertical_counter_position'], array( 'inner_left', 'inner_right' ) ) ? 'var heateorSssReduceVerticalSvgWidth = true;' : '';
+							$inline_script .= ! isset( $this->options['vertical_counter_position'] ) || in_array( $this->options['vertical_counter_position'], array( 'inner_top', 'inner_bottom' ) ) ? 'var heateorSssReduceVerticalSvgHeight = true;' : '';
 						}
-
-						/**
-						 * Search sharing services
-						 */
-						function heateorSssFilterSharing(val) {
-							var sharingServices = document.getElementById(\'heateor_sss_sharing_more_content\').getElementsByTagName(\'a\');
-							for(var i = 0; i < sharingServices.length; i++){
-								if (sharingServices[i].innerText.toLowerCase().indexOf(val.toLowerCase()) != -1) {
-									sharingServices[i].parentNode.style.display = \'block\';
-									//jQuery(this).parent().css(\'display\', \'block\');
-								} else {
-									sharingServices[i].parentNode.style.display = \'none\';
-								}
-							}
-						};
-
-						function heateorSssMoreSharingPopup(elem, postUrl, postTitle, twitterTitle){
-							postUrl = encodeURIComponent(postUrl);
-							concate = \'</ul></div><div class="footer-panel"><p></p></div></div>\';
-							var heateorSssMoreSharingServices = {
-							  facebook: {
-								title: "Facebook",
-								locale: "en-US",
-								redirect_url: "http://www.facebook.com/sharer.php?u=" + postUrl + "&t=" + postTitle + "&v=3",
-							  },
-							  twitter: {
-								title: "Twitter",
-								locale: "en-US",
-								redirect_url: "http://twitter.com/intent/tweet?text=" + (twitterTitle ? twitterTitle : postTitle) + " " + postUrl,
-							  },
-							  linkedin: {
-								title: "Linkedin",
-								locale: "en-US",
-								redirect_url: "http://www.linkedin.com/shareArticle?mini=true&url=" + postUrl + "&title=" + postTitle,
-							  },
-							  pinterest: {
-								title: "Pinterest",
-								locale: "en-US",
-								redirect_url: "https://pinterest.com/pin/create/button/?url=" + postUrl + "&media=${media_link}&description=" + postTitle,
-								bookmarklet_url: "javascript:void((function(){var e=document.createElement(\'script\');e.setAttribute(\'type\',\'text/javascript\');e.setAttribute(\'charset\',\'UTF-8\');e.setAttribute(\'src\',\'//assets.pinterest.com/js/pinmarklet.js?r=\'+Math.random()*99999999);document.body.appendChild(e)})());"
-							  },
-							  CopyLink: {
-								title: "Copy Link",
-								locale: "en-US",
-								redirect_url: "",
-								bookmarklet_url: ""
-							  },
-							  Diaspora: {
-								title: "Diaspora",
-								locale: "en-US",
-								redirect_url: "https://joindiaspora.com/bookmarklet?url=" + postUrl + "&title=" + postTitle + "&v=1"
-							  },
-							  Douban: {
-								title: "Douban",
-								locale: "en-US",
-								redirect_url: "https://www.douban.com/share/service?name="+postTitle+"&href="+postUrl+"&image=&updated=&bm=&url="+postUrl+"&title="+postTitle+"&sel="
-							  },
-							  Draugiem: {
-								title: "Draugiem",
-								locale: "en-US",
-								redirect_url: "https://www.draugiem.lv/say/ext/add.php?link="+postUrl+"&title="+postTitle
-							  },
-							  Facebook_Messenger: {
-								title: "Facebook Messenger",
-								locale: "en-US",
-								redirect_url: "https://www.facebook.com/dialog/send?app_id=1904103319867886&display=popup&link="+postUrl+"&redirect_uri="+postUrl
-							  },
-							  Google_Classroom: {
-								title: "Google Classroom",
-								locale: "en-US",
-								redirect_url: "https://classroom.google.com/u/0/share?url="+postUrl
-							  },
-							  Kik: {
-								title: "Kik",
-								locale: "en-US",
-								redirect_url: "https://www.kik.com/send/article/?app_name=Share&text=&title="+postTitle+"&url="+postUrl
-							  },
-							  Papaly: {
-								title: "Papaly",
-								locale: "en-US",
-								redirect_url: "https://papaly.com/api/share.html?url="+postUrl+"&title="+postTitle
-							  },
-							  Polyvore: {
-								title: "Polyvore",
-								locale: "en-US",
-								bookmarklet_url: "javascript:(function(){function e(a){var c=window;if(c.PolyvoreClipper){c.PolyvoreClipper.run()}else{var b=a.createElement(\'script\');c._polyvoreMode=\'prod\';c._polyvoreHost=\'www.polyvore.com\';b.src=\'http://akwww.polyvorecdn.com/rsrc/clipper.js?\'+Math.floor((new Date()).getTime()/86400000);a.body.appendChild(b)}}try{e(document)}catch(g){}for(var f=0;f<frames.length;++f){var i=frames[f];try{if(i.frameElement.tagName==\'IFRAME\'){continue}if(i.innerWidth<400||i.innerHeight<400){continue}e(i.document)}catch(j){}}})();"
-							  },
-							  Refind: {
-								title: "Refind",
-								locale: "en-US",
-								redirect_url: "https://refind.com/?url="+postUrl
-							  },
-							  Skype: {
-								title: "Skype",
-								locale: "en-US",
-								redirect_url: "https://web.skype.com/share?url="+postUrl
-							  },
-							  SMS: {
-								title: "SMS",
-								locale: "en-US",
-								bookmarklet_url: "sms://?&body="+postTitle+" "+postUrl
-							  },
-							  Trello: {
-								title: "Trello",
-								locale: "en-US",
-								redirect_url: "https://trello.com/add-card?mode=popup&url="+postUrl+"&name="+postTitle+"&desc="
-							  },
-							  Viber: {
-								title: "Viber",
-								locale: "en-US",
-								bookmarklet_url: "viber://forward?text="+postTitle+" "+postUrl
-							  },
-							  Telegram: {
-								title: "Telegram",
-								locale: "en-US",
-								redirect_url: "https://telegram.me/share/url?url="+postUrl+"&text="+postTitle
-							  },
-							  yahoo_bookmarks: {
-								title: "Yahoo",
-								locale: "en-US",
-								redirect_url: "http://bookmarks.yahoo.com/toolbar/savebm?u=" + postUrl + "&t=" + postTitle,
-							  },
-							  email: {
-								title: "Email",
-								locale: "en-US",
-								redirect_url: "mailto:?subject=" + postTitle + "&body=Link: " + postUrl,
-							  },
-							  delicious: {
-								title: "Delicious",
-								locale: "en-US",
-								redirect_url: "http://delicious.com/save?url=" + postUrl + "&title=" + postTitle,
-							  },
-							  reddit: {
-								title: "Reddit",
-								locale: "en-US",
-								redirect_url: "http://reddit.com/submit?url=" + postUrl + "&title=" + postTitle,
-							  },
-							  float_it: {
-								title: "Float it",
-								locale: "en-US",
-								redirect_url: "http://www.designfloat.com/submit.php?url=" + postUrl + "&title=" + postTitle,
-							  },
-							  google_mail: {
-								title: "Google Gmail",
-								locale: "en-US",
-								redirect_url: "https://mail.google.com/mail/?ui=2&view=cm&fs=1&tf=1&su=" + postTitle + "&body=Link: " + postUrl,
-							  },
-							  google_bookmarks: {
-								title: "Google Bookmarks",
-								locale: "en-US",
-								redirect_url: "http://www.google.com/bookmarks/mark?op=edit&bkmk=" + postUrl + "&title=" + postTitle,
-							  },
-							  digg: {
-								title: "Digg",
-								locale: "en-US",
-								redirect_url: "http://digg.com/submit?phase=2&url=" + postUrl + "&title=" + postTitle,
-							  },
-							  printfriendly: {
-								title: "PrintFriendly",
-								locale: "en-US",
-								redirect_url: "http://www.printfriendly.com/print?url=" + postUrl,
-							  },
-							  print: {
-								title: "Print",
-								locale: "en-US",
-								redirect_url: "http://www.printfriendly.com/print?url=" + postUrl,
-							  },
-							  tumblr: {
-								title: "Tumblr",
-								locale: "en-US",
-								redirect_url: "http://www.tumblr.com/share?v=3&u=" + postUrl + "&t=" + postTitle,
-								bookmarklet_url: "javascript:var d=document,w=window,e=w.getSelection,k=d.getSelection,x=d.selection,s=(e?e():(k)?k():(x?x.createRange().text:0)),f=\'http://www.tumblr.com/share\',l=d.location,e=encodeURIComponent,p=\'?v=3&u=\'+e(l.href) +\'&t=\'+e(d.title) +\'&s=\'+e(s),u=f+p;try{if(!/^(.*\\.)?tumblr[^.]*$/.test(l.host))throw(0);tstbklt();}catch(z){a =function(){if(!w.open(u,\'t\',\'toolbar=0,resizable=0,status=1,width=450,height=430\'))l.href=u;};if(/Firefox/.test(navigator.userAgent))setTimeout(a,0);else a();}void(0);"
-							  },
-							  vk: {
-								title: "Vkontakte",
-								locale: "ru",
-								redirect_url: "https://vk.com/share.php?url=" + postUrl + "&title=" + postTitle,
-							  },
-							  evernote: {
-								title: "Evernote",
-								locale: "en-US",
-								redirect_url: "https://www.evernote.com/clip.action?url=" + postUrl + "&title=" + postTitle,
-								bookmarklet_url: "javascript:(function(){EN_CLIP_HOST=\'http://www.evernote.com\';try{var x=document.createElement(\'SCRIPT\');x.type=\'text/javascript\';x.src=EN_CLIP_HOST+\'/public/bookmarkClipper.js?\'+(new Date().getTime()/100000);document.getElementsByTagName(\'head\')[0].appendChild(x);}catch(e){location.href=EN_CLIP_HOST+\'/clip.action?url=\'+encodeURIComponent(location.href)+\'&title=\'+encodeURIComponent(document.title);}})();"
-							  },
-							  amazon_us_wish_list: {
-								title: "Amazon Wish List",
-								locale: "en-US",
-								redirect_url: "http://www.amazon.com/wishlist/add?u=" + postUrl + "&t=" + postTitle,
-								bookmarklet_url: "javascript:(function(){var w=window,l=w.location,d=w.document,s=d.createElement(\'script\'),e=encodeURIComponent,x=\'undefined\',u=\'http://www.amazon.com/gp/wishlist/add\';if(typeof s!=\'object\')l.href=u+\'?u=\'+e(l)+\'&t=\'+e(d.title);function g(){if(d.readyState&&d.readyState!=\'complete\'){setTimeout(g,200);}else{if(typeof AUWLBook==x)s.setAttribute(\'src\',u+\'.js?loc=\'+e(l)),d.body.appendChild(s);function f(){(typeof AUWLBook==x)?setTimeout(f,200):AUWLBook.showPopover();}f();}}g();}())"
-							  },
-							  wordpress_blog: {
-								title: "WordPress",
-								locale: "en-US",
-								redirect_url: "http://www.addtoany.com/ext/wordpress/press_this?linkurl=" + postUrl + "&linkname=" + postTitle,
-							  },
-							  whatsapp: {
-								title: "Whatsapp",
-								locale: "en-US",
-								bookmarklet_url: "whatsapp://send?text=" + postTitle + " " + postUrl,
-							  },
-							  diigo: {
-								title: "Diigo",
-								locale: "en-US",
-								redirect_url: "http://www.diigo.com/post?url=" + postUrl + "&title=" + postTitle,
-							  },
-							  yc_hacker_news: {
-								title: "Hacker News",
-								locale: "en-US",
-								redirect_url: "http://news.ycombinator.com/submitlink?u=" + postUrl + "&t=" + postTitle,
-							  },
-							  box_net: {
-								title: "Box.net",
-								locale: "en-US",
-								redirect_url: "https://www.box.net/api/1.0/import?url=" + postUrl + "&name=" + postTitle + "&import_as=link",
-							  },
-							  aol_mail: {
-								title: "AOL Mail",
-								locale: "en-US",
-								redirect_url: "http://webmail.aol.com/25045/aol/en-us/Mail/compose-message.aspx?subject=" + postTitle + "&body=" + postUrl,
-							  },
-							  yahoo_mail: {
-								title: "Yahoo Mail",
-								locale: "en-US",
-								redirect_url: "http://compose.mail.yahoo.com/?Subject=" + postTitle + "&body=Link: " + postUrl,
-							  },
-							  instapaper: {
-								title: "Instapaper",
-								locale: "en-US",
-								redirect_url: "http://www.instapaper.com/edit?url=" + postUrl + "&title=" + postTitle,
-							  },
-							  plurk: {
-								title: "Plurk",
-								locale: "en-US",
-								redirect_url: "http://www.plurk.com/m?content=" + postUrl + "&qualifier=shares",
-							  },
-							  wanelo: {
-								title: "Wanelo",
-								locale: "en-US",
-								redirect_url: "http://wanelo.com/p/post?bookmarklet=&images%5B%5D=&url=" + postUrl + "&title=" + postTitle + "&price=&shop=",
-								bookmarklet_url: "javascript:void ((function(url){if(!window.waneloBookmarklet){var productURL=encodeURIComponent(url),cacheBuster=Math.floor(Math.random()*1e3),element=document.createElement(\'script\');element.setAttribute(\'src\',\'//wanelo.com/bookmarklet/3/setup?*=\'+cacheBuster+\'&url=\'+productURL),element.onload=init,element.setAttribute(\'type\',\'text/javascript\'),document.getElementsByTagName(\'head\')[0].appendChild(element)}else init();function init(){window.waneloBookmarklet()}})(window.location.href))"
-							  },
-							  aim: {
-								title: "AIM",
-								locale: "en-US",
-								redirect_url: "http://share.aim.com/share/?url=" + postUrl + "&title=" + postTitle,
-							  },
-							  stumpedia: {
-								title: "Stumpedia",
-								locale: "en-US",
-								redirect_url: "http://www.stumpedia.com/submit?url=" + postUrl + "&title=" + postTitle,
-							  },
-							  viadeo: {
-								title: "Viadeo",
-								locale: "en-US",
-								redirect_url: "http://www.viadeo.com/shareit/share/?url=" + postUrl + "&title=" + postTitle,
-							  },
-							  yahoo_messenger: {
-								title: "Yahoo Messenger",
-								locale: "en-US",
-								redirect_url: "ymsgr:sendim?m=" + postUrl,
-							  },
-							  pinboard_in: {
-								title: "Pinboard",
-								locale: "en-US",
-								redirect_url: "http://pinboard.in/add?url=" + postUrl + "&title=" + postTitle,
-							  },
-							  blogger_post: {
-								title: "Blogger Post",
-								locale: "en-US",
-								redirect_url: "http://www.blogger.com/blog_this.pyra?t=&u=" + postUrl + "&l&n=" + postTitle,
-							  },
-							  typepad_post: {
-								title: "TypePad Post",
-								locale: "en-US",
-								redirect_url: "http://www.typepad.com/services/quickpost/post?v=2&qp_show=ac&qp_title=" + postTitle + "&qp_href=" + postUrl + "&qp_text=" + postTitle,
-							  },
-							  buffer: {
-								title: "Buffer",
-								locale: "en-US",
-								redirect_url: "http://bufferapp.com/add?url=" + postUrl + "&text=" + postTitle,
-							  },
-							  flipboard: {
-								title: "Flipboard",
-								locale: "en-US",
-								redirect_url: "https://share.flipboard.com/bookmarklet/popout?v=2&url=" + postUrl + "&title=" + postTitle,
-							  },
-							  mail: {
-								title: "Email",
-								locale: "en-US",
-								redirect_url: "mailto:?subject=" + postTitle + "&body=Link: " + postUrl,
-							  },
-							  pocket: {
-								title: "Pocket",
-								locale: "en-US",
-								redirect_url: "https://readitlaterlist.com/save?url=" + postUrl + "&title=" + postTitle,
-							  },
-							  fark: {
-								title: "Fark",
-								locale: "en-US",
-								redirect_url: "http://cgi.fark.com/cgi/fark/submit.pl?new_url=" + postUrl,
-							  },
-							  yummly: {
-								title: "Yummly",
-								locale: "en-US",
-								redirect_url: "http://www.yummly.com/urb/verify?url=" + postUrl + "&title=" + postTitle,
-							  },
-							  app_net: {
-								title: "App.net",
-								locale: "en-US",
-								redirect_url: "https://account.app.net/login/",
-							  },
-							  baidu: {
-								title: "Baidu",
-								locale: "en-US",
-								redirect_url: "http://cang.baidu.com/do/add?it=" + postTitle + "&iu=" + postUrl,
-							  },
-							  balatarin: {
-								title: "Balatarin",
-								locale: "en-US",
-								redirect_url: "https://www.balatarin.com/login",
-							  },
-							  bibSonomy: {
-								title: "BibSonomy",
-								locale: "en-US",
-								redirect_url: "http://www.bibsonomy.org/login",
-							  },
-							  Bitty_Browser: {
-								title: "Bitty Browser",
-								locale: "en-US",
-								redirect_url: "http://www.bitty.com/manual/?contenttype=&contentvalue=" + postUrl,
-							  },
-							  Blinklist: {
-								title: "Blinklist",
-								locale: "en-US",
-								redirect_url: "http://blinklist.com/blink?t=" + postTitle + "&d=&u=" + postUrl,
-							  },
-							  BlogMarks: {
-								title: "BlogMarks",
-								locale: "en-US",
-								redirect_url: "http://blogmarks.net/my/new.php?mini=1&simple=1&title=" + postTitle + "&url=" + postUrl,
-							  },
-							  Bookmarks_fr: {
-								title: "Bookmarks.fr",
-								locale: "en-US",
-								redirect_url: "http://www.bookmarks.fr/Connexion/?action=add&address=" + postUrl + "&title=" + postTitle,
-							  },
-							  BuddyMarks: {
-								title: "BuddyMarks",
-								locale: "en-US",
-								redirect_url: "http://buddymarks.com/login.php?bookmark_title=" + postTitle + "&bookmark_url=" + postUrl + "&bookmark_desc=&bookmark_tags=",
-							  },
-							  Care2_news: {
-								title: "Care2 News",
-								locale: "en-US",
-								redirect_url: "http://www.care2.com/passport/login.html?promoID=10&pg=http://www.care2.com/news/compose?sharehint=news&share[share_type]news&bookmarklet=Y&share[title]=" + postTitle + "&share[link_url]=" + postUrl + "&share[content]=",
-							  },
-							  CiteULike: {
-								title: "Cite U Like",
-								locale: "en-US",
-								redirect_url: "http://www.citeulike.org/posturl?url=" + postUrl + "&title=" + postTitle,
-							  },
-							  Diary_Ru: {
-								title: "Diary.Ru",
-								locale: "en-US",
-								redirect_url: "http://www.diary.ru/?newpost&title=" + postTitle + "&text=" + postUrl,
-							  },
-							  diHITT: {
-								title: "diHITT",
-								locale: "en-US",
-								redirect_url: "http://www.dihitt.com/submit?url=" + postUrl + "&title=" + postTitle,
-							  },
-							  dzone: {
-								title: "DZone",
-								locale: "en-US",
-								redirect_url: "http://www.dzone.com/links/add.html?url=" + postUrl + "&title=" + postTitle,
-							  },
-							  Folkd: {
-								title: "Folkd",
-								locale: "en-US",
-								redirect_url: "http://www.folkd.com/page/social-bookmarking.html?addurl=" + postUrl,
-							  },
-							  Hatena: {
-								title: "Hatena",
-								locale: "en-US",
-								redirect_url: "http://b.hatena.ne.jp/bookmarklet?url=" + postUrl + "&btitle=" + postTitle,
-							  },
-							  Jamespot: {
-								title: "Jamespot",
-								locale: "en-US",
-								redirect_url: "//my.jamespot.com/",
-							  },
-							  Kakao: {
-								title: "Kakao",
-								locale: "en-US",
-								redirect_url: "https://story.kakao.com/share?url=" + postUrl,
-							  },
-							  Kindle_It: {
-								title: "Kindle_It",
-								locale: "en-US",
-								redirect_url: "//fivefilters.org/kindle-it/send.php?url=" + postUrl,
-							  },
-							  Known: {
-								title: "Known",
-								locale: "en-US",
-								redirect_url: "https://withknown.com/share/?url=" + postUrl + "&title=" + postTitle,
-							  },
-							  Line: {
-								title: "Line",
-								locale: "en-US",
-								redirect_url: "line://msg/text/" + postTitle + "! " + postUrl,
-							  },
-							  LiveJournal: {
-								title: "LiveJournal",
-								locale: "en-US",
-								redirect_url: "http://www.livejournal.com/update.bml?subject=" + postTitle + "&event=" + postUrl,
-							  },
-							  Mail_Ru: {
-								title: "Mail.Ru",
-								locale: "en-US",
-								redirect_url: "http://connect.mail.ru/share?share_url=" + postUrl,
-							  },
-							  Mendeley: {
-								title: "Mendeley",
-								locale: "en-US",
-								redirect_url: "https://www.mendeley.com/sign-in/",
-							  },
-							  Meneame: {
-								title: "Meneame",
-								locale: "en-US",
-								redirect_url: "https://www.meneame.net/submit.php?url=" + postUrl,
-							  },
-							  MeWe: {
-								title: "MeWe",
-								locale: "en-US",
-								redirect_url: "https://mewe.com/share?link=" + postUrl,
-							  },
-							  Mix: {
-								title: "Mix",
-								locale: "en-US",
-								redirect_url: "https://mix.com/mixit?url=" + postUrl,
-							  },
-							  Mixi: {
-								title: "Mixi",
-								locale: "en-US",
-								redirect_url: "https://mixi.jp/share.pl?mode=login&u=" + postUrl,
-							  },
-							  MySpace: {
-								title: "MySpace",
-								locale: "en-US",
-								redirect_url: "https://myspace.com/post?u=" + encodeURIComponent(postUrl) + "&t=" + postTitle + "&l=3&c=" + postTitle,
-							  },
-							  Netlog: {
-								title: "Netlog",
-								locale: "en-US",
-								redirect_url: "http://www.netlog.com/go/manage/links/view=save&origin=external&url=" + postUrl + "&title=" + postTitle + "&description=",
-							  },
-							  Netvouz: {
-								title: "Netvouz",
-								locale: "en-US",
-								redirect_url: "http://www.netvouz.com/action/submitBookmark?url=" + postUrl + "&title=" + postTitle + "&popup=no&description=",
-							  },
-							  NewsVine: {
-								title: "NewsVine",
-								locale: "en-US",
-								redirect_url: "http://www.newsvine.com/_tools/seed?popoff=0&u=" + postUrl + "&h=" + postTitle,
-							  },
-							  NUjij: {
-								title: "NUjij",
-								locale: "en-US",
-								redirect_url: "http://www.nujij.nl/nieuw-bericht.2051051.lynkx?title=" + postTitle + "&url=" + postUrl + "&bericht=&topic=",
-							  },
-							  Odnoklassniki: {
-								title: "Odnoklassniki",
-								locale: "en-US",
-								redirect_url: "https://connect.ok.ru/dk?cmd=WidgetSharePreview&st.cmd=WidgetSharePreview&st.shareUrl=" + postUrl + "&st.client_id=-1",
-							  },
-							  Oknotizie: {
-								title: "Oknotizie",
-								locale: "en-US",
-								redirect_url: "//oknotizie.virgilio.it/post?url=" + postUrl + "&title=" + postTitle,
-							  },
-							  Outlook_com: {
-								title: "Outlook.com",
-								locale: "en-US",
-								redirect_url: "https://mail.live.com/default.aspx?rru=compose?subject=" + postTitle + "&body=" + postUrl + "&lc=1033&id=64855&mkt=en-us&cbcxt=mai",
-							  },
-							  Protopage_Bookmarks: {
-								title: "Protopage_Bookmarks",
-								locale: "en-US",
-								redirect_url: "http://www.protopage.com/add-button-site?url=" + postUrl + "&label=&type=page",
-							  },
-							  Pusha: {
-								title: "Pusha",
-								locale: "en-US",
-								redirect_url: "//www.pusha.se/posta?url=" + postUrl,
-							  },
-							  Qzone: {
-								title: "Qzone",
-								locale: "en-US",
-								redirect_url: "http://sns.qzone.qq.com/cgi-bin/qzshare/cgi_qzshare_onekey?url=" + postUrl,
-							  },
-							  Rediff_MyPage: {
-								title: "Rediff MyPage",
-								locale: "en-US",
-								redirect_url: "//share.rediff.com/bookmark/addbookmark?bookmarkurl=" + postUrl + "&title=" + postTitle,
-							  },
-							  Renren: {
-								title: "Renren",
-								locale: "en-US",
-								redirect_url: "//www.connect.renren.com/share/sharer?url=" + postUrl + "&title=" + postTitle,
-							  },
-							  Segnalo: {
-								title: "Segnalo",
-								locale: "en-US",
-								redirect_url: "http://segnalo.virgilio.it/post.html.php?url=" + postUrl + "&title=" + postTitle,
-							  },
-							  Sina_Weibo: {
-								title: "Sina Weibo",
-								locale: "en-US",
-								redirect_url: "//service.weibo.com/share/share.php?url=" + postUrl + "&title=" + postTitle,
-							  },
-							  SiteJot: {
-								title: "SiteJot",
-								locale: "en-US",
-								redirect_url: "http://www.sitejot.com/loginform.php?iSiteAdd=&iSiteDes=",
-							  },
-							  Slashdot: {
-								title: "Slashdot",
-								locale: "en-US",
-								redirect_url: "//slashdot.org/submission?url=" + postUrl,
-							  },
-							  Svejo: {
-								title: "Svejo",
-								locale: "en-US",
-								redirect_url: "https://svejo.net/story/submit_by_url?url=" + postUrl + "&title=" + postTitle + "&summary=",
-							  },
-							  Symbaloo_Feeds: {
-								title: "Symbaloo_Feeds",
-								locale: "en-US",
-								redirect_url: "//www.symbaloo.com/",
-							  },
-							  Tuenti: {
-								title: "Tuenti",
-								locale: "en-US",
-								redirect_url: "https://www.tuenti.com/share?p=b5dd6602&url=" + postUrl,
-							  },
-							  Twiddla: {
-								title: "Twiddla",
-								locale: "en-US",
-								redirect_url: "//www.twiddla.com/New.aspx?url=" + postUrl + "&title=" + postTitle,
-							  },
-							  Webnews: {
-								title: "Webnews",
-								locale: "en-US",
-								redirect_url: "//www.webnews.de/login",
-							  },
-							  Wykop: {
-								title: "Wykop",
-								locale: "en-US",
-								redirect_url: "//www.wykop.pl/dodaj?url=" + postUrl + "&title=" + postTitle,
-							  },
-							  Yoolink: {
-								title: "Yoolink",
-								locale: "en-US",
-								redirect_url: "//yoolink.to/addorshare?url_value=" + postUrl + "&title=" + postTitle,
-							  },
-							  YouMob: {
-								title: "YouMob",
-								locale: "en-US",
-								redirect_url: "//youmob.com/startmob.aspx?cookietest=true&mob=" + postUrl,
-							  }
-							}
-							var heateorSssMoreSharingServicesHtml = \'<button id="heateor_sss_sharing_popup_close" class="close-button separated"><img src="\'+ heateorSssCloseIconPath +\'" /></button><div id="heateor_sss_sharing_more_content" data-href="\'+ decodeURIComponent(postUrl) +\'"><div class="filter"><input type="text" onkeyup="heateorSssFilterSharing(this.value.trim())" placeholder="Search" class="search"></div><div class="all-services"><ul class="mini">\';
-							for(var i in heateorSssMoreSharingServices){
-								var tempTitle = heateorSssCapitaliseFirstLetter(heateorSssMoreSharingServices[i].title.replace(/[_. ]/g, ""));
-								heateorSssMoreSharingServicesHtml += \'<li><a rel="nofollow" class="heateorSss\'+i+\'Share" title="\'+ heateorSssMoreSharingServices[i].title +\'" alt="\'+ heateorSssMoreSharingServices[i].title +\'" \';
-								if(heateorSssMoreSharingServices[i].bookmarklet_url){
-									heateorSssMoreSharingServicesHtml += \'href="\' + heateorSssMoreSharingServices[i].bookmarklet_url + \'" \';
-								}else if(heateorSssMoreSharingServices[i].redirect_url){
-									heateorSssMoreSharingServicesHtml += \'onclick="heateorSssPopup(\'\' + heateorSssMoreSharingServices[i].redirect_url + \'\')" href="javascript:void(0)" \';
-								}else{
-									heateorSssMoreSharingServicesHtml += \'href="javascript:void(0)" \';
-								}
-								heateorSssMoreSharingServicesHtml += \'"><i style="width:22px;height:22px" title="\'+ heateorSssMoreSharingServices[i].title +\'" class="heateorSssSharing heateorSss\' + tempTitle + \'Background"><ss style="display:block;width:100%;height:100%;" class="heateorSssSharingSvg heateorSss\' + tempTitle + \'Svg"></ss></i>\' + heateorSssMoreSharingServices[i].title + \'</a></li>\';
-							}
-							heateorSssMoreSharingServicesHtml += concate;
-							
-							var mainDiv = document.createElement(\'div\');
-							mainDiv.innerHTML = heateorSssMoreSharingServicesHtml;
-							mainDiv.setAttribute(\'id\', \'heateor_sss_sharing_more_providers\');
-							var bgDiv = document.createElement(\'div\');
-							bgDiv.setAttribute(\'id\', \'heateor_sss_popup_bg\');
-							document.body.appendChild(mainDiv);
-							document.body.appendChild(bgDiv);
-							document.getElementById(\'heateor_sss_sharing_popup_close\').onclick = function(){
-								mainDiv.parentNode.removeChild(mainDiv);
-								bgDiv.parentNode.removeChild(bgDiv);
-							}
-						}';
+						$inline_script .= 'var heateorSssUrlCountFetched = [], heateorSssSharesText = \''. htmlspecialchars(__('Shares', 'sassy-social-share'), ENT_QUOTES) .'\', heateorSssShareText = \''. htmlspecialchars(__('Share', 'sassy-social-share'), ENT_QUOTES) .'\';';
+						$inline_script .= 'function heateorSssPopup(e) {window.open(e,"popUpWindow","height=400,width=600,left=400,top=100,resizable,scrollbars,toolbar=0,personalbar=0,menubar=no,location=no,directories=no,status")}';
+						if ( $this->facebook_like_recommend_enabled() || $this->facebook_share_enabled() ) {
+							$inline_script .= 'function heateorSssInitiateFB() {FB.init({appId:"",channelUrl:"",status:!0,cookie:!0,xfbml:!0,version:"v3.0"})}window.fbAsyncInit=function() {heateorSssInitiateFB(),' . ( defined( 'HEATEOR_SOCIAL_SHARE_MYCRED_INTEGRATION_VERSION' ) && $this->facebook_like_recommend_enabled() ? 1 : 0 ) . '&&(FB.Event.subscribe("edge.create",function(e) {heateorSsmiMycredPoints("Facebook_like_recommend","",e?e:"")}),FB.Event.subscribe("edge.remove",function(e) {heateorSsmiMycredPoints("Facebook_like_recommend","",e?e:"","Minus point(s) for undoing Facebook like-recommend")}) ),'. ( defined( 'HEATEOR_SHARING_GOOGLE_ANALYTICS_VERSION' ) ? 1 : 0 ) .'&&(FB.Event.subscribe("edge.create",function(e) {heateorSsgaSocialPluginsTracking("Facebook","Like",e?e:"")}),FB.Event.subscribe("edge.remove",function(e) {heateorSsgaSocialPluginsTracking("Facebook","Unlike",e?e:"")}) )},function(e) {var n,i="facebook-jssdk",o=e.getElementsByTagName("script")[0];e.getElementById(i)||(n=e.createElement("script"),n.id=i,n.async=!0,n.src="//connect.facebook.net/'. ( $this->options['language'] ? $this->options['language'] : 'en_US' ) .'/sdk.js",o.parentNode.insertBefore(n,o) )}(document);';
+						}
+						$inline_script .= ';var heateorSssWhatsappShareAPI = "' . $this->whatsapp_share_api() . '";';
+						wp_enqueue_script( 'heateor_sss_sharing_js', plugins_url( 'js/sassy-social-share-public.js', __FILE__ ), array( 'jquery' ), $this->version, $in_footer );
+						wp_add_inline_script( 'heateor_sss_sharing_js', $inline_script, $position = 'before' );
 					}
-					echo '<script type="text/javascript">' . $inline_script . ';var heateorSssWhatsappShareAPI = "' . $this->whatsapp_share_api() . '";</script>';
-					wp_enqueue_script( 'heateor_sss_sharing_js', plugins_url( 'js/sassy-social-share-public.js', __FILE__ ), array( 'jquery' ), $this->version, $in_footer );
 				}
 			}
 		}
@@ -791,7 +136,7 @@ class Sassy_Social_Share_Public {
 	 *
 	 * @since    3.2.13
 	 */
-	private function whatsapp_share_api() {
+	public function whatsapp_share_api() {
 
 		if ( isset( $_SERVER['HTTP_USER_AGENT'] ) ) {
 			// detect the device for Whatsapp share API
@@ -817,7 +162,7 @@ class Sassy_Social_Share_Public {
 	 *
 	 * @since    1.0.0
 	 */
-	private function facebook_like_recommend_enabled() {
+	public function facebook_like_recommend_enabled() {
 		
 		if ( ( isset( $this->options['hor_enable'] ) && isset( $this->options['horizontal_re_providers'] ) && ( in_array( 'facebook_like', $this->options['horizontal_re_providers'] ) || in_array( 'facebook_recommend', $this->options['horizontal_re_providers'] ) ) ) || ( isset( $this->options['vertical_enable'] ) && isset( $this->options['vertical_re_providers'] ) && ( in_array( 'facebook_like', $this->options['vertical_re_providers'] ) || in_array( 'facebook_recommend', $this->options['vertical_re_providers'] ) ) ) ) {
 			return true;
@@ -832,7 +177,7 @@ class Sassy_Social_Share_Public {
 	 *
 	 * @since    2.4
 	 */
-	private function facebook_share_enabled() {
+	public function facebook_share_enabled() {
 		
 		if ( ( isset( $this->options['hor_enable'] ) && isset( $this->options['horizontal_re_providers'] ) && ( in_array( 'facebook_share', $this->options['horizontal_re_providers'] ) ) ) || ( isset( $this->options['vertical_enable'] ) && isset( $this->options['vertical_re_providers'] ) && ( in_array( 'facebook_share', $this->options['vertical_re_providers'] ) ) ) ) {
 			return true;
@@ -1418,7 +763,7 @@ class Sassy_Social_Share_Public {
 				}
 			}
 		}
-		if ( isset( $this->options['vertical_enable'] ) && ! $this->is_amp_page() && ! ( isset( $sharing_meta['vertical_sharing'] ) && $sharing_meta['vertical_sharing'] == 1 && ( ! is_front_page() || ( is_front_page() && 'page' == get_option( 'show_on_front' ) ) ) ) ) {
+		if ( isset( $this->options['vertical_enable'] ) && ! ( isset( $sharing_meta['vertical_sharing'] ) && $sharing_meta['vertical_sharing'] == 1 && ( ! is_front_page() || ( is_front_page() && 'page' == get_option( 'show_on_front' ) ) ) ) ) {
 			$post_id = $post -> ID;
 			$post_url = get_permalink( $post->ID );
 			$share_count_url = $post_url;
@@ -1518,6 +863,7 @@ class Sassy_Social_Share_Public {
 	private function ajax_response( $response ) {
 		
 		$response = apply_filters( 'heateor_sss_ajax_response_filter', $response );
+		header( 'Content-Type: application/json' );
 		die( json_encode( $response ) );
 
 	}
@@ -1547,7 +893,7 @@ class Sassy_Social_Share_Public {
 		if ( isset( $_GET['urls'] ) && count( $_GET['urls'] ) > 0 ) {
 			$target_urls = array_unique( $_GET['urls'] );
 			foreach ( $target_urls as $k => $v ) {
-				$target_urls[$k] = esc_attr( $v );
+				$target_urls[esc_attr( $k )] = esc_attr( $v );
 			}
 		} else {
 			$this->ajax_response( array( 'status' => 0, 'message' => __( 'Invalid request' ) ) );
@@ -1876,7 +1222,27 @@ class Sassy_Social_Share_Public {
 		} else {
 			$important = '!important';
 		}
-		?>
+		if ( isset( $this->options['plain_instagram_bg'] ) ) {
+			?>
+			.heateorSssInstagramBackground{background-color:#527fa4}
+			<?php
+		} else {
+			?>
+			.heateorSssInstagramBackground{background:radial-gradient(circle at 30% 107%,#fdf497 0,#fdf497 5%,#fd5949 45%,#d6249f 60%,#285aeb 90%)}
+			<?php
+		}
+		if ( $this->options['horizontal_bg_color_default'] != '' ) { ?>
+			div.heateor_sss_horizontal_sharing i.heateorSssInstagramBackground{background:<?php echo $this->options['horizontal_bg_color_default'] ?>!important;}div.heateor_sss_standard_follow_icons_container i.heateorSssInstagramBackground{background:<?php echo $this->options['horizontal_bg_color_default'] ?>;}
+		<?php } ?>
+		<?php if ( $this->options['horizontal_bg_color_hover'] != '' ) { ?>
+			div.heateor_sss_horizontal_sharing i.heateorSssInstagramBackground:hover{background:<?php echo $this->options['horizontal_bg_color_hover'] ?>!important;}div.heateor_sss_standard_follow_icons_container i.heateorSssInstagramBackground:hover{background:<?php echo $this->options['horizontal_bg_color_hover'] ?>;}
+		<?php } ?>
+		<?php if ( $this->options['vertical_bg_color_default'] != '' ) { ?>
+			div.heateor_sss_vertical_sharing  i.heateorSssInstagramBackground{background:<?php echo $this->options['vertical_bg_color_default'] ?>!important;}div.heateor_sss_floating_follow_icons_container i.heateorSssInstagramBackground{background:<?php echo $this->options['vertical_bg_color_default'] ?>;}
+		<?php } ?>
+		<?php if ( $this->options['vertical_bg_color_hover'] != '' ) { ?>
+			div.heateor_sss_vertical_sharing i.heateorSssInstagramBackground:hover{background:<?php echo $this->options['vertical_bg_color_hover'] ?>!important;}div.heateor_sss_floating_follow_icons_container i.heateorSssInstagramBackground:hover{background:<?php echo $this->options['vertical_bg_color_hover'] ?>;}
+		<?php } ?>
 		.heateor_sss_horizontal_sharing .heateorSssSharing,.heateor_sss_standard_follow_icons_container .heateorSssSharing{
 			<?php if ( $this->options['horizontal_bg_color_default'] != '' ) { ?>
 				background-color: <?php echo $this->options['horizontal_bg_color_default'] ?>;
@@ -1939,6 +1305,7 @@ class Sassy_Social_Share_Public {
 			<?php  } ?>
 			border-color: <?php echo $this->options['vertical_border_color_hover'] != '' ? $this->options['vertical_border_color_hover'] : 'transparent'; echo $important; ?>;
 		}
+		
 		<?php
 		if ( isset( $this->options['horizontal_counts'] ) ) {
 			$svg_height = $this->options['horizontal_sharing_shape'] == 'rectangle' ? $this->options['horizontal_sharing_height'] : $this->options['horizontal_sharing_size'];
@@ -1979,6 +1346,9 @@ class Sassy_Social_Share_Public {
 			}
 		}
 		echo isset( $this->options['hide_mobile_sharing'] ) && $this->options['vertical_screen_width'] != '' ? '@media screen and (max-width:' . $this->options['vertical_screen_width'] . 'px) {.heateor_sss_vertical_sharing{display:none!important}}' : '';
+		
+		echo isset( $this->options['hide_mobile_sharing'] ) && $this->options['vertical_screen_width'] != '' ? '@media screen and (max-width:' . $this->options['vertical_screen_width'] . 'px) {.heateor_sss_floating_follow_icons_container{display:none!important}}' : '';
+		
 		$bottom_sharing_postion_inverse = $this->options['bottom_sharing_alignment'] == 'left' ? 'right' : 'left';
 		$bottom_sharing_responsive_css = '';
 		if ( isset( $this->options['vertical_enable'] ) && $this->options['bottom_sharing_position_radio'] == 'responsive' ) {
@@ -2053,7 +1423,7 @@ class Sassy_Social_Share_Public {
 			$css .= '<style type="text/css">';
 		}
 		// background color of amp icons
-		$css .= 'a.heateor_sss_amp{padding:0 4px;}div.heateor_sss_horizontal_sharing a amp-img{display:inline-block;}.heateor_sss_amp_instagram img{background-color:#624E47}.heateor_sss_amp_yummly img{background-color:#E16120}.heateor_sss_amp_buffer img{background-color:#000}.heateor_sss_amp_delicious img{background-color:#53BEEE}.heateor_sss_amp_facebook img{background-color:#3C589A}.heateor_sss_amp_digg img{background-color:#006094}.heateor_sss_amp_email img{background-color:#649A3F}.heateor_sss_amp_float_it img{background-color:#53BEEE}.heateor_sss_amp_linkedin img{background-color:#0077B5}.heateor_sss_amp_pinterest img{background-color:#CC2329}.heateor_sss_amp_print img{background-color:#FD6500}.heateor_sss_amp_reddit img{background-color:#FF5700}.heateor_sss_amp_stocktwits img{background-color: #40576F}.heateor_sss_amp_mewe img{background-color:#007da1}.heateor_sss_amp_mix img{background-color:#ff8226}.heateor_sss_amp_tumblr img{background-color:#29435D}.heateor_sss_amp_twitter img{background-color:#55acee}.heateor_sss_amp_vkontakte img{background-color:#5E84AC}.heateor_sss_amp_yahoo img{background-color:#8F03CC}.heateor_sss_amp_xing img{background-color:#00797D}.heateor_sss_amp_instagram img{background-color:#527FA4}.heateor_sss_amp_whatsapp img{background-color:#55EB4C}.heateor_sss_amp_aim img{background-color: #10ff00}.heateor_sss_amp_amazon_wish_list img{background-color: #ffe000}.heateor_sss_amp_aol_mail img{background-color: #2A2A2A}.heateor_sss_amp_app_net img{background-color: #5D5D5D}.heateor_sss_amp_baidu img{background-color: #2319DC}.heateor_sss_amp_balatarin img{background-color: #fff}.heateor_sss_amp_bibsonomy img{background-color: #000}.heateor_sss_amp_bitty_browser img{background-color: #EFEFEF}.heateor_sss_amp_blinklist img{background-color: #3D3C3B}.heateor_sss_amp_blogger_post img{background-color: #FDA352}.heateor_sss_amp_blogmarks img{background-color: #535353}.heateor_sss_amp_bookmarks_fr img{background-color: #E8EAD4}.heateor_sss_amp_box_net img{background-color: #1A74B0}.heateor_sss_amp_buddymarks img{background-color: #ffd400}.heateor_sss_amp_care2_news img{background-color: #6EB43F}.heateor_sss_amp_citeulike img{background-color: #2781CD}.heateor_sss_amp_comment img{background-color: #444}.heateor_sss_amp_diary_ru img{background-color: #E8D8C6}.heateor_sss_amp_diaspora img{background-color: #2E3436}.heateor_sss_amp_dihitt img{background-color: #FF6300}.heateor_sss_amp_diigo img{background-color: #4A8BCA}.heateor_sss_amp_douban img{background-color: #497700}.heateor_sss_amp_draugiem img{background-color: #ffad66}.heateor_sss_amp_dzone img{background-color: #fff088}.heateor_sss_amp_evernote img{background-color: #8BE056}.heateor_sss_amp_facebook_messenger img{background-color: #0084FF}.heateor_sss_amp_fark img{background-color: #555}.heateor_sss_amp_fintel img{background-color: #087515}.heateor_sss_amp_flipboard img{background-color: #CC0000}.heateor_sss_amp_folkd img{background-color: #0F70B2}.heateor_sss_amp_google_classroom img{background-color: #FFC112}.heateor_sss_amp_google_bookmarks img{background-color: #CB0909}.heateor_sss_amp_google_gmail img{background-color: #E5E5E5}.heateor_sss_amp_hacker_news img{background-color: #F60}.heateor_sss_amp_hatena img{background-color: #00A6DB}.heateor_sss_amp_instapaper img{background-color: #EDEDED}.heateor_sss_amp_jamespot img{background-color: #FF9E2C}.heateor_sss_amp_kakao img{background-color: #FCB700}.heateor_sss_amp_kik img{background-color: #2A2A2A}.heateor_sss_amp_kindle_it img{background-color: #2A2A2A}.heateor_sss_amp_known img{background-color: #fff101}.heateor_sss_amp_line img{background-color: #00C300}.heateor_sss_amp_livejournal img{background-color: #EDEDED}.heateor_sss_amp_mail_ru img{background-color: #356FAC}.heateor_sss_amp_mendeley img{background-color: #A70805}.heateor_sss_amp_meneame img{background-color: #FF7D12}.heateor_sss_amp_mixi img{background-color: #EDEDED}.heateor_sss_amp_myspace img{background-color: #2A2A2A}.heateor_sss_amp_netlog img{background-color: #2A2A2A}.heateor_sss_amp_netvouz img{background-color: #c0ff00}.heateor_sss_amp_newsvine img{background-color: #055D00}.heateor_sss_amp_nujij img{background-color: #D40000}.heateor_sss_amp_odnoklassniki img{background-color: #F2720C}.heateor_sss_amp_oknotizie img{background-color: #fdff88}.heateor_sss_amp_outlook_com img{background-color: #0072C6}.heateor_sss_amp_papaly img{background-color: #3AC0F6}.heateor_sss_amp_pinboard img{background-color: #1341DE}.heateor_sss_amp_plurk img{background-color: #CF682F}.heateor_sss_amp_pocket img{background-color: #f0f0f0}.heateor_sss_amp_polyvore img{background-color: #2A2A2A}.heateor_sss_amp_printfriendly img{background-color: #61D1D5}.heateor_sss_amp_protopage_bookmarks img{background-color: #413FFF}.heateor_sss_amp_pusha img{background-color: #0072B8}.heateor_sss_amp_qzone img{background-color: #2B82D9}.heateor_sss_amp_refind img{background-color: #1492ef}.heateor_sss_amp_rediff_mypage img{background-color: #D20000}.heateor_sss_amp_renren img{background-color: #005EAC}.heateor_sss_amp_segnalo img{background-color: #fdff88}.heateor_sss_amp_sina_weibo img{background-color: #ff0}.heateor_sss_amp_sitejot img{background-color: #ffc800}.heateor_sss_amp_skype img{background-color: #00AFF0}.heateor_sss_amp_sms img{background-color: #6ebe45}.heateor_sss_amp_slashdot img{background-color: #004242}.heateor_sss_amp_stumpedia img{background-color: #EDEDED}.heateor_sss_amp_svejo img{background-color: #fa7aa3}.heateor_sss_amp_symbaloo_feeds img{background-color: #6DA8F7}.heateor_sss_amp_telegram img{background-color: #3DA5f1}.heateor_sss_amp_trello img{background-color: #1189CE}.heateor_sss_amp_tuenti img{background-color: #0075C9}.heateor_sss_amp_twiddla img{background-color: #EDEDED}.heateor_sss_amp_typepad_post img{background-color: #2A2A2A}.heateor_sss_amp_viadeo img{background-color: #2A2A2A}.heateor_sss_amp_viber img{background-color: #8B628F}.heateor_sss_amp_wanelo img{background-color: #fff}.heateor_sss_amp_webnews img{background-color: #CC2512}.heateor_sss_amp_wordpress img{background-color: #464646}.heateor_sss_amp_wykop img{background-color: #367DA9}.heateor_sss_amp_yahoo_mail img{background-color: #400090}.heateor_sss_amp_yahoo_messenger img{background-color: #400090}.heateor_sss_amp_yoolink img{background-color: #A2C538}.heateor_sss_amp_youmob img{background-color: #3B599D}.heateor_sss_amp_gentlereader img{background-color: #46aecf}.heateor_sss_amp_threema img{background-color: #2A2A2A}';
+		$css .= 'a.heateor_sss_amp{padding:0 4px;}div.heateor_sss_horizontal_sharing a amp-img{display:inline-block;}.heateor_sss_amp_instagram img{background-color:#624E47}.heateor_sss_amp_yummly img{background-color:#E16120}.heateor_sss_amp_youtube img{background-color:#ff0000}.heateor_sss_amp_buffer img{background-color:#000}.heateor_sss_amp_delicious img{background-color:#53BEEE}.heateor_sss_amp_facebook img{background-color:#3C589A}.heateor_sss_amp_digg img{background-color:#006094}.heateor_sss_amp_email img{background-color:#649A3F}.heateor_sss_amp_float_it img{background-color:#53BEEE}.heateor_sss_amp_linkedin img{background-color:#0077B5}.heateor_sss_amp_pinterest img{background-color:#CC2329}.heateor_sss_amp_print img{background-color:#FD6500}.heateor_sss_amp_reddit img{background-color:#FF5700}.heateor_sss_amp_stocktwits img{background-color: #40576F}.heateor_sss_amp_mewe img{background-color:#007da1}.heateor_sss_amp_mix img{background-color:#ff8226}.heateor_sss_amp_tumblr img{background-color:#29435D}.heateor_sss_amp_twitter img{background-color:#55acee}.heateor_sss_amp_vkontakte img{background-color:#5E84AC}.heateor_sss_amp_yahoo img{background-color:#8F03CC}.heateor_sss_amp_xing img{background-color:#00797D}.heateor_sss_amp_instagram img{background-color:#527FA4}.heateor_sss_amp_whatsapp img{background-color:#55EB4C}.heateor_sss_amp_aim img{background-color: #10ff00}.heateor_sss_amp_amazon_wish_list img{background-color: #ffe000}.heateor_sss_amp_aol_mail img{background-color: #2A2A2A}.heateor_sss_amp_app_net img{background-color: #5D5D5D}.heateor_sss_amp_baidu img{background-color: #2319DC}.heateor_sss_amp_balatarin img{background-color: #fff}.heateor_sss_amp_bibsonomy img{background-color: #000}.heateor_sss_amp_bitty_browser img{background-color: #EFEFEF}.heateor_sss_amp_blinklist img{background-color: #3D3C3B}.heateor_sss_amp_blogger_post img{background-color: #FDA352}.heateor_sss_amp_blogmarks img{background-color: #535353}.heateor_sss_amp_bookmarks_fr img{background-color: #E8EAD4}.heateor_sss_amp_box_net img{background-color: #1A74B0}.heateor_sss_amp_buddymarks img{background-color: #ffd400}.heateor_sss_amp_care2_news img{background-color: #6EB43F}.heateor_sss_amp_comment img{background-color: #444}.heateor_sss_amp_diary_ru img{background-color: #E8D8C6}.heateor_sss_amp_diaspora img{background-color: #2E3436}.heateor_sss_amp_dihitt img{background-color: #FF6300}.heateor_sss_amp_diigo img{background-color: #4A8BCA}.heateor_sss_amp_douban img{background-color: #497700}.heateor_sss_amp_draugiem img{background-color: #ffad66}.heateor_sss_amp_evernote img{background-color: #8BE056}.heateor_sss_amp_facebook_messenger img{background-color: #0084FF}.heateor_sss_amp_fark img{background-color: #555}.heateor_sss_amp_fintel img{background-color: #087515}.heateor_sss_amp_flipboard img{background-color: #CC0000}.heateor_sss_amp_folkd img{background-color: #0F70B2}.heateor_sss_amp_google_classroom img{background-color: #FFC112}.heateor_sss_amp_google_bookmarks img{background-color: #CB0909}.heateor_sss_amp_google_gmail img{background-color: #E5E5E5}.heateor_sss_amp_hacker_news img{background-color: #F60}.heateor_sss_amp_hatena img{background-color: #00A6DB}.heateor_sss_amp_instapaper img{background-color: #EDEDED}.heateor_sss_amp_jamespot img{background-color: #FF9E2C}.heateor_sss_amp_kakao img{background-color: #FCB700}.heateor_sss_amp_kik img{background-color: #2A2A2A}.heateor_sss_amp_kindle_it img{background-color: #2A2A2A}.heateor_sss_amp_known img{background-color: #fff101}.heateor_sss_amp_line img{background-color: #00C300}.heateor_sss_amp_livejournal img{background-color: #EDEDED}.heateor_sss_amp_mail_ru img{background-color: #356FAC}.heateor_sss_amp_mendeley img{background-color: #A70805}.heateor_sss_amp_meneame img{background-color: #FF7D12}.heateor_sss_amp_mixi img{background-color: #EDEDED}.heateor_sss_amp_myspace img{background-color: #2A2A2A}.heateor_sss_amp_netlog img{background-color: #2A2A2A}.heateor_sss_amp_netvouz img{background-color: #c0ff00}.heateor_sss_amp_newsvine img{background-color: #055D00}.heateor_sss_amp_nujij img{background-color: #D40000}.heateor_sss_amp_odnoklassniki img{background-color: #F2720C}.heateor_sss_amp_oknotizie img{background-color: #fdff88}.heateor_sss_amp_outlook_com img{background-color: #0072C6}.heateor_sss_amp_papaly img{background-color: #3AC0F6}.heateor_sss_amp_pinboard img{background-color: #1341DE}.heateor_sss_amp_plurk img{background-color: #CF682F}.heateor_sss_amp_pocket img{background-color: #f0f0f0}.heateor_sss_amp_polyvore img{background-color: #2A2A2A}.heateor_sss_amp_printfriendly img{background-color: #61D1D5}.heateor_sss_amp_protopage_bookmarks img{background-color: #413FFF}.heateor_sss_amp_pusha img{background-color: #0072B8}.heateor_sss_amp_qzone img{background-color: #2B82D9}.heateor_sss_amp_refind img{background-color: #1492ef}.heateor_sss_amp_rediff_mypage img{background-color: #D20000}.heateor_sss_amp_renren img{background-color: #005EAC}.heateor_sss_amp_segnalo img{background-color: #fdff88}.heateor_sss_amp_sina_weibo img{background-color: #ff0}.heateor_sss_amp_sitejot img{background-color: #ffc800}.heateor_sss_amp_skype img{background-color: #00AFF0}.heateor_sss_amp_sms img{background-color: #6ebe45}.heateor_sss_amp_slashdot img{background-color: #004242}.heateor_sss_amp_stumpedia img{background-color: #EDEDED}.heateor_sss_amp_svejo img{background-color: #fa7aa3}.heateor_sss_amp_symbaloo_feeds img{background-color: #6DA8F7}.heateor_sss_amp_telegram img{background-color: #3DA5f1}.heateor_sss_amp_trello img{background-color: #1189CE}.heateor_sss_amp_tuenti img{background-color: #0075C9}.heateor_sss_amp_twiddla img{background-color: #EDEDED}.heateor_sss_amp_typepad_post img{background-color: #2A2A2A}.heateor_sss_amp_viadeo img{background-color: #2A2A2A}.heateor_sss_amp_viber img{background-color: #8B628F}.heateor_sss_amp_webnews img{background-color: #CC2512}.heateor_sss_amp_wordpress img{background-color: #464646}.heateor_sss_amp_wykop img{background-color: #367DA9}.heateor_sss_amp_yahoo_mail img{background-color: #400090}.heateor_sss_amp_yahoo_messenger img{background-color: #400090}.heateor_sss_amp_yoolink img{background-color: #A2C538}.heateor_sss_amp_youmob img{background-color: #3B599D}.heateor_sss_amp_gentlereader img{background-color: #46aecf}.heateor_sss_amp_threema img{background-color: #2A2A2A}';
 
 		// css for horizontal sharing bar
 		if ( $this->options['horizontal_sharing_shape'] == 'round' ) {

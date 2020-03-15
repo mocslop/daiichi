@@ -12,12 +12,12 @@
 		
 		<?php if(is_search() OR is_archive()){?>
 			<div class="excerpt"><p><?php echo excerpt(25); ?></p></div>
-			<a class="readmore" href="<?php echo the_permalink(); ?>">Read more <i class="fa fa-angle-double-right" aria-hidden="true"></i></a>
+			<a class="readmore" href="<?php echo the_permalink(); ?>">Xem thêm <i class="fa fa-angle-double-right" aria-hidden="true"></i></a>
 		<?php } 
 		else {
 			if($post->post_excerpt){ ?>
 				<div class="excerpt"><p><?php echo excerpt(35); ?></p></div>
-				<a class="readmore" href="<?php echo the_permalink(); ?>">Read more <i class="fa fa-angle-double-right" aria-hidden="true"></i></a>
+				<a class="readmore" href="<?php echo the_permalink(); ?>">Xem thêm <i class="fa fa-angle-double-right" aria-hidden="true"></i></a>
 			<?php } else{
 				the_content();
 			} 

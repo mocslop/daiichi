@@ -125,7 +125,6 @@ class Sassy_Social_Share {
 
 		// create object of admin class to pass options
 		$plugin_admin = new Sassy_Social_Share_Admin( $this->options, $this->version );
-		
 		// hook to upate plugin db/options based on version
 		add_action( 'plugins_loaded', array( $plugin_admin, 'update_db_check' ) );
 		// save GDPR notification flag in DB
@@ -244,6 +243,10 @@ class Sassy_Social_Share {
 
 		// shortcode for sharing
 		add_shortcode( 'Sassy_Social_Share', array( $plugin_shortcodes, 'sharing_shortcode' ) );
+
+		// shortcode for follow icons
+		add_shortcode( 'Sassy_Follow_Icons', array( $plugin_shortcodes, 'follow_icons_shortcode' ) );
+
 		
 	}
 
