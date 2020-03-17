@@ -135,7 +135,7 @@ function shortcode_gbh(){
 	?>
 	<div class="gbh">
 		<div class="container">
-			<h4 class="title_under_before">Các gói bảo hiểm được quan tâm</h4>
+			<h4 class="title_under_before"><span>Các gói bảo hiểm được quan tâm</span></h4>
 			<ul class="row">
 				<?php
 				$args = array(  
@@ -150,9 +150,11 @@ function shortcode_gbh(){
 				while ( $loop_partner->have_posts() ) : $loop_partner->the_post(); 
     	//echo the_title();
 					?> <li class="col-sm-3">
-						<div class="product_inner">
-							<?php  $image = wp_get_attachment_image_src( get_post_thumbnail_id( $post->ID ), 'single-post-thumbnail' );  ?>
-							<figure class="thumbnail" style="background:url('<?php echo $image[0]; ?>');"><a href="<?php the_permalink(); ?>"></a> </figure>
+						<div class="product_inner pw">
+							<div class="wrap_figure">
+								<?php  $image = wp_get_attachment_image_src( get_post_thumbnail_id( $post->ID ), 'single-post-thumbnail' );  ?>
+								<figure class="thumbnail" style="background:url('<?php echo $image[0]; ?>');"><a href="<?php the_permalink(); ?>"></a> </figure>
+							</div>
 							<h4><a href="<?php the_permalink(); ?>"><?php echo the_title(); ?></a></h4>
 							<div class="excerpt">
 								<p><?php echo excerpt(20); ?></p>

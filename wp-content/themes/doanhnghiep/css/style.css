@@ -97,6 +97,7 @@ input[type=number]::-webkit-outer-spin-button {
      border-radius: 0px;
      margin:0px;
      position: relative;
+     transition: all 0.5s;
 }
 input:focus::-webkit-input-placeholder , textarea:focus::-webkit-input-placeholder {
      color:transparent;
@@ -753,38 +754,17 @@ span.parent-link{
      font-weight: 700;
      padding: 3px 10px 3px 0px;
 }
-
-.pw .thumbnail a::before{
-     content:"";
-     background: rgba(255, 255, 255, 0.25);
-     height: 100%;
-     left: 100%;
-     position: absolute;
-     top: 100%;
+.pw figure a{
+     display: block;
      width: 100%;
-     -webkit-transition: all 0.3s;
-     -moz-transition: all 0.3s;
-     -o-transition: all 0.3s;
-     transition: all 0.3s;
-}
-.pw .thumbnail a::after{
-     content:"";
-     background: rgba(255, 255, 255, 0.25);
      height: 100%;
-     left: -100%;
-     position: absolute;
-     top: -100%;
-     width: 100%;
-     -webkit-transition: all 0.3s;
-     -moz-transition: all 0.3s;
-     -o-transition: all 0.3s;
-     transition: all 0.3s;
 }
-.pw:hover .thumbnail a::before , .pw:hover .thumbnail a::after{
-     left: 0;
-     top: 0;
+.pw:hover .thumbnail{
+     transform: scale(1.1);
 }
-
+.wrap_figure{
+     overflow: hidden;
+}
 .pw:hover h2 a , .widget_area a:hover{
      color: #c5010b !important;
 }
@@ -1103,6 +1083,11 @@ ul.list_categories li.parent_cat>a:not(:first-child)::before{
 }
 .heateor_sss_horizontal_sharing{
      margin:20px 0px;
+}
+.archive .list_post_categories .post_title a {
+     text-transform: uppercase;
+     font-size: 15px;
+     line-height: 22px;
 }
 .title_archives{
      margin:0px;
@@ -1533,9 +1518,7 @@ iframe{
      max-width: 100% !important;
      width: 100% !important;
 }
-.popup_map iframe{
-     height: 400px;
-}
+
 /* END CSS OTHER*/
 
 /* CSS FOOTER */
@@ -1782,8 +1765,14 @@ iframe{
      width: 100%;
      height: 100%;
 }
+.pay_qlbh .post_wrapper_content h2{
+     margin:10px 0px 0px 0px;
+}
 .pay_qlbh{
-     padding: 35px 0px;
+     padding: 40px 0px;
+     background: #efefef;
+}
+.pay_qlbh .title_under_before span{     
      background: #efefef;
 }
 .form_tuvanft input{
@@ -2332,6 +2321,7 @@ div.wpcf7-response-output{
 .effect17:focus ~ label, .has-content.effect17 ~ label{top: -16px; font-size: 12px; color: #F1C40F; transition: 0.3s;}
 #feedback {
  padding: 4em 0em;
+ background-position: initial !important;
 }
 
 #feedback .textwidget figure {
@@ -2357,21 +2347,29 @@ div.wpcf7-response-output{
  text-align: center;
  font-size: 30px;
  line-height: 56px;
- color: #162b1a;
+ color: #c5020c;
  position: relative;
  font-weight: 400;
- margin: 0px 0px 30px 0px;
+ margin: 0px 0px 5px 0px;
  font-weight: 700;
  text-transform: uppercase;
+}
+#feedback .panel-layout>.panel-grid:nth-child(1)  h3.widget-title span{
+     display: table;
+    margin: 0px auto;
+    position: relative;
+    z-index: 2;
+    padding: 0px 15px;
+    background: #fff;
 }
 #feedback .panel-layout>.panel-grid:nth-child(1)  h3.widget-title::before{
      content: "";
      position: absolute;
      width: 100%;
-     max-width: 100px;
-     height: 4px;
-     background: #c5010b;
-     bottom: -10px;
+     max-width: 100%;
+     height: 2px;
+     background: #e6e6e6;
+     bottom: 29px;
      left: 0px;
      right: 0px;
      margin: 0px auto;
@@ -2381,7 +2379,7 @@ div.wpcf7-response-output{
    display: table;
    width: 100%;
    max-width: 700px;
-   margin: 0px auto 55px auto;
+   margin: 0px auto 30px auto;
 }
 #feedback .panel-layout>.panel-grid:nth-child(1) .textwidget p {
  color: #616161;
@@ -2615,21 +2613,28 @@ div.wpcf7-response-output{
 }
 .title_under_before{
       text-transform: uppercase;
-      color: #000;
+      color: #c5020c;
       font-weight: 700;
       font-size: 30px;
-      display: table;
-      margin: 0px auto 50px auto;
+      margin: 0px auto 25px auto;
       position: relative;
+}
+.title_under_before span{
+     display: table;
+     margin:0px auto;
+     position: relative;
+     z-index: 2;
+     padding: 0px 15px;
+     background: #fff;
 }
 .title_under_before::before{
          content: "";
          position: absolute;
          width: 100%;
-         max-width: 100px;
-         height: 4px;
-         background: #c5010b;
-         bottom: -20px;
+         max-width: 100%;
+         height: 2px;
+         background: #e6e6e6;
+         bottom: 18px;
          left: 0px;
          right: 0px;
          margin: 0px auto;
@@ -2640,7 +2645,7 @@ div.wpcf7-response-output{
   height: 100%;
 }
 .partners{
-  padding: 35px 0px;
+  padding: 40px 0px;
 }
 .partners .slick-slider{
   margin:0px !important;

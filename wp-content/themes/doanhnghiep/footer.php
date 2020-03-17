@@ -1,6 +1,6 @@
 	<div class="pay_qlbh">
 		<div class="container">
-					<h4 class="title_under_before"><?php  echo get_cat_name('20'); ?></h4>
+					<h4 class="title_under_before"><span><?php  echo get_cat_name('20'); ?></span></h4>
 			<div class="row">
 			<?php 
 			$args_qlbh = array(  
@@ -28,7 +28,7 @@
 	</div>
 	<div class="partners">
 		<div class="container">
-			<h4 class="title_under_before">Đối tác bảo lãnh viện phí</h4>
+			<h4 class="title_under_before"><span>Đối tác bảo lãnh viện phí</span></h4>
 			<ul>
 				<?php
 				$args = array(  
